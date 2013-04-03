@@ -1,0 +1,42 @@
+%p#notice= notice
+
+%p
+  %b Uid:
+  = @bill.uid
+%p
+  %b Title:
+  = @bill.title
+%p
+  %b Summary:
+  = @bill.summary
+%p
+  %b Tags:
+  = @bill.tags
+%p
+  %b Matters:
+  = @bill.matters
+%p
+  %b Stage:
+  = @bill.stage
+%p
+  %b Creation date:
+  = @bill.creation_date
+%p
+  %b Publish date:
+  = @bill.publish_date
+%p
+  %b Authors:
+  = @bill.authors
+%p
+  %b Origin chamber:
+  = @bill.origin_chamber
+%p
+  %b Current urgency:
+  = @bill.current_urgency
+%p
+  %b Link law:
+  = @bill.link_law
+
+= link_to 'Edit', edit_bill_path(@bill)
+\|
+= link_to 'Back', bills_path
