@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2'
 
+gem 'haml-rails', '~> 0.4'
+
 #Search
 #latest version of sunspot_mongoid
 #(the one in rubygems doesn't work by march 2013)

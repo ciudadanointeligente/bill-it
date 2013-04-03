@@ -66,11 +66,13 @@ module BillIt
     config.assets.version = '1.0'
 
     config.generators do |g|
-      g.orm             :mongoid
-      g.template_engine :haml
-      g.test_framework  :rspec, :fixture => false
-      g.view_specs      false
-      g.helper_specs    false
+      g.orm              :mongoid
+      g.template_engine  :haml
+      g.test_framework   :rspec, :fixture => false
+      g.view_specs       false
+      g.helper_specs     false
+      g.integration_tool nil
+      g.performance_tool nil
     end
   end
 end
