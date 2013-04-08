@@ -1,5 +1,9 @@
 class Bill
   include Mongoid::Document
+
+  validates_presence_of :uid
+  validates_uniqueness_of :uid
+  
   field :uid, type: String
   field :title, type: String
   field :summary, type: String
