@@ -15,7 +15,12 @@ gem 'roar', '~> 0.11'
 gem 'roar-rails', "~> 0.0"
 gem 'billit_representers', '~> 0.0'
 
-#Test
-group :test do
+group :development, :test do
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'faker'
 end
