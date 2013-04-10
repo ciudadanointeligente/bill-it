@@ -3,6 +3,10 @@ class Bill
 
   validates_presence_of :uid
   validates_uniqueness_of :uid
+
+  embeds_many :events
+  embeds_many :urgencies
+  embeds_many :reports
   
   field :uid, type: String
   field :title, type: String
