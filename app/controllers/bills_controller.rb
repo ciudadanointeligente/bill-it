@@ -1,4 +1,9 @@
+require 'billit_representers/representers/bill_representer'
+require 'billit_representers/representers/bills_representer'
+
 class BillsController < ApplicationController
+  include Roar::Rails::ControllerAdditions
+  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillsRepresenter
   # GET /bills
   # GET /bills.json
   def index
@@ -13,12 +18,8 @@ class BillsController < ApplicationController
   # GET /bills/1
   # GET /bills/1.json
   def show
-    @bill = Bill.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @bill }
-    end
+    @bill = Bill.find_by(uid: params[:id])
+    respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 
   # GET /bills/new
