@@ -34,17 +34,9 @@ describe BillsController do
     {}
   end
 
-  describe "GET index" do
-    xit "assigns all bills as @bills" do
-      bill = Bill.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:bills).should eq([bill])
-    end
-  end
-
   describe "GET show" do
     it "assigns the requested bill as @bill" do
-      bill = FactoryGirl.create(:bill)
+      bill = FactoryGirl.create(:bill1)
       get :show, id: bill.uid, format: :json
       assigns(:bill).should eq(bill)
     end
@@ -52,10 +44,18 @@ describe BillsController do
 
   describe "GET show" do
     it "returns the correct bill in json format" do
-      bill = FactoryGirl.create(:bill)
+      bill = FactoryGirl.create(:bill1)
       get :show, id: bill.uid, format: :json
       response.should be_success
       response.body.should eq(assigns(:bill).to_json)
+    end
+  end
+
+  describe "GET index" do
+    xit "assigns all bills as @bills" do
+      bill = Bill.create! valid_attributes
+      get :index, {}, valid_session
+      assigns(:bills).should eq([bill])
     end
   end
 
