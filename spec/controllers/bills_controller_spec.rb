@@ -40,9 +40,7 @@ describe BillsController do
       get :show, id: bill.uid, format: :json
       assigns(:bill).should eq(bill)
     end
-  end
 
-  describe "GET show" do
     it "returns the correct bill in json format" do
       bill = FactoryGirl.create(:bill1)
       get :show, id: bill.uid, format: :json
