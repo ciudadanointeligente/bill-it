@@ -103,7 +103,8 @@ class BillsController < ApplicationController
     search_attribute_names = ["q"]
     filtered_conditions = {}
     conditions.each do |key, value|
-        if !value.nil?() && value != "" && search_attribute_names.include?(key)
+        if !mongoid_attribute_names.include?(key) && !value.nil?() && value != ""\
+          && (Bill.attribute_names.include?(key) || search_attribute_names.include?(key))
           filtered_conditions[key] = value
         end
     end
@@ -117,6 +118,18 @@ class BillsController < ApplicationController
       if filtered_conditions.key?("q")
         fulltext conditions["q"]
         filtered_conditions.delete("q")
+      #search over specific fields
+      end
+      text_fields do
+        all_of do
+          filtered_conditions.each do |key, value|
+            any_of do
+              value.split("|").each do |term|
+                with(key, term)
+              end
+            end
+          end
+        end
       end
     end
     search

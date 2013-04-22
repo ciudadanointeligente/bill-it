@@ -32,5 +32,19 @@ FactoryGirl.define do
       f.current_urgency nil
       f.link_law "http://bcn.cl/19ce2"
     end
+    factory :bill3 do |f|
+      f.uid "0000-00"
+      f.title "Fake bill with terms información pública"
+      f.summary "Ley de transparencia"
+      f.tags ["Transparencia", "Acceso a la información pública"]
+      f.matters ["Transparencia", "Participación"]
+      f.stage "Tramitación terminada"
+      f.creation_date "2005-01-04T00:00:00Z"
+      f.publish_date "2008-08-11T00:00:00Z"
+      f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
+      f.origin_chamber "C.Diputados"
+      f.current_urgency nil
+      f.link_law "http://bcn.cl/19ce2"
+    end
   end
 end

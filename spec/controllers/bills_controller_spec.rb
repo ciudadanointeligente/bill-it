@@ -51,23 +51,51 @@ describe BillsController do
   end
 
   describe "GET search" do
-    it "assigns query results to @bills" do
-      bill1 = FactoryGirl.create(:bill1)
-      bill2 = FactoryGirl.create(:bill2)
-      Sunspot.remove_all(Bill)
-      Sunspot.index!(Bill.all)
-      get :search, q: "Pena", format: :json
-      assigns(:bills).should eq([bill1])
+    context "doing a simple 'q' query" do
+      context "with a single result" do
+        it "assigns query results to @bills" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "Pena", format: :json
+          assigns(:bills).should eq([bill1])
+        end
+
+        #works well, but haven't found the way to test the format
+        xit "returns bills in roar/json format" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "Tramitación", format: :json
+          response.body.should eq(assigns(:bills).to_json)
+        end
+      end
+
+      context "with multiple results" do
+        it "assigns multiple query results to @bills" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          bill3 = FactoryGirl.create(:bill3)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "transparencia", format: :json
+          assigns(:bills).should eq([bill2, bill3])
+        end
+      end
     end
 
-    #works well, but haven't found the way to test the format
-    xit "returns bills in roar/json format" do
-      bill1 = FactoryGirl.create(:bill1)
-      bill2 = FactoryGirl.create(:bill2)
-      Sunspot.remove_all(Bill)
-      Sunspot.index!(Bill.all)
-      get :search, q: "Tramitación", format: :json
-      response.body.should eq(assigns(:bills).to_json)
+    context "advanced query" do
+      it "assigns query results to @bills" do
+        bill1 = FactoryGirl.create(:bill1)
+        bill2 = FactoryGirl.create(:bill2)
+        bill3 = FactoryGirl.create(:bill3)
+        Sunspot.remove_all(Bill)
+        Sunspot.index!(Bill.all)
+        get :search, summary: "transparencia", origin_chamber: "C.Diputados", format: :json
+        assigns(:bills).should eq([bill3])
+      end
     end
   end
 
