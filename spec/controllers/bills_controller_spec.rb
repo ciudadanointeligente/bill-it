@@ -35,6 +35,63 @@ describe BillsController do
     {}
   end
 
+  describe "filter_conditions" do
+    it "passes 'q' params" do
+      conditions = {"q" => "Pena"}
+      filtered_conditions = BillsController.new.filter_conditions(conditions)
+      expect(filtered_conditions[:equivalence_conditions]).to eq(conditions)
+    end
+    
+    context "with bill attributes as params" do
+      it "passes bill attributes" do
+        mongoid_attribute_names = ["_id", "created_at", "updated_at"]
+        attr1, attr2 = (Bill.attribute_names - mongoid_attribute_names)[0..1]
+        conditions = {attr1 => "Pena", attr2 => "1234-5"}
+        filtered_conditions = BillsController.new.filter_conditions(conditions)
+        expect(filtered_conditions[:equivalence_conditions]).to eq(conditions)
+      end
+
+      it "passes range params" do
+        range_modifier_min = "_min" #This should be a global variable for the rails project
+        bill_range_fields = Bill.fields.dup
+        bill_range_fields.reject! {|field_name, metadata| metadata.options[:type]!= Time}
+        attr1 = bill_range_fields.keys[0] + range_modifier_min
+        conditions = {attr1 => "2008-08-11T00:00:00Z"}
+        return_conditions = {bill_range_fields.keys[0] => "2008-08-11T00:00:00Z"}
+        filtered_conditions = BillsController.new.filter_conditions(conditions)
+        expect(filtered_conditions[:range_conditions_min]).to eq(return_conditions)
+      end
+    end
+    
+    context "given unwanted params" do
+      it "filters nil values and empty strings" do
+        mongoid_attribute_names = ["_id", "created_at", "updated_at"]
+        attr1, attr2 = (Bill.attribute_names - mongoid_attribute_names)[0..1]
+        conditions = {attr1 => "", attr2 => nil}
+        filtered_conditions = BillsController.new.filter_conditions(conditions)
+        for key, val in filtered_conditions
+          expect(val).to be_empty
+        end
+      end
+
+      it "filters unknown attributes" do
+        conditions = {"wia9nai4OS0iXiif" => "Pena"}
+        filtered_conditions = BillsController.new.filter_conditions(conditions)
+        for key, val in filtered_conditions
+          expect(val).to be_empty
+        end
+      end
+
+      it "filters mongoid attributes" do
+        conditions = {"_id" => "1234567890"}
+        filtered_conditions = BillsController.new.filter_conditions(conditions)
+        for key, val in filtered_conditions
+          expect(val).to be_empty
+        end
+      end
+    end
+  end
+
   describe "GET show" do
     it "assigns the requested bill as @bill" do
       bill = FactoryGirl.create(:bill1)
@@ -95,6 +152,17 @@ describe BillsController do
         Sunspot.index!(Bill.all)
         get :search, summary: "transparencia", origin_chamber: "C.Diputados", format: :json
         assigns(:bills).should eq([bill3])
+      end
+
+      it "searches over a date range" do
+        bill1 = FactoryGirl.create(:bill1)
+        bill2 = FactoryGirl.create(:bill2)
+        bill3 = FactoryGirl.create(:bill3)
+        Sunspot.remove_all(Bill)
+        Sunspot.index!(Bill.all)
+        get :search, publish_date_min: "2008-01-01T00:00:00Z", publish_date_max: "2010-01-01T00:00:00Z",\
+          origin_chamber: "Senado", format: :json
+        assigns(:bills).should eq([bill2])
       end
     end
   end

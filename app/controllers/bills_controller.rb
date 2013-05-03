@@ -99,36 +99,72 @@ class BillsController < ApplicationController
   end
 
   def filter_conditions(conditions)
-    mongoid_attribute_names = ["_id", "created_at", "updated_at"] #Fix should probably have a greater scope
-    search_attribute_names = ["q"]
-    filtered_conditions = {}
-    conditions.each do |key, value|
-        if !mongoid_attribute_names.include?(key) && !value.nil?() && value != ""\
-          && (Bill.attribute_names.include?(key) || search_attribute_names.include?(key))
-          filtered_conditions[key] = value
-        end
+    @mongoid_attribute_names = ["_id", "created_at", "updated_at"] #Fix should probably have a greater scope
+    @search_attribute_names = ["q"]
+    @range_field_types = [Time]
+    @range_modifier_min = "_min"
+    @range_modifier_max = "_max"
+
+    bill_range_fields = Bill.fields.dup
+    @range_field_types.each do |type|
+      bill_range_fields.reject! {|field_name, metadata| metadata.options[:type]!= type}
     end
-    filtered_conditions
+    bill_range_attributes = bill_range_fields.keys
+
+    bill_public_attributes = Bill.attribute_names - @mongoid_attribute_names
+
+    equivalence_attributes = bill_public_attributes + @search_attribute_names
+    range_attributes_min = bill_range_attributes.map {|attribute| attribute + @range_modifier_min}
+    range_attributes_max = bill_range_attributes.map {|attribute| attribute + @range_modifier_max}
+
+    filtered_conditions = {}
+    equivalence_conditions = {}
+    range_conditions_min = {}
+    range_conditions_max = {}
+    conditions.each do |key, value|
+      next if value.nil?() || value == ""
+      if equivalence_attributes.include?(key)
+        equivalence_conditions[key] = value
+      elsif range_attributes_min.include?(key)
+        range_conditions_min[key.gsub(@range_modifier_min, "")] = value
+      elsif range_attributes_max.include?(key)
+        range_conditions_max[key.gsub(@range_modifier_max, "")] = value
+      end
+    end
+
+    return {equivalence_conditions: equivalence_conditions,\
+      range_conditions_min: range_conditions_min, range_conditions_max: range_conditions_max}
   end
 
   def results_for(conditions)
     filtered_conditions = filter_conditions(conditions)
+
     search = Sunspot.search(Bill) do
       # search over all fields
-      if filtered_conditions.key?("q")
-        fulltext conditions["q"]
-        filtered_conditions.delete("q")
-      #search over specific fields
+      if filtered_conditions[:equivalence_conditions].key?("q")
+        fulltext filtered_conditions[:equivalence_conditions]["q"]
+        filtered_conditions[:equivalence_conditions].delete("q")
       end
+      #search over specific fields
       text_fields do
         all_of do
-          filtered_conditions.each do |key, value|
+          filtered_conditions[:equivalence_conditions].each do |key, value|
             any_of do
               value.split("|").each do |term|
                 with(key, term)
               end
             end
           end
+        end
+      end
+
+      all_of do
+        #range_conditions_min might be asdf_min instead of asdf
+        filtered_conditions[:range_conditions_min].each do |key, value|
+          with(key).greater_than(value)
+        end
+        filtered_conditions[:range_conditions_max].each do |key, value|
+          with(key).less_than(value)
         end
       end
     end

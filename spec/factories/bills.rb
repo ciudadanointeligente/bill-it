@@ -39,8 +39,8 @@ FactoryGirl.define do
       f.tags ["Transparencia", "Acceso a la información pública"]
       f.matters ["Transparencia", "Participación"]
       f.stage "Tramitación terminada"
-      f.creation_date "2005-01-04T00:00:00Z"
-      f.publish_date "2008-08-11T00:00:00Z"
+      f.creation_date "2007-01-04T00:00:00Z"
+      f.publish_date "2009-08-11T00:00:00Z"
       f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
       f.origin_chamber "C.Diputados"
       f.current_urgency nil
