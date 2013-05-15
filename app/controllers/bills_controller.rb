@@ -1,9 +1,11 @@
+# encoding: UTF-8
 require 'billit_representers/representers/bill_representer'
 require 'billit_representers/representers/bills_representer'
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
   represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillsRepresenter
+  respond_to :json
   # GET /bills
   # GET /bills.json
   def index
@@ -57,17 +59,11 @@ class BillsController < ApplicationController
   # POST /bills
   # POST /bills.json
   def create
-    @bill = Bill.new(params[:bill])
-
-    respond_to do |format|
-      if @bill.save
-        format.html { redirect_to @bill, notice: 'Bill was successfully created.' }
-        format.json { render json: @bill, status: :created, location: @bill }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @bill.errors, status: :unprocessable_entity }
-      end
-    end
+    @bill = Bill.new
+    @bill.extend(Billit::BillRepresenter)
+    @bill.from_json(params[:bill])
+    @bill.save
+    respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 
   # PUT /bills/1

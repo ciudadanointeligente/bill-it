@@ -192,37 +192,42 @@ describe BillsController do
 
   describe "POST create" do
     describe "with valid params" do
-      xit "creates a new Bill" do
+      it "creates a new Bill" do
+        bill1 = FactoryGirl.attributes_for(:bill1).to_json
         expect {
-          post :create, {:bill => valid_attributes}, valid_session
+          post :create, format: :json, :bill => bill1
         }.to change(Bill, :count).by(1)
       end
 
-      xit "assigns a newly created bill as @bill" do
-        post :create, {:bill => valid_attributes}, valid_session
+      it "assigns a newly created bill as @bill" do
+        bill1 = FactoryGirl.attributes_for(:bill1).to_json
+        post :create, format: :json, :bill => bill1
         assigns(:bill).should be_a(Bill)
         assigns(:bill).should be_persisted
       end
 
-      xit "redirects to the created bill" do
-        post :create, {:bill => valid_attributes}, valid_session
-        response.should redirect_to(Bill.last)
+      it "responds with the created bill" do
+        bill1 = FactoryGirl.attributes_for(:bill1).to_json
+        post :create, format: :json, :bill => bill1
+        response.should be_success
+        response.body.should eq(assigns(:bill).to_json)
       end
     end
 
     describe "with invalid params" do
-      xit "assigns a newly created but unsaved bill as @bill" do
+      it "assigns a newly created but unsaved bill as @bill" do
         # Trigger the behavior that occurs when invalid params are submitted
+        # Eventually useful for form feedback
         Bill.any_instance.stub(:save).and_return(false)
-        post :create, {:bill => { "uid" => "invalid value" }}, valid_session
+        post :create, format: :json, :bill => { "uid" => "invalid value" }.to_json
         assigns(:bill).should be_a_new(Bill)
       end
 
-      xit "re-renders the 'new' template" do
+      xit "responds with the rejected params" do
         # Trigger the behavior that occurs when invalid params are submitted
         Bill.any_instance.stub(:save).and_return(false)
-        post :create, {:bill => { "uid" => "invalid value" }}, valid_session
-        response.should render_template("new")
+        post :create, format: :json, :bill => { "uid" => "invalid value" }.to_json
+        response.should eq(assigns(:bill_error).to_json)
       end
     end
   end
