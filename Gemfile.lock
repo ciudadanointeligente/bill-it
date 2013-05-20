@@ -38,7 +38,7 @@ GEM
       i18n (= 0.6.1)
       multi_json (~> 1.0)
     arel (3.0.2)
-    billit_representers (0.0.5)
+    billit_representers (0.0.7)
       roar
     builder (3.0.4)
     database_cleaner (0.9.1)
@@ -77,7 +77,7 @@ GEM
       origin (~> 1.0)
       tzinfo (~> 0.3.22)
     moped (1.4.5)
-    multi_json (1.7.2)
+    multi_json (1.7.3)
     nokogiri (1.5.9)
     origin (1.0.11)
     polyglot (0.3.3)
@@ -107,11 +107,11 @@ GEM
     rake (10.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
-    representable (1.3.5)
+    representable (1.5.0)
       multi_json
       nokogiri
-    roar (0.11.12)
-      representable (>= 1.2.8)
+    roar (0.11.17)
+      representable (>= 1.5.0)
     roar-rails (0.0.11)
       actionpack (~> 3.0)
       hooks
