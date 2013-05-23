@@ -1,5 +1,6 @@
 class Bill
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   validates_presence_of :uid
   validates_uniqueness_of :uid
