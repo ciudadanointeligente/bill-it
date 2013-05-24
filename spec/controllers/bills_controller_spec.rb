@@ -291,4 +291,13 @@ describe BillsController do
     end
   end
 
+  describe "last_update" do
+    it "returns the update date of the bill that was most recently updated" do
+      bill1 = FactoryGirl.create(:bill1)
+      bill1_last_update = bill1.updated_at.strftime("%d/%m/%Y")
+      get :last_update
+      assigns(:date).should eq(bill1_last_update)
+    end
+  end
+
 end

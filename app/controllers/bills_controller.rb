@@ -167,4 +167,9 @@ class BillsController < ApplicationController
     search
   end
 
+  def last_update
+    @date = Bill.max(:updated_at).strftime("%d/%m/%Y")
+    render :text => @date
+  end
+
 end
