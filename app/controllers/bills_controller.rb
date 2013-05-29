@@ -69,17 +69,23 @@ class BillsController < ApplicationController
   # PUT /bills/1
   # PUT /bills/1.json
   def update
-    @bill = Bill.find(params[:id])
-
-    respond_to do |format|
-      if @bill.update_attributes(params[:bill])
-        format.html { redirect_to @bill, notice: 'Bill was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @bill.errors, status: :unprocessable_entity }
-      end
+    @bill = Bill.find_by(uid: params[:id])
+    @bill.extend(Billit::BillRepresenter)
+    if @bill.update_attributes(params[:bill])
+      respond_with @bill, :represent_with => Billit::BillRepresenter
+    else
+      render json: @bill.errors, status: :unprocessable_entity
     end
+
+    # respond_to do |format|
+    #   if @bill.update_attributes(params[:bill])
+    #     format.html { redirect_to @bill, notice: 'Bill was successfully updated.' }
+    #     format.json { head :no_content }
+    #   else
+    #     format.html { render action: "edit" }
+    #     format.json { render json: @bill.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /bills/1
