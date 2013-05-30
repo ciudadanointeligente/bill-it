@@ -20,7 +20,11 @@ class BillsController < ApplicationController
   # GET /bills/1.json
   def show
     @bill = Bill.find_by(uid: params[:id])
-    respond_with @bill, :represent_with => Billit::BillRepresenter
+    if @bill.nil?
+      render text: "", :status => 404
+    else
+      respond_with @bill, :represent_with => Billit::BillRepresenter
+    end
   end
 
   # GET /bills/search.json?q=search_string
@@ -61,7 +65,7 @@ class BillsController < ApplicationController
   def create
     @bill = Bill.new
     @bill.extend(Billit::BillRepresenter)
-    @bill.from_json(params[:bill])
+    @bill.from_json(params[:bill].to_json)
     @bill.save
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end

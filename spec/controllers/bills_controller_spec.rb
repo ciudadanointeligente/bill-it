@@ -93,17 +93,27 @@ describe BillsController do
   end
 
   describe "GET show" do
-    it "assigns the requested bill as @bill" do
-      bill = FactoryGirl.create(:bill1)
-      get :show, id: bill.uid, format: :json
-      assigns(:bill).should eq(bill)
-    end
+    describe "with existing id" do
+      it "assigns the requested bill as @bill" do
+        bill = FactoryGirl.create(:bill1)
+        get :show, id: bill.uid, format: :json
+        assigns(:bill).should eq(bill)
+      end
 
-    it "returns the correct bill in json format" do
-      bill = FactoryGirl.create(:bill1)
-      get :show, id: bill.uid, format: :json
-      response.should be_success
-      response.body.should eq(assigns(:bill).to_json)
+      it "returns the correct bill in json format" do
+        bill = FactoryGirl.create(:bill1)
+        get :show, id: bill.uid, format: :json
+        response.should be_success
+        response.body.should eq(assigns(:bill).to_json)
+      end
+    end
+    describe "with non existent id" do
+      it "returns a 404" do
+        bill = FactoryGirl.create(:bill1)
+        bill2 = FactoryGirl.attributes_for(:bill2)
+        get :show, id: bill2[:uid], format: :json
+        response.response_code.should == 404
+      end
     end
   end
 
@@ -193,21 +203,21 @@ describe BillsController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1).to_json
+        bill1 = FactoryGirl.attributes_for(:bill1)
         expect {
           post :create, format: :json, :bill => bill1
         }.to change(Bill, :count).by(1)
       end
 
       it "assigns a newly created bill as @bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1).to_json
+        bill1 = FactoryGirl.attributes_for(:bill1)
         post :create, format: :json, :bill => bill1
         assigns(:bill).should be_a(Bill)
         assigns(:bill).should be_persisted
       end
 
       it "responds with the created bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1).to_json
+        bill1 = FactoryGirl.attributes_for(:bill1)
         post :create, format: :json, :bill => bill1
         response.should be_success
         response.body.should eq(assigns(:bill).to_json)
@@ -219,7 +229,7 @@ describe BillsController do
         # Trigger the behavior that occurs when invalid params are submitted
         # Eventually useful for form feedback
         Bill.any_instance.stub(:save).and_return(false)
-        post :create, format: :json, :bill => { "uid" => "invalid value" }.to_json
+        post :create, format: :json, :bill => { "uid" => "invalid value" }
         assigns(:bill).should be_a_new(Bill)
       end
 
@@ -267,18 +277,6 @@ describe BillsController do
         bill_new_attrs.delete(:title)
         put :update, format: :json, :id => bill.uid, :bill => bill_new_attrs
         assigns(:bill).should eq(bill)
-      end
-
-      #FIX doesn't return the updated bill
-      xit "returns bills in roar/json format" do
-        bill = FactoryGirl.create(:bill1)
-        bill_new_attrs = FactoryGirl.attributes_for(:bill2)
-        bill_new_attrs.delete(:uid)
-        bill_new_attrs.delete(:title)
-        bill_new_attrs.to_json
-        put :update, format: :json, :id => bill.uid, :bill => bill_new_attrs
-        response.body.should eq(assigns(:bill).to_json)
-        response.should be_success
       end
     end
 
