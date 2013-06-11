@@ -5,16 +5,12 @@ require 'billit_representers/representers/bills_representer'
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
   represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillsRepresenter
-  respond_to :json
-  # GET /bills
+  respond_to :json, :xml
+  # json /bills
   # GET /bills.json
   def index
     @bills = Bill.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @bills }
-    end
+    respond_with @bills, represent_with: Billit::BillsRepresenter
   end
 
   # GET /bills/1.json
