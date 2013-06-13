@@ -1,5 +1,6 @@
 BillIt::Application.routes.draw do
-  match 'bills/search' => 'bills#search'
-  match 'bills/last_update' => 'bills#last_update'
-  resources :bills
+  resources :bills do
+  	get 'search', on: :collection
+  	get 'last_update', on: :collection
+  end
 end
