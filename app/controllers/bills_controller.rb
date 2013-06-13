@@ -59,9 +59,8 @@ class BillsController < ApplicationController
   # POST /bills
   # POST /bills.json
   def create
-    @bill = Bill.new
-    @bill.extend(Billit::BillRepresenter)
-    @bill.from_json(params[:bill].to_json)
+    @bill = Bill.new.extend(Billit::BillRepresenter)
+    @bill.from_json(request.body.string)
     @bill.save
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
