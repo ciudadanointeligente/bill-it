@@ -42,4 +42,8 @@ class Bill
     text :origin_chamber
     text :current_urgency
   end
+
+  def to_param
+    uid
+  end
 end
