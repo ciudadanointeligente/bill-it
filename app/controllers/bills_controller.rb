@@ -1,16 +1,17 @@
 # encoding: UTF-8
 require 'billit_representers/representers/bill_representer'
-require 'billit_representers/representers/bills_representer'
+require 'billit_representers/representers/bill_collection_representer'
+require 'billit_representers/representers/bill_collection_page_representer'
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
-  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillsRepresenter
+  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillCollectionRepresenter
   respond_to :json, :xml
   # json /bills
   # GET /bills.json
   def index
     @bills = Bill.all
-    respond_with @bills, represent_with: Billit::BillsRepresenter
+    respond_with @bills, represent_with: Billit::BillCollectionRepresenter
   end
 
   # GET /bills/1.json
@@ -25,6 +26,7 @@ class BillsController < ApplicationController
 
   # GET /bills/search.json?q=search_string
   def search
+    require 'will_paginate/array'
     # Sunspot.remove_all(Bill)   # descomentar para reindexar,
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = results_for(params)
@@ -37,7 +39,10 @@ class BillsController < ApplicationController
         @bills.push Bill.find_by(id: hit.primary_key)
       end
     end
-    respond_with @bills, represent_with: Billit::BillsRepresenter
+
+    @page = @bills.paginate(page: params[:page], per_page: params[:per_page])
+    @page.extend(Billit::BillCollectionPageRepresenter)
+    respond_with @page.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
   end
 
   # GET /bills/new

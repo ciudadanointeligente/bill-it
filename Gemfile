@@ -14,7 +14,8 @@ gem 'sunspot_solr'
 #Representers
 gem 'roar', '~> 0.11'
 gem 'roar-rails', "~> 0.0"
-gem 'billit_representers', '~> 0.0'
+gem 'billit_representers', '~> 0.3'
+gem 'will_paginate', '~> 3.0'
 
 group :development, :test do
   gem 'rspec-rails'

@@ -150,6 +150,18 @@ describe BillsController do
           get :search, q: "transparencia", format: :json
           assigns(:bills).should eq([bill2, bill3])
         end
+
+        it "paginates results" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          bill3 = FactoryGirl.create(:bill3)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "", per_page: '2', page: '1', format: :json
+          assigns(:page).should eq([bill1, bill2])
+          get :search, q: "", per_page: '2', page: '2', format: :json
+          assigns(:page).should eq([bill3])
+        end
       end
     end
 
