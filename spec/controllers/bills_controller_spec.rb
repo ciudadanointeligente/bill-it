@@ -158,9 +158,9 @@ describe BillsController do
           Sunspot.remove_all(Bill)
           Sunspot.index!(Bill.all)
           get :search, q: "", per_page: '2', page: '1', format: :json
-          assigns(:page).should eq([bill1, bill2])
+          assigns(:bills).should eq([bill1, bill2])
           get :search, q: "", per_page: '2', page: '2', format: :json
-          assigns(:page).should eq([bill3])
+          assigns(:bills).should eq([bill3])
         end
       end
     end

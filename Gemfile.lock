@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/jugyo/sunspot_mongoid.git
-  revision: fb4cf0c701276e7084672e2419999c40e8964cd3
-  specs:
-    sunspot_mongoid (0.4.1)
-      mongoid
-      sunspot (>= 1.1.0)
-      sunspot_rails (>= 1.1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -141,6 +132,10 @@ GEM
     sunspot (2.0.0)
       pr_geohash (~> 1.0)
       rsolr (~> 1.0.7)
+    sunspot_mongoid2 (0.5.1.5)
+      mongoid
+      sunspot (>= 2)
+      sunspot_rails (>= 2)
     sunspot_rails (2.0.0)
       nokogiri
       sunspot (= 2.0.0)
@@ -169,6 +164,6 @@ DEPENDENCIES
   roar (~> 0.11)
   roar-rails (~> 0.0)
   rspec-rails
-  sunspot_mongoid!
+  sunspot_mongoid2
   sunspot_solr
   will_paginate (~> 3.0)

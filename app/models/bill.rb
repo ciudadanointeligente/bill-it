@@ -31,7 +31,7 @@ class Bill
   field :summary, type: String
   field :tags, type: Array
 
-  include Sunspot::Mongoid
+  include Sunspot::Mongoid2
   searchable do
     text :uid
     text :title

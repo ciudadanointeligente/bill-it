@@ -29,20 +29,10 @@ class BillsController < ApplicationController
     require 'will_paginate/array'
     # Sunspot.remove_all(Bill)   # descomentar para reindexar,
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
-    search = results_for(params)
-
-    @bills = []
-    if search.hits.empty?
-      key = ''
-    else
-      search.hits.each do |hit|
-        @bills.push Bill.find_by(id: hit.primary_key)
-      end
-    end
-
-    @page = @bills.paginate(page: params[:page], per_page: params[:per_page])
-    @page.extend(Billit::BillCollectionPageRepresenter)
-    respond_with @page.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
+    search = search_for(params)
+    @bills = search.results
+    @bills.extend(Billit::BillCollectionPageRepresenter)
+    respond_with @bills.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
   end
 
   # GET /bills/new
@@ -142,7 +132,7 @@ class BillsController < ApplicationController
       range_conditions_min: range_conditions_min, range_conditions_max: range_conditions_max}
   end
 
-  def results_for(conditions)
+  def search_for(conditions)
     filtered_conditions = filter_conditions(conditions)
 
     search = Sunspot.search(Bill) do
@@ -173,6 +163,8 @@ class BillsController < ApplicationController
           with(key).less_than(value)
         end
       end
+
+      paginate page:conditions[:page], per_page:conditions[:per_page]
     end
     search
   end
