@@ -17,3 +17,4 @@ pickle-email-*.html
 
 solr/data/*
 solr/pids/*
+*.log
