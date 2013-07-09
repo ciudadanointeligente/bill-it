@@ -39,6 +39,7 @@ class Bill
     text :stage
     time :creation_date
     time :publish_date
+    time :updated_at
     text :origin_chamber
     text :current_urgency
   end
