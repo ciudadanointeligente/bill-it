@@ -34,5 +34,5 @@ BillIt::Application.configure do
   config.active_support.deprecation = :stderr
 
   #Representers
-  config.representer.default_url_options = {:host => "localhost:9292"}
+  config.representer.default_url_options = {:host => ENV['root_url']}
 end

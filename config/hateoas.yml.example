@@ -1,0 +1,6 @@
+production:
+  root_url:  "production.site.org"
+development:
+  root_url:  "development.site.org"
+test:
+  root_url:  "test.site.org"
