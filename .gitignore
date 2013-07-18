@@ -20,3 +20,6 @@ solr/pids/*
 *.log
 
 hateoas.yml
+
+#for local gem installations
+/vendor/*
