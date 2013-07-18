@@ -1,0 +1,6 @@
+transliterate_special:
+  i18n:
+    transliterate:
+      rule:
+          ñ: "ñ"
+          Ñ: "ñ"

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'spec_helper'
 
 describe Bill do
@@ -13,6 +14,14 @@ describe Bill do
   it "is invalid with an existing id (uid)" do
     FactoryGirl.create(:bill, uid: 123456)
     FactoryGirl.build(:bill, uid: 123456).should_not be_valid
+  end
+
+  it "saves tags in lowercase" do
+    bill = FactoryGirl.create(:bill, uid: 123456)
+    bill.tags = ['áéíóúüñ', 'ÑÜÚÓÍÉÁ']
+    bill.save
+    bill = Bill.find_by(uid: 123456)
+    bill.tags.should eq(['aeiouuñ', 'ñuuoiea'])
   end
 
 end

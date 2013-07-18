@@ -5,6 +5,8 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
+  before_save :standardize_tags
+
   embeds_many :events
   embeds_many :urgencies
   embeds_many :reports
@@ -46,5 +48,11 @@ class Bill
 
   def to_param
     uid
+  end
+
+  def standardize_tags
+    self.tags.map! do |tag|
+      tag = I18n.transliterate(tag, locale: :transliterate_special).downcase
+    end if self.tags
   end
 end
