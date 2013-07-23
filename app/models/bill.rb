@@ -36,6 +36,7 @@ class Bill
   include Sunspot::Mongoid2
   searchable do
     text :uid
+    text :short_uid
     text :title
     text :summary
     text :stage
@@ -54,5 +55,9 @@ class Bill
     self.tags.map! do |tag|
       tag = I18n.transliterate(tag, locale: :transliterate_special).downcase
     end if self.tags
+  end
+
+  def short_uid
+    self.uid.split("-")[0]
   end
 end

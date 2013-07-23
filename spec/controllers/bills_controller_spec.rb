@@ -186,6 +186,18 @@ describe BillsController do
           origin_chamber: "Senado", format: :json
         assigns(:bills).should eq([bill2])
       end
+
+      it "matches bill identifiers with and without the trailing numbers" do
+        bill1 = FactoryGirl.create(:bill1)
+        bill2 = FactoryGirl.create(:bill2)
+        bill3 = FactoryGirl.create(:bill3)
+        Sunspot.remove_all(Bill)
+        Sunspot.index!(Bill.all)
+        get :search, bill_id: "3773", format: :json
+        assigns(:bills).should eq([bill2])
+        get :search, bill_id: "3773-06", format: :json
+        assigns(:bills).should eq([bill2])
+      end
     end
   end
 

@@ -32,6 +32,9 @@ class BillsController < ApplicationController
     search = search_for(params)
     @bills = search.results
     @bills.extend(Billit::BillCollectionPageRepresenter)
+    puts "<bills>"
+    puts @bills
+    puts "<bills>"
     respond_with @bills.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
   end
 
@@ -82,8 +85,8 @@ class BillsController < ApplicationController
   end
 
   def filter_conditions(conditions)
-    @mongoid_attribute_names = ["_id", "created_at"] #Fix should probably have a greater scope
-    @search_attribute_names = ["q"]
+    @mongoid_attribute_names = ["_id", "created_at"] #FIX should probably have a greater scope
+    @search_attribute_names = ["q", "bill_id"]
     @range_field_types = [Time]
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
@@ -123,10 +126,21 @@ class BillsController < ApplicationController
     filtered_conditions = filter_conditions(conditions)
 
     search = Sunspot.search(Bill) do
+      # FIX the equivalence conditions settings should be in a conf file
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"]
         filtered_conditions[:equivalence_conditions].delete("q")
+      end
+      # search over bill identifiers, both uid and short uid
+      if filtered_conditions[:equivalence_conditions].key?("bill_id")
+        text_fields do
+          any_of do
+            with(:uid, filtered_conditions[:equivalence_conditions]["bill_id"])
+            with(:short_uid, filtered_conditions[:equivalence_conditions]["bill_id"])
+          end
+        end
+        filtered_conditions[:equivalence_conditions].delete("bill_id")
       end
       #search over specific fields
       text_fields do
