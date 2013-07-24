@@ -228,21 +228,21 @@ describe BillsController do
   #and don't know how to simulate them with rspec
   describe "POST create" do
     describe "with valid params" do
-      xit "creates a new Bill" do
+      it "creates a new Bill" do
         bill1 = FactoryGirl.attributes_for(:bill1)
         expect {
           post :create, format: :json, :bill => bill1
         }.to change(Bill, :count).by(1)
       end
 
-      xit "assigns a newly created bill as @bill" do
+      it "assigns a newly created bill as @bill" do
         bill1 = FactoryGirl.attributes_for(:bill1)
         post :create, format: :json, :bill => bill1
         assigns(:bill).should be_a(Bill)
         assigns(:bill).should be_persisted
       end
 
-      xit "responds with the created bill" do
+      it "responds with the created bill" do
         bill1 = FactoryGirl.attributes_for(:bill1)
         post :create, format: :json, :bill => bill1
         response.should be_success
@@ -251,7 +251,7 @@ describe BillsController do
     end
 
     describe "with invalid params" do
-      xit "assigns a newly created but unsaved bill as @bill" do
+      it "assigns a newly created but unsaved bill as @bill" do
         # Trigger the behavior that occurs when invalid params are submitted
         # Eventually useful for form feedback
         Bill.any_instance.stub(:save).and_return(false)
@@ -272,7 +272,7 @@ describe BillsController do
   #and don't know how to simulate them with rspec
   describe "PUT update" do
     describe "with valid params" do
-      xit "updates the requested bill" do
+      it "updates the requested bill" do
         bill = FactoryGirl.create(:bill1)
         bill_new_attrs = FactoryGirl.attributes_for(:bill2)
         bill_new_attrs.delete(:uid)
@@ -283,7 +283,7 @@ describe BillsController do
         end
       end
 
-      xit "doesn't modify the rest of the bill's attributes" do
+      it "doesn't modify the rest of the bill's attributes" do
         bill = FactoryGirl.create(:bill1)
         bill_attrs = bill.attributes
         bill_new_attrs = FactoryGirl.attributes_for(:bill2)
@@ -298,7 +298,7 @@ describe BillsController do
         end
       end
 
-      xit "assigns the requested bill as @bill" do
+      it "assigns the requested bill as @bill" do
         bill = FactoryGirl.create(:bill1)
         bill_new_attrs = FactoryGirl.attributes_for(:bill2)
         bill_new_attrs.delete(:uid)

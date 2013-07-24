@@ -8,7 +8,7 @@ FactoryGirl.define do
       f.uid "1-07"
       f.title "Modifica los Códigos de Justicia Militar, Penal y Aeronáutico para abolir la Pena de Muerte."
       f.summary "Abolición de la pena de muerte."
-      f.tags ["Pena de muerte", "Justicia"]
+      f.tags ["pena de muerte", "justicia"]
       f.matters ["Derechos Fundamentales"]
       f.stage "Tramitación terminada"
       f.creation_date "1990-03-20T00:00:00Z"
@@ -22,7 +22,7 @@ FactoryGirl.define do
       f.uid "3773-06"
       f.title "Sobre acceso a la información pública"
       f.summary "Ley de transparencia"
-      f.tags ["Transparencia", "Acceso a la información pública"]
+      f.tags ["transparencia", "acceso a la informacion publica"]
       f.matters ["Transparencia", "Participación"]
       f.stage "Tramitación terminada"
       f.creation_date "2005-01-04T00:00:00Z"
@@ -36,7 +36,7 @@ FactoryGirl.define do
       f.uid "0000-00"
       f.title "Fake bill with terms información pública"
       f.summary "Ley de transparencia"
-      f.tags ["Transparencia", "Acceso a la información pública"]
+      f.tags ["transparencia", "acceso a la informacion publica"]
       f.matters ["Transparencia", "Participación"]
       f.stage "Tramitación terminada"
       f.creation_date "2007-01-04T00:00:00Z"

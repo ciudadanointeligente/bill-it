@@ -32,9 +32,6 @@ class BillsController < ApplicationController
     search = search_for(params)
     @bills = search.results
     @bills.extend(Billit::BillCollectionPageRepresenter)
-    puts "<bills>"
-    puts @bills
-    puts "<bills>"
     respond_with @bills.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
   end
 
@@ -58,7 +55,7 @@ class BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new.extend(Billit::BillRepresenter)
-    @bill.from_json(request.body.read)
+    @bill.from_json(params[:bill].to_json)
     @bill.save
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
@@ -67,7 +64,7 @@ class BillsController < ApplicationController
   # PUT /bills/1.json
   def update
     @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
-    @bill.from_json(request.body.read)
+    @bill.from_json(params[:bill].to_json)
     @bill.save
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
