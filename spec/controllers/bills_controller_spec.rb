@@ -229,21 +229,21 @@ describe BillsController do
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1)
+        bill1 = FactoryGirl.build(:bill1)
         expect {
           post :create, format: :json, :bill => bill1
         }.to change(Bill, :count).by(1)
       end
 
       it "assigns a newly created bill as @bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1)
+        bill1 = FactoryGirl.build(:bill1)
         post :create, format: :json, :bill => bill1
         assigns(:bill).should be_a(Bill)
         assigns(:bill).should be_persisted
       end
 
       it "responds with the created bill" do
-        bill1 = FactoryGirl.attributes_for(:bill1)
+        bill1 = FactoryGirl.build(:bill1)
         post :create, format: :json, :bill => bill1
         response.should be_success
         response.body.should eq(assigns(:bill).to_json)
