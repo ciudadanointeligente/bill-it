@@ -57,6 +57,7 @@ class BillsController < ApplicationController
     @bill = Bill.new.extend(Billit::BillRepresenter)
     @bill.from_json(params[:bill].to_json)
     @bill.save
+    Sunspot.index!(@bill)
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 
@@ -66,6 +67,7 @@ class BillsController < ApplicationController
     @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
     @bill.from_json(params[:bill].to_json)
     @bill.save
+    Sunspot.index!(@bill)
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 

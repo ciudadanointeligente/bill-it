@@ -266,6 +266,13 @@ describe BillsController do
         response.should eq(assigns(:bill_error).to_json)
       end
     end
+
+    it "indexes the new bill after creation" do
+      bill1 = FactoryGirl.build(:bill1)
+      post :create, format: :json, bill: bill1
+      get :search, bill_id: "1-07", format: :json
+      assigns(:bills).first.uid.should eq(bill1.uid)
+    end
   end
 
   #Modified the params update gets so they're compatible with ROAR's Model.post
@@ -326,6 +333,14 @@ describe BillsController do
         put :update, {:id => bill.to_param, :bill => { "uid" => "invalid value" }}, valid_session
         response.should render_template("edit")
       end
+    end
+
+    it "indexes the changes to the bill after update" do
+      bill1 = FactoryGirl.create(:bill1)
+      bill1.title = "changedbilltitle"
+      put :update, format: :json, id: bill1.uid, bill: bill1
+      get :search, title: "changedbilltitle", format: :json
+      assigns(:bills).first.uid.should eq(bill1.uid)
     end
   end
 
