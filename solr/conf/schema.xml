@@ -90,6 +90,9 @@
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+
+    <!-- Fields added to support attachments with sunspot cell, added by Marcel -->
+    <fieldType name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
   </types>
   <fields>
     <!-- Valid attributes for fields:
@@ -238,6 +241,10 @@
     <dynamicField name="*_llm" stored="false" type="location" multiValued="true" indexed="true"/>
     <dynamicField name="*_lls" stored="true" type="location" multiValued="false" indexed="true"/>
     <dynamicField name="*_llms" stored="true" type="location" multiValued="true" indexed="true"/>
+
+    <!-- Fields added to support attachments with sunspot cell, added by Marcel -->
+    <dynamicField name="*_attachment" stored="true" type="text" multiValued="true" indexed="true"/>
+    <dynamicField name="ignored_*" type="ignored"/>
   </fields>
   <!-- Field to use to determine and enforce document uniqueness.
       Unless this field is marked with required="false", it will be a required field

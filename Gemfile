@@ -8,6 +8,9 @@ gem 'haml-rails', '~> 0.4'
 #Search
 gem 'sunspot_mongoid2'
 gem 'sunspot_solr'
+gem 'sunspot_cell', :git => 'git://github.com/zheileman/sunspot_cell.git'
+gem 'sunspot_cell_jars'
+gem 'progress_bar'
 
 #Representers
 gem 'roar', '~> 0.11'

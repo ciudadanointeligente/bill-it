@@ -14,6 +14,8 @@ class Bill
   embeds_many :documents
   embeds_many :instructions
   embeds_many :observations
+
+  has_many :attachments
   
   field :uid, type: String
   field :title, type: String
