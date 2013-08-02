@@ -1,0 +1,6 @@
+production:
+  log_size_limit:  5.megabytes
+development:
+  log_size_limit:  5.megabytes
+test:
+  log_size_limit:  5.megabytes
