@@ -35,10 +35,13 @@ GEM
     activesupport (3.2.13)
       i18n (= 0.6.1)
       multi_json (~> 1.0)
+    addressable (2.3.5)
     arel (3.0.2)
     billit_representers (0.3.1)
       roar
     builder (3.0.4)
+    crack (0.4.1)
+      safe_yaml (~> 0.9.0)
     database_cleaner (1.0.1)
     diff-lcs (1.2.4)
     erubis (2.7.0)
@@ -138,6 +141,7 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
+    safe_yaml (0.9.4)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -163,6 +167,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    webmock (1.13.0)
+      addressable (>= 2.2.7)
+      crack (>= 0.3.2)
     will_paginate (3.0.4)
 
 PLATFORMS
@@ -184,4 +191,5 @@ DEPENDENCIES
   sunspot_cell_jars
   sunspot_mongoid2
   sunspot_solr
+  webmock
   will_paginate (~> 3.0)

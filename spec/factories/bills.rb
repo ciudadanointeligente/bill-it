@@ -16,7 +16,7 @@ FactoryGirl.define do
       f.authors []
       f.origin_chamber "C.Diputados"
       f.current_urgency nil
-      f.link_law "http://bcn.cl/19im1"
+      f.law "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029"
     end
     factory :bill2 do |f|
       f.uid "3773-06"
@@ -30,7 +30,7 @@ FactoryGirl.define do
       f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
       f.origin_chamber "Senado"
       f.current_urgency nil
-      f.link_law "http://bcn.cl/19ce2"
+      f.law "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa"
     end
     factory :bill3 do |f|
       f.uid "0000-00"
@@ -44,7 +44,7 @@ FactoryGirl.define do
       f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
       f.origin_chamber "C.Diputados"
       f.current_urgency nil
-      f.link_law "http://bcn.cl/19ce2"
+      f.law "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa"
     end
   end
 end

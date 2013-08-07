@@ -55,7 +55,7 @@ class BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new.extend(Billit::BillRepresenter)
-    @bill.from_json(params[:bill].to_json)
+    @bill.from_json(request.body.read)
     @bill.save
     Sunspot.index!(@bill)
     respond_with @bill, :represent_with => Billit::BillRepresenter
@@ -65,7 +65,7 @@ class BillsController < ApplicationController
   # PUT /bills/1.json
   def update
     @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
-    @bill.from_json(params[:bill].to_json)
+    @bill.from_json(request.body.read)
     @bill.save
     Sunspot.index!(@bill)
     respond_with @bill, :represent_with => Billit::BillRepresenter
