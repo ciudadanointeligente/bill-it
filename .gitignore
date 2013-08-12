@@ -19,7 +19,11 @@ solr/data/*
 solr/pids/*
 *.log
 
+#configuration files
 hateoas.yml
+mongoid.yml
+sunspot.yml
+config.ru
 
 #for local gem installations
 /vendor/*
