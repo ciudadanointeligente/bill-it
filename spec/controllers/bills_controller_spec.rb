@@ -207,7 +207,7 @@ describe BillsController do
         bill3 = FactoryGirl.create(:bill3)
         Sunspot.remove_all(Bill)
         Sunspot.index!(Bill.all)
-        get :search, summary: "transparencia", origin_chamber: "C.Diputados", format: :json
+        get :search, abstract: "transparencia", origin_chamber: "C.Diputados", format: :json
         assigns(:bills).should eq([bill3])
       end
 

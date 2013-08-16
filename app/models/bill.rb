@@ -31,7 +31,7 @@ class Bill
   field :matters, type: Array
   field :authors, type: Array
   field :publish_date, type: Time
-  field :summary, type: String
+  field :abstract, type: String
   field :tags, type: Array
 
   include Sunspot::Mongoid2
@@ -39,7 +39,7 @@ class Bill
     text :uid
     text :short_uid
     text :title
-    text :summary
+    text :abstract
     text :stage
     time :creation_date
     time :publish_date

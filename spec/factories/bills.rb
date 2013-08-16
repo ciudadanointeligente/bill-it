@@ -7,7 +7,7 @@ FactoryGirl.define do
     factory :bill1 do |f|
       f.uid "1-07"
       f.title "Modifica los Códigos de Justicia Militar, Penal y Aeronáutico para abolir la Pena de Muerte."
-      f.summary "Abolición de la pena de muerte."
+      f.abstract "Abolición de la pena de muerte."
       f.tags ["pena de muerte", "justicia"]
       f.matters ["Derechos Fundamentales"]
       f.stage "Tramitación terminada"
@@ -21,7 +21,7 @@ FactoryGirl.define do
     factory :bill2 do |f|
       f.uid "3773-06"
       f.title "Sobre acceso a la información pública"
-      f.summary "Ley de transparencia"
+      f.abstract "Ley de transparencia"
       f.tags ["transparencia", "acceso a la informacion publica"]
       f.matters ["Transparencia", "Participación"]
       f.stage "Tramitación terminada"
@@ -35,7 +35,7 @@ FactoryGirl.define do
     factory :bill3 do |f|
       f.uid "0000-00"
       f.title "Fake bill with terms información pública"
-      f.summary "Ley de transparencia"
+      f.abstract "Ley de transparencia"
       f.tags ["transparencia", "acceso a la informacion publica"]
       f.matters ["Transparencia", "Participación"]
       f.stage "Tramitación terminada"
