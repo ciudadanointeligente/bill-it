@@ -1,11 +1,12 @@
 class Bill
+  require 'open-uri'
   include Mongoid::Document
   include Mongoid::Timestamps
 
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags
+  before_save :standardize_tags, :uri_encode
 
   embeds_many :events
   embeds_many :urgencies
@@ -45,6 +46,13 @@ class Bill
     time :updated_at
     text :origin_chamber
     text :current_urgency
+    #attachment type has to be a uri (local or remote)
+    #if it's a string it will not get indexed
+    attachment :law
+  end
+
+  def uri_encode
+    self.law = URI.encode(self.law) if self.law
   end
 
   def to_param

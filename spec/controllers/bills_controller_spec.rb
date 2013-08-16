@@ -118,6 +118,19 @@ describe BillsController do
   end
 
   describe "GET search" do
+
+    before(:each) do
+    #   bill1 = FactoryGirl.create(:bill1)
+    #   bill2 = FactoryGirl.create(:bill2)
+    #   bill3 = FactoryGirl.create(:bill3)
+    #   Sunspot.remove_all(Bill)
+    #   Sunspot.index!(Bill.all)
+      stub_request(:any, "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029").
+        to_return(:body => File.open("#{Rails.root}/spec/example_files/ley_19029.xml"), :status => 200)
+      stub_request(:any, "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa").
+        to_return(:body => File.open("#{Rails.root}/spec/example_files/boletin_3773-06.doc"), :status => 200)
+    end
+
     context "doing a simple 'q' query" do
       context "with a single result" do
         it "assigns query results to @bills" do
@@ -161,6 +174,28 @@ describe BillsController do
           assigns(:bills).should eq([bill1, bill2])
           get :search, q: "", per_page: '2', page: '2', format: :json
           assigns(:bills).should eq([bill3])
+        end
+      end
+
+      context "in referenced documents" do
+        it "searches over xml" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          bill3 = FactoryGirl.create(:bill3)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "presidio", format: :json
+          assigns(:bills).should eq([bill1])
+        end
+
+        it "searches over doc" do
+          bill1 = FactoryGirl.create(:bill1)
+          bill2 = FactoryGirl.create(:bill2)
+          bill3 = FactoryGirl.create(:bill3)
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "apruébase", format: :json
+          assigns(:bills).should eq([bill2, bill3])
         end
       end
     end

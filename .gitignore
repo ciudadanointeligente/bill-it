@@ -24,6 +24,7 @@ hateoas.yml
 mongoid.yml
 sunspot.yml
 config.ru
+log.yml
 
 #for local gem installations
 /vendor/*
