@@ -6,7 +6,7 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags, :uri_encode
+  before_save :standardize_tags
 
   embeds_many :events
   embeds_many :urgencies
@@ -48,11 +48,17 @@ class Bill
     text :current_urgency
     #attachment type has to be a uri (local or remote)
     #if it's a string it will not get indexed
-    attachment :law
+    attachment :law_text
   end
 
-  def uri_encode
-    self.law = URI.encode(self.law) if self.law
+  def law_text
+    #if self.law is a valid uri
+    if self.law =~ URI::regexp
+      URI.encode self.law
+    elsif !self.law.blank?
+      law_number = self.law.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2')
+      "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_number
+    end
   end
 
   def to_param

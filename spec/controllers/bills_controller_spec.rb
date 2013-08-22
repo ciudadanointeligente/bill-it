@@ -110,8 +110,8 @@ describe BillsController do
     describe "with non existent id" do
       it "returns a 404" do
         bill = FactoryGirl.create(:bill1)
-        bill2 = FactoryGirl.attributes_for(:bill2)
-        get :show, id: bill2[:uid], format: :json
+        @bill3 = FactoryGirl.attributes_for(:bill3)
+        get :show, id: @bill3[:uid], format: :json
         response.response_code.should == 404
       end
     end
@@ -120,34 +120,27 @@ describe BillsController do
   describe "GET search" do
 
     before(:each) do
-    #   bill1 = FactoryGirl.create(:bill1)
-    #   bill2 = FactoryGirl.create(:bill2)
-    #   bill3 = FactoryGirl.create(:bill3)
-    #   Sunspot.remove_all(Bill)
-    #   Sunspot.index!(Bill.all)
+      @bill1 = FactoryGirl.create(:bill1)
+      @bill2 = FactoryGirl.create(:bill2)
+      @bill3 = FactoryGirl.create(:bill3)
+      @bill4 = FactoryGirl.create(:bill4)
       stub_request(:any, "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029").
         to_return(:body => File.open("#{Rails.root}/spec/example_files/ley_19029.xml"), :status => 200)
       stub_request(:any, "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa").
         to_return(:body => File.open("#{Rails.root}/spec/example_files/boletin_3773-06.doc"), :status => 200)
+      Sunspot.remove_all(Bill)
+      Sunspot.index!(Bill.all)
     end
 
     context "doing a simple 'q' query" do
       context "with a single result" do
         it "assigns query results to @bills" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
-          get :search, q: "Pena", format: :json
-          assigns(:bills).should eq([bill1])
+          get :search, q: "Aeronáutico", format: :json
+          assigns(:bills).should eq([@bill1])
         end
 
         #FIX works well, but haven't found the way to test the format
         xit "returns bills in roar/json format" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
           get :search, q: "Tramitación", format: :json
           response.body.should eq(assigns(:bills).to_json)
         end
@@ -155,83 +148,48 @@ describe BillsController do
 
       context "with multiple results" do
         it "assigns multiple query results to @bills" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          bill3 = FactoryGirl.create(:bill3)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
           get :search, q: "transparencia", format: :json
-          assigns(:bills).should eq([bill2, bill3])
+          assigns(:bills).should eq([@bill3, @bill4])
         end
 
         it "paginates results" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          bill3 = FactoryGirl.create(:bill3)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
           get :search, q: "", per_page: '2', page: '1', format: :json
-          assigns(:bills).should eq([bill1, bill2])
+          assigns(:bills).should eq([@bill1, @bill2])
           get :search, q: "", per_page: '2', page: '2', format: :json
-          assigns(:bills).should eq([bill3])
+          assigns(:bills).should eq([@bill3, @bill4])
         end
       end
 
       context "in referenced documents" do
         it "searches over xml" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          bill3 = FactoryGirl.create(:bill3)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
           get :search, q: "presidio", format: :json
-          assigns(:bills).should eq([bill1])
+          assigns(:bills).should eq([@bill1, @bill2])
         end
 
         it "searches over doc" do
-          bill1 = FactoryGirl.create(:bill1)
-          bill2 = FactoryGirl.create(:bill2)
-          bill3 = FactoryGirl.create(:bill3)
-          Sunspot.remove_all(Bill)
-          Sunspot.index!(Bill.all)
           get :search, q: "apruébase", format: :json
-          assigns(:bills).should eq([bill2, bill3])
+          assigns(:bills).should eq([@bill3, @bill4])
         end
       end
     end
 
     context "advanced query" do
       it "assigns query results to @bills" do
-        bill1 = FactoryGirl.create(:bill1)
-        bill2 = FactoryGirl.create(:bill2)
-        bill3 = FactoryGirl.create(:bill3)
-        Sunspot.remove_all(Bill)
-        Sunspot.index!(Bill.all)
         get :search, abstract: "transparencia", origin_chamber: "C.Diputados", format: :json
-        assigns(:bills).should eq([bill3])
+        assigns(:bills).should eq([@bill4])
       end
 
       it "searches over a date range" do
-        bill1 = FactoryGirl.create(:bill1)
-        bill2 = FactoryGirl.create(:bill2)
-        bill3 = FactoryGirl.create(:bill3)
-        Sunspot.remove_all(Bill)
-        Sunspot.index!(Bill.all)
         get :search, publish_date_min: "2008-01-01T00:00:00Z", publish_date_max: "2010-01-01T00:00:00Z",\
           origin_chamber: "Senado", format: :json
-        assigns(:bills).should eq([bill2])
+        assigns(:bills).should eq([@bill3])
       end
 
       it "matches bill identifiers with and without the trailing numbers" do
-        bill1 = FactoryGirl.create(:bill1)
-        bill2 = FactoryGirl.create(:bill2)
-        bill3 = FactoryGirl.create(:bill3)
-        Sunspot.remove_all(Bill)
-        Sunspot.index!(Bill.all)
         get :search, bill_id: "3773", format: :json
-        assigns(:bills).should eq([bill2])
+        assigns(:bills).should eq([@bill3])
         get :search, bill_id: "3773-06", format: :json
-        assigns(:bills).should eq([bill2])
+        assigns(:bills).should eq([@bill3])
       end
     end
   end
@@ -265,22 +223,22 @@ describe BillsController do
     before { pending }
     describe "with valid params" do
       it "creates a new Bill" do
-        bill1 = FactoryGirl.build(:bill1)
+        @bill1 = FactoryGirl.build(:bill1)
         expect {
-          post :create, format: :json, :bill => bill1
+          post :create, format: :json, :bill => @bill1
         }.to change(Bill, :count).by(1)
       end
 
       it "assigns a newly created bill as @bill" do
-        bill1 = FactoryGirl.build(:bill1)
-        post :create, format: :json, :bill => bill1
+        @bill1 = FactoryGirl.build(:bill1)
+        post :create, format: :json, :bill => @bill1
         assigns(:bill).should be_a(Bill)
         assigns(:bill).should be_persisted
       end
 
       it "responds with the created bill" do
-        bill1 = FactoryGirl.build(:bill1)
-        post :create, format: :json, :bill => bill1
+        @bill1 = FactoryGirl.build(:bill1)
+        post :create, format: :json, :bill => @bill1
         response.should be_success
         response.body.should eq(assigns(:bill).to_json)
       end
@@ -304,8 +262,8 @@ describe BillsController do
     end
 
     it "indexes the new bill after creation" do
-      bill1 = FactoryGirl.build(:bill1)
-      post :create, format: :json, bill: bill1
+      @bill1 = FactoryGirl.build(:bill1)
+      post :create, format: :json, bill: @bill1
       get :search, bill_id: "1-07", format: :json
       assigns(:bills).first.uid.should eq(bill1.uid)
     end
@@ -318,7 +276,7 @@ describe BillsController do
     describe "with valid params" do
       it "updates the requested bill" do
         bill = FactoryGirl.create(:bill1)
-        bill_new_attrs = FactoryGirl.attributes_for(:bill2)
+        bill_new_attrs = FactoryGirl.attributes_for(:bill3)
         bill_new_attrs.delete(:uid)
         bill_new_attrs.delete(:title)
         put :update, format: :json, :id => bill.uid, :bill => bill_new_attrs
@@ -330,7 +288,7 @@ describe BillsController do
       it "doesn't modify the rest of the bill's attributes" do
         bill = FactoryGirl.create(:bill1)
         bill_attrs = bill.attributes
-        bill_new_attrs = FactoryGirl.attributes_for(:bill2)
+        bill_new_attrs = FactoryGirl.attributes_for(:bill3)
         bill_new_attrs.delete(:uid)
         bill_new_attrs.delete(:title)
         put :update, format: :json, :id => bill.uid, :bill => bill_new_attrs
@@ -344,7 +302,7 @@ describe BillsController do
 
       it "assigns the requested bill as @bill" do
         bill = FactoryGirl.create(:bill1)
-        bill_new_attrs = FactoryGirl.attributes_for(:bill2)
+        bill_new_attrs = FactoryGirl.attributes_for(:bill3)
         bill_new_attrs.delete(:uid)
         bill_new_attrs.delete(:title)
         put :update, format: :json, :id => bill.uid, :bill => bill_new_attrs
@@ -356,7 +314,7 @@ describe BillsController do
     describe "with invalid params" do
       xit "assigns the bill as @bill" do
         bill = FactoryGirl.create(:bill1)
-        bill_new_attrs = FactoryGirl.attributes_for(:bill2)
+        bill_new_attrs = FactoryGirl.attributes_for(:bill3)
         # Trigger the behavior that occurs when invalid params are submitted
         Bill.any_instance.stub(:save).and_return(false)
         put :update, format: :json, :id => bill_new_attrs[:uid], :bill => bill_new_attrs.to_json
@@ -373,11 +331,11 @@ describe BillsController do
     end
 
     it "indexes the changes to the bill after update" do
-      bill1 = FactoryGirl.create(:bill1)
-      bill1.title = "changedbilltitle"
-      put :update, format: :json, id: bill1.uid, bill: bill1
+      @bill1 = FactoryGirl.create(:bill1)
+      @bill1.title = "changedbilltitle"
+      put :update, format: :json, id: @bill1.uid, bill: @bill1
       get :search, title: "changedbilltitle", format: :json
-      assigns(:bills).first.uid.should eq(bill1.uid)
+      assigns(:bills).first.uid.should eq(@bill1.uid)
     end
   end
 
@@ -398,10 +356,10 @@ describe BillsController do
 
   describe "last_update" do
     it "returns the update date of the bill that was most recently updated" do
-      bill1 = FactoryGirl.create(:bill1)
-      bill1_last_update = bill1.updated_at.strftime("%d/%m/%Y")
+      @bill1 = FactoryGirl.create(:bill1)
+      @bill1_last_update = @bill1.updated_at.strftime("%d/%m/%Y")
       get :last_update
-      assigns(:date).should eq(bill1_last_update)
+      assigns(:date).should eq(@bill1_last_update)
     end
   end
 
