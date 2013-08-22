@@ -19,6 +19,20 @@ FactoryGirl.define do
       f.law "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029"
     end
     factory :bill2 do |f|
+      f.uid "01-07"
+      f.title "Fake bill with terms pena de muerte"
+      f.abstract "Abolición de la pena de muerte."
+      f.tags ["pena de muerte", "justicia"]
+      f.matters ["Derechos Fundamentales"]
+      f.stage "Tramitación terminada"
+      f.creation_date "1990-03-20T00:00:00Z"
+      f.publish_date "1991-01-23T00:00:00Z"
+      f.authors []
+      f.origin_chamber "C.Diputados"
+      f.current_urgency nil
+      f.law "Ley Nº 19.029"
+    end
+    factory :bill3 do |f|
       f.uid "3773-06"
       f.title "Sobre acceso a la información pública"
       f.abstract "Ley de transparencia"
@@ -32,8 +46,8 @@ FactoryGirl.define do
       f.current_urgency nil
       f.law "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa"
     end
-    factory :bill3 do |f|
-      f.uid "0000-00"
+    factory :bill4 do |f|
+      f.uid "03773-06"
       f.title "Fake bill with terms información pública"
       f.abstract "Ley de transparencia"
       f.tags ["transparencia", "acceso a la informacion publica"]
