@@ -37,8 +37,12 @@ namespace :sunspot do
     end
     sunspot_models.each do |model|
       puts "Re-indexing #{model.name}"
-      Sunspot.remove_all(Bill)
-      Sunspot.index!(Bill.all)
+      bar = ProgressBar.new(model.count)
+      Sunspot.remove_all(model)
+      model.each do |element|
+        Sunspot.index!(element)
+        bar.increment!
+      end
     end
   end
 end
