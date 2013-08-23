@@ -18,6 +18,7 @@ class Bill
   
   field :uid, type: String
   field :title, type: String
+  field :abstract, type: String
   field :creation_date, type: Time
   field :initiative, type: String
   field :origin_chamber, type: String
@@ -31,7 +32,6 @@ class Bill
   field :matters, type: Array
   field :authors, type: Array
   field :publish_date, type: Time
-  field :abstract, type: String
   field :tags, type: Array
 
   include Sunspot::Mongoid2
@@ -40,12 +40,18 @@ class Bill
     text :short_uid
     text :title
     text :abstract
-    text :stage
     time :creation_date
-    time :publish_date
-    time :updated_at
+    text :initiative
     text :origin_chamber
     text :current_urgency
+    text :stage
+    text :sub_stage
+    text :state
+    text :matters
+    text :authors
+    time :publish_date
+    text :tags
+    time :updated_at
     #attachment type has to be a uri (local or remote)
     #if it's a string it will not get indexed
     attachment :law_text

@@ -148,3 +148,19 @@ bill_array = bill_page.bills
 bill_next_page = BillCollectionPage.new
 bill_next_page.get(bill_page.next, 'application/json')
 ```
+
+### Reindexing
+If you add information, like bills, through the post or put method, it gets automatically reindexed. If you add them manually or through the database the indexing has to be done manually. This can be done by executing the rails console
+```
+bundle exec rails console
+```
+and then executing the reindex method on your model name, for instance:
+```
+Bill.reindex
+```
+
+For small servers, on which the previous method gets killed for lack of memory, the following rake task can be executed
+```
+bundle exec rake sunspot:solr:reindex
+```
+This process is much slower.
