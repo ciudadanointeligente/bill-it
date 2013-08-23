@@ -158,6 +158,17 @@ describe BillsController do
           get :search, q: "", per_page: '2', page: '2', format: :json
           assigns(:bills).should eq([@bill3, @bill4])
         end
+
+        it "boosts results for fields: tag, matters, title and abstract, in that order" do
+          bill1 = FactoryGirl.create(:bill, uid: 1, abstract: "term")
+          bill2 = FactoryGirl.create(:bill, uid: 2, title: "term")
+          bill3 = FactoryGirl.create(:bill, uid: 3, matters: ["term"])
+          bill4 = FactoryGirl.create(:bill, uid: 4, tags: ["term"])
+          Sunspot.remove_all(Bill)
+          Sunspot.index!(Bill.all)
+          get :search, q: "term", format: :json
+          assigns(:bills).should eq([bill4, bill3, bill2, bill1])
+        end
       end
 
       context "in referenced documents" do
@@ -190,6 +201,11 @@ describe BillsController do
         assigns(:bills).should eq([@bill3])
         get :search, bill_id: "3773-06", format: :json
         assigns(:bills).should eq([@bill3])
+      end
+
+      it "searches over bill functions" do
+        get :search, law_text: "presidio", format: :json
+        assigns(:bills).should eq([@bill1, @bill2])
       end
     end
   end

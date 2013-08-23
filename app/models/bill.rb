@@ -6,7 +6,7 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags
+  before_save :standardize_tags, :set_link_law
 
   embeds_many :events
   embeds_many :urgencies
@@ -57,7 +57,7 @@ class Bill
     attachment :law_text
   end
 
-  def law_text
+  def get_link_law
     #if self.law is a valid uri
     if self.law =~ URI::regexp
       URI.encode self.law
@@ -65,6 +65,14 @@ class Bill
       law_number = self.law.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2')
       "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_number
     end
+  end
+
+  def law_text
+    get_link_law
+  end
+
+  def set_link_law
+    self.link_law = get_link_law
   end
 
   def to_param
