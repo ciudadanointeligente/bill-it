@@ -158,7 +158,6 @@ describe BillsController do
           get :search, q: "", per_page: '2', page: '2', format: :json
           assigns(:bills).should eq([@bill3, @bill4])
         end
-      end
 
       context "in referenced documents" do
         it "searches over xml" do
@@ -190,6 +189,11 @@ describe BillsController do
         assigns(:bills).should eq([@bill3])
         get :search, bill_id: "3773-06", format: :json
         assigns(:bills).should eq([@bill3])
+      end
+
+      it "searches over bill functions" do
+        get :search, law_text: "presidio", format: :json
+        assigns(:bills).should eq([@bill1, @bill2])
       end
     end
   end

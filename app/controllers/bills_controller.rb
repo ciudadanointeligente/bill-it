@@ -85,7 +85,7 @@ class BillsController < ApplicationController
 
   def filter_conditions(conditions)
     @mongoid_attribute_names = ["_id", "created_at"] #FIX should probably have a greater scope
-    @search_attribute_names = ["q", "bill_id"]
+    @search_attribute_names = ["q", "bill_id", "law_text"]
     @range_field_types = [Time]
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
