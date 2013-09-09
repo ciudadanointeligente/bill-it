@@ -15,7 +15,7 @@ gem 'progress_bar'
 #Representers
 gem 'roar', '~> 0.11'
 gem 'roar-rails', "~> 0.0"
-gem 'billit_representers', '~> 0.3'
+gem 'billit_representers_south_africa', '~> 0.0'
 gem 'will_paginate', '~> 3.0'
 
 group :development, :test do

@@ -1,7 +1,7 @@
 # encoding: UTF-8
-require 'billit_representers/representers/bill_representer'
-require 'billit_representers/representers/bill_collection_representer'
-require 'billit_representers/representers/bill_collection_page_representer'
+require 'billit_representers_south_africa/representers/bill_representer'
+require 'billit_representers_south_africa/representers/bill_collection_representer'
+require 'billit_representers_south_africa/representers/bill_collection_page_representer'
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
@@ -16,7 +16,7 @@ class BillsController < ApplicationController
 
   # GET /bills/1.json
   def show
-    @bill = Bill.find_by(uid: params[:id])
+    @bill = Bill.find(params[:id])
     if @bill.nil?
       render text: "", :status => 404
     else
@@ -85,7 +85,7 @@ class BillsController < ApplicationController
 
   def filter_conditions(conditions)
     @mongoid_attribute_names = ["_id", "created_at"] #FIX should probably have a greater scope
-    @search_attribute_names = ["q", "bill_id", "law_text"]
+    @search_attribute_names = ["q", "bill_id"]
     @range_field_types = [Time]
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
@@ -130,9 +130,7 @@ class BillsController < ApplicationController
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
           boost_fields :tags => 3.0
-          boost_fields :matters => 2.9
           boost_fields :title => 2.5
-          boost_fields :abstract => 2.0
         end
         filtered_conditions[:equivalence_conditions].delete("q")
       end
