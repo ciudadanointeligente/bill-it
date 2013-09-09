@@ -64,7 +64,7 @@ class BillsController < ApplicationController
   # PUT /bills/1
   # PUT /bills/1.json
   def update
-    @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
+    @bill = Bill.find(params[:id]).extend(Billit::BillRepresenter)
     @bill.from_json(request.body.read)
     @bill.save
     Sunspot.index!(@bill)
