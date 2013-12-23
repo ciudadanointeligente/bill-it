@@ -6,7 +6,7 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags, :set_link_law
+  before_save :standardize_tags, :set_law_link
 
   embeds_many :paperworks
   embeds_many :priorities
@@ -20,16 +20,16 @@ class Bill
   field :title, type: String
   field :abstract, type: String
   field :creation_date, type: Time
-  field :initiative, type: String
-  field :origin_chamber, type: String
-  field :current_urgency, type: String
+  field :source, type: String
+  field :inital_chamber, type: String
+  field :current_priority, type: String
   field :stage, type: String
   field :sub_stage, type: String
-  field :state, type: String
-  field :law, type: String
-  field :link_law, type: String
-  field :merged, type: String
-  field :matters, type: Array
+  field :status, type: String
+  field :resulting_document, type: String
+  field :law_link, type: String
+  field :merged_bills, type: String
+  field :subject_areas, type: Array
   field :authors, type: Array
   field :publish_date, type: Time
   field :tags, type: Array
@@ -41,13 +41,13 @@ class Bill
     text :title
     text :abstract
     time :creation_date
-    text :initiative
-    text :origin_chamber
-    text :current_urgency
+    text :source
+    text :inital_chamber
+    text :current_priority
     text :stage
     text :sub_stage
-    text :state
-    text :matters
+    text :status
+    text :subject_areas
     text :authors
     time :publish_date
     text :tags
@@ -57,7 +57,7 @@ class Bill
     attachment :law_text
   end
 
-  def get_link_law
+  def get_law_link
     #if self.law is a valid uri
     if self.law =~ URI::regexp
       URI.encode self.law
@@ -68,11 +68,11 @@ class Bill
   end
 
   def law_text
-    get_link_law
+    get_law_link
   end
 
-  def set_link_law
-    self.link_law = get_link_law
+  def set_law_link
+    self.law_link = get_law_link
   end
 
   def to_param
