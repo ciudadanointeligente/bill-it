@@ -1,4 +1,4 @@
-class Instruction
+class Remark
   include Mongoid::Document
   include Mongoid::Timestamps
 
