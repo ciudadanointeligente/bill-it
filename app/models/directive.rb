@@ -1,4 +1,4 @@
-class Observation
+class Directive
   include Mongoid::Document
   include Mongoid::Timestamps
 

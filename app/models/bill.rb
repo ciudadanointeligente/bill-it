@@ -8,13 +8,13 @@ class Bill
 
   before_save :standardize_tags, :set_link_law
 
-  embeds_many :events
-  embeds_many :urgencies
+  embeds_many :paperworks
+  embeds_many :priorities
   embeds_many :reports
-  embeds_many :modifications
+  embeds_many :revisions
   embeds_many :documents
-  embeds_many :instructions
-  embeds_many :observations
+  embeds_many :directives
+  embeds_many :remarks
   
   field :uid, type: String
   field :title, type: String
