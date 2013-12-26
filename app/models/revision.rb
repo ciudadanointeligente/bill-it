@@ -1,4 +1,4 @@
-class Modification
+class Revision
   include Mongoid::Document
 
   embedded_in :bill

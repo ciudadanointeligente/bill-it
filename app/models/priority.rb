@@ -1,4 +1,4 @@
-class Urgency #Immediacy?
+class Priority
   include Mongoid::Document
   include Mongoid::Timestamps
 
