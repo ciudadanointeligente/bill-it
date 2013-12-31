@@ -97,6 +97,9 @@ describe BillsController do
       it "assigns the requested bill as @bill" do
         bill = FactoryGirl.create(:bill1)
         get :show, id: bill.uid, format: :json
+        puts 'assigns'
+        puts assigns(:bill)
+        puts '/assigns'
         assigns(:bill).should eq(bill)
       end
 
@@ -159,10 +162,10 @@ describe BillsController do
           assigns(:bills).should eq([@bill3, @bill4])
         end
 
-        it "boosts results for fields: tag, matters, title and abstract, in that order" do
+        it "boosts results for fields: tag, subject_areas, title and abstract, in that order" do
           bill1 = FactoryGirl.create(:bill, uid: 1, abstract: "term")
           bill2 = FactoryGirl.create(:bill, uid: 2, title: "term")
-          bill3 = FactoryGirl.create(:bill, uid: 3, matters: ["term"])
+          bill3 = FactoryGirl.create(:bill, uid: 3, subject_areas: ["term"])
           bill4 = FactoryGirl.create(:bill, uid: 4, tags: ["term"])
           Sunspot.remove_all(Bill)
           Sunspot.index!(Bill.all)
@@ -186,13 +189,13 @@ describe BillsController do
 
     context "advanced query" do
       it "assigns query results to @bills" do
-        get :search, abstract: "transparencia", origin_chamber: "C.Diputados", format: :json
+        get :search, abstract: "transparencia", initial_chamber: "C.Diputados", format: :json
         assigns(:bills).should eq([@bill4])
       end
 
       it "searches over a date range" do
         get :search, publish_date_min: "2008-01-01T00:00:00Z", publish_date_max: "2010-01-01T00:00:00Z",\
-          origin_chamber: "Senado", format: :json
+          initial_chamber: "Senado", format: :json
         assigns(:bills).should eq([@bill3])
       end
 

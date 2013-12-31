@@ -130,7 +130,7 @@ class BillsController < ApplicationController
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
           boost_fields :tags => 3.0
-          boost_fields :matters => 2.9
+          boost_fields :subject_areas => 2.9
           boost_fields :title => 2.5
           boost_fields :abstract => 2.0
         end

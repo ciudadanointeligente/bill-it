@@ -1,4 +1,4 @@
-class Event
+class Paperwork
   include Mongoid::Document
   include Mongoid::Timestamps
 

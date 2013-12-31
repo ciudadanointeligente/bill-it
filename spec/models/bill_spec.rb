@@ -25,12 +25,12 @@ describe Bill do
   end
 
   it "creates the link_law field when saved" do
-    bill1 = FactoryGirl.create(:bill, uid: 1, law: "Ley Nº 20.000")
-    bill2 = FactoryGirl.create(:bill, uid: 2, law: "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029")
+    bill1 = FactoryGirl.create(:bill, uid: 1, resulting_document: "Ley Nº 20.000")
+    bill2 = FactoryGirl.create(:bill, uid: 2, resulting_document: "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029")
     bill1.save
     bill2.save
-    bill1.link_law.should eq("http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=20000")
-    bill2.link_law.should eq("http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029")
+    bill1.law_link.should eq("http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=20000")
+    bill2.law_link.should eq("http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029")
   end
 
 end

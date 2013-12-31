@@ -21,7 +21,7 @@ class Bill
   field :abstract, type: String
   field :creation_date, type: Time
   field :source, type: String
-  field :inital_chamber, type: String
+  field :initial_chamber, type: String
   field :current_priority, type: String
   field :stage, type: String
   field :sub_stage, type: String
@@ -42,7 +42,7 @@ class Bill
     text :abstract
     time :creation_date
     text :source
-    text :inital_chamber
+    text :initial_chamber
     text :current_priority
     text :stage
     text :sub_stage
@@ -59,10 +59,10 @@ class Bill
 
   def get_law_link
     #if self.law is a valid uri
-    if self.law =~ URI::regexp
-      URI.encode self.law
-    elsif !self.law.blank?
-      law_number = self.law.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2')
+    if self.resulting_document =~ URI::regexp
+      URI.encode self.resulting_document
+    elsif !self.resulting_document.blank?
+      law_number = self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2')
       "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_number
     end
   end
