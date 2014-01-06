@@ -11,7 +11,12 @@ https://rvm.io/rvm/install  and http://bundler.io/
 Make sure you have mongodb installed
 if not follow instructions at http://docs.mongodb.org/manual/tutorial/
 
-install gems
+clone the billit project
+```
+git clone git@github.com:ciudadanointeligente/bill-it.git
+```
+
+go to the bill-it project folder install gems
 ```
 bundle install
 ```
