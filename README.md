@@ -16,7 +16,7 @@ clone the billit project
 git clone git@github.com:ciudadanointeligente/bill-it.git
 ```
 
-install gems
+go to the bill-it project folder install gems
 ```
 bundle install
 ```
