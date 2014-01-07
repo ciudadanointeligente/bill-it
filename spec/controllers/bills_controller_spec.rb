@@ -213,6 +213,14 @@ describe BillsController do
     end
   end
 
+  describe "feed" do
+    it "receives a bill id and returns last update date" do
+      @bill1 = FactoryGirl.create(:bill1)
+      get :feed, id: @bill1.uid
+      assigns(:updated_at).to_s.should eq(@bill1.updated_at.to_s)
+    end 
+  end
+
   describe "GET index" do
     xit "assigns all bills as @bills" do
       bill = Bill.create! valid_attributes

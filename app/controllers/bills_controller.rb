@@ -11,7 +11,18 @@ class BillsController < ApplicationController
   # GET /bills.json
   def index
     @bills = Bill.all
+    
     respond_with @bills, represent_with: Billit::BillCollectionRepresenter
+  end
+
+  # GET /id/feed
+  def feed
+    @bill = Bill.find_by(uid: params[:id])
+
+    # this will be our Feed's update timestamp
+    @updated_at = @bill.updated_at unless @bill.nil?
+    
+    render text: @updated_at
   end
 
   # GET /bills/1.json
