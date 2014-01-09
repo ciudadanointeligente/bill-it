@@ -61,4 +61,9 @@ BillIt::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  # Representers
+  config.representer.default_url_options = {:host => ENV['root_url']}
+
+  # Limit log disk space
+  config.logger = Logger.new("log/#{Rails.env}.log", 1, ENV['log_size_limit'])
 end
