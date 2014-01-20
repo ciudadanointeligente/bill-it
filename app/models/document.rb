@@ -2,11 +2,13 @@ class Document
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :bill
+  include Billit::DocumentRepresenter
 
-  field :date, :type => DateTime
+  belongs_to :bill
+
   field :number, :type => String
-  field :event, :type => String
+  field :date, :type => DateTime
+  field :step, :type => String
   field :stage, :type => String
   field :type, :type => String
   field :chamber, :type => String

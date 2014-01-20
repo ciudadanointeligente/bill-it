@@ -8,13 +8,14 @@ class Bill
 
   before_save :standardize_tags, :set_law_link
 
-  embeds_many :paperworks
-  embeds_many :priorities
-  embeds_many :reports
+  has_many :paperworks, autosave: true
+  # embeds_many :paperworks
+  has_many :priorities, autosave: true
+  has_many :reports, autosave: true
   embeds_many :revisions
-  embeds_many :documents
-  embeds_many :directives
-  embeds_many :remarks
+  has_many :documents, autosave: true
+  has_many :directives, autosave: true
+  has_many :remarks, autosave: true
   
   field :uid, type: String
   field :title, type: String

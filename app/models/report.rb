@@ -2,7 +2,9 @@ class Report
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :bill
+  include Billit::ReportRepresenter
+
+  belongs_to :bill
 
   field :date, :type => DateTime
   field :step, :type => String

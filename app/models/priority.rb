@@ -2,7 +2,9 @@ class Priority
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :bill
+  include Billit::PriorityRepresenter
+
+  belongs_to :bill
 
   field :type, :type => String
   field :entry_date, :type => DateTime

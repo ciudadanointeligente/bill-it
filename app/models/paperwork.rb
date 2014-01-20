@@ -2,7 +2,10 @@ class Paperwork
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :bill
+  include Billit::PaperworkRepresenter
+
+  # embedded_in :bill
+  belongs_to :bill
 
   field :session, :type => String
   field :date, :type => DateTime
