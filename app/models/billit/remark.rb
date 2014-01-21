@@ -1,12 +1,10 @@
-class Directive
+class Billit::Remark
   include Mongoid::Document
   include Mongoid::Timestamps
-
-  include Billit::DirectiveRepresenter
 
   belongs_to :bill
 
   field :date, :type => DateTime
-  field :step, :type => String
+  field :event, :type => String
   field :stage, :type => String
 end

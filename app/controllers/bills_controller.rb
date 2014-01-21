@@ -2,6 +2,7 @@
 require 'billit_representers/representers/bill_representer'
 require 'billit_representers/representers/bill_collection_representer'
 require 'billit_representers/representers/bill_collection_page_representer'
+Dir['./app/models/billit/*'].each { |model| require model }
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions

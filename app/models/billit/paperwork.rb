@@ -1,12 +1,12 @@
-class Report
+class Billit::Paperwork
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  include Billit::ReportRepresenter
-
   belongs_to :bill
 
+  field :session, :type => String
   field :date, :type => DateTime
-  field :step, :type => String
+  field :description, :type => String
   field :stage, :type => String
+  field :chamber, :type => String
 end

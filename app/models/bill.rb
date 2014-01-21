@@ -8,14 +8,14 @@ class Bill
 
   before_save :standardize_tags, :set_law_link
 
-  has_many :paperworks, autosave: true
+  has_many :paperworks, autosave: true, class_name: "Billit::Paperwork"
   # embeds_many :paperworks
-  has_many :priorities, autosave: true
-  has_many :reports, autosave: true
+  has_many :priorities, autosave: true, class_name: "Billit::Priority"
+  has_many :reports, autosave: true, class_name: "Billit::Report"
+  has_many :documents, autosave: true, class_name: "Billit::Document"
+  has_many :directives, autosave: true, class_name: "Billit::Directive"
+  has_many :remarks, autosave: true, class_name: "Billit::Remark"
   embeds_many :revisions
-  has_many :documents, autosave: true
-  has_many :directives, autosave: true
-  has_many :remarks, autosave: true
   
   field :uid, type: String
   field :title, type: String

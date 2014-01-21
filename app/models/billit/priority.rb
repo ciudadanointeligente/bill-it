@@ -1,8 +1,6 @@
-class Priority
+class Billit::Priority
   include Mongoid::Document
   include Mongoid::Timestamps
-
-  include Billit::PriorityRepresenter
 
   belongs_to :bill
 
