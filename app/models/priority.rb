@@ -1,4 +1,4 @@
-class Billit::Priority
+class Priority
   include Mongoid::Document
   include Mongoid::Timestamps
 

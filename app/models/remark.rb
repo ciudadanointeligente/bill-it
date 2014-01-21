@@ -1,10 +1,10 @@
-class Billit::Directive
+class Remark
   include Mongoid::Document
   include Mongoid::Timestamps
 
   belongs_to :bill
 
   field :date, :type => DateTime
-  field :step, :type => String
+  field :event, :type => String
   field :stage, :type => String
 end

@@ -1,0 +1,27 @@
+%h1 Listing billit_paperworks
+
+%table
+  %tr
+    %th Session
+    %th Date
+    %th Description
+    %th Stage
+    %th Chamber
+    %th
+    %th
+    %th
+
+  - @billit_paperworks.each do |billit_paperwork|
+    %tr
+      %td= billit_paperwork.session
+      %td= billit_paperwork.date
+      %td= billit_paperwork.description
+      %td= billit_paperwork.stage
+      %td= billit_paperwork.chamber
+      %td= link_to 'Show', billit_paperwork
+      %td= link_to 'Edit', edit_billit_paperwork_path(billit_paperwork)
+      %td= link_to 'Destroy', billit_paperwork, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Paperwork', new_billit_paperwork_path
