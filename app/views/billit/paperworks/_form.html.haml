@@ -1,0 +1,25 @@
+= form_for @billit_paperwork do |f|
+  - if @billit_paperwork.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@billit_paperwork.errors.count, "error")} prohibited this billit_paperwork from being saved:"
+      %ul
+        - @billit_paperwork.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :session
+    = f.text_field :session
+  .field
+    = f.label :date
+    = f.datetime_select :date
+  .field
+    = f.label :description
+    = f.text_field :description
+  .field
+    = f.label :stage
+    = f.text_field :stage
+  .field
+    = f.label :chamber
+    = f.text_field :chamber
+  .actions
+    = f.submit 'Save'

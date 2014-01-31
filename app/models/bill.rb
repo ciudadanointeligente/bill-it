@@ -3,18 +3,21 @@ class Bill
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  # include Billit::BillRepresenter
+
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
   before_save :standardize_tags, :set_law_link
 
-  embeds_many :paperworks
-  embeds_many :priorities
-  embeds_many :reports
+  has_many :paperworks, autosave: true, class_name: "Paperwork"
+  # embeds_many :paperworks
+  has_many :priorities, autosave: true, class_name: "Priority"
+  has_many :reports, autosave: true, class_name: "Report"
+  has_many :documents, autosave: true, class_name: "Document"
+  has_many :directives, autosave: true, class_name: "Directive"
+  has_many :remarks, autosave: true, class_name: "Remark"
   embeds_many :revisions
-  embeds_many :documents
-  embeds_many :directives
-  embeds_many :remarks
   
   field :uid, type: String
   field :title, type: String

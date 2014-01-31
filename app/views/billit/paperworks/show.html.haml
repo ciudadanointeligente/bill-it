@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Session:
+  = @billit_paperwork.session
+%p
+  %b Date:
+  = @billit_paperwork.date
+%p
+  %b Description:
+  = @billit_paperwork.description
+%p
+  %b Stage:
+  = @billit_paperwork.stage
+%p
+  %b Chamber:
+  = @billit_paperwork.chamber
+
+= link_to 'Edit', edit_billit_paperwork_path(@billit_paperwork)
+\|
+= link_to 'Back', billit_paperworks_path

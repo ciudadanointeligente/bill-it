@@ -40,7 +40,7 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  #database_cleaner
+  # Database_cleaner
   config.before :each do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.start
@@ -48,5 +48,8 @@ RSpec.configure do |config|
   config.after do
     DatabaseCleaner.clean
   end
+
+  # To skip groups of tests
+  config.filter_run_excluding :broken => true
 
 end

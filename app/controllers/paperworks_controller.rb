@@ -1,114 +1,119 @@
-# encoding: UTF-8
-require 'billit_representers/representers/bill_representer'
-require 'billit_representers/representers/bill_collection_representer'
-require 'billit_representers/representers/bill_collection_page_representer'
-Dir['./app/models/billit/*'].each { |model| require model }
-
-class BillsController < ApplicationController
-  include Roar::Rails::ControllerAdditions
-  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillCollectionRepresenter
+require 'billit_representers/representers/paperwork_collection_representer'
+class PaperworksController < ApplicationController
   respond_to :json, :xml
-  # json /bills
-  # GET /bills.json
+  # GET /paperworks
+  # GET /paperworks.json
   def index
-    @bills = Bill.all
-    
-    respond_with @bills, represent_with: Billit::BillCollectionRepresenter
-  end
+    @paperworks = Paperwork.all
 
-  # GET /id/feed
-  def feed
-    @bill = Bill.find_by(uid: params[:id])
-
-    # this will be our Feed's update timestamp
-    @updated_at = @bill.updated_at unless @bill.nil?
-    
-    render text: @updated_at
-  end
-
-  # GET /bills/1.json
-  def show
-    @bill = Bill.find_by(uid: params[:id])
-    if @bill.nil?
-      render text: "", :status => 404
-    else
-      respond_with @bill, :represent_with => Billit::BillRepresenter
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @paperworks }
     end
   end
 
-  # GET /bills/search.json?q=search_string
-  def search
-    require 'will_paginate/array'
-    # Sunspot.remove_all(Bill)   # descomentar para reindexar,
-    # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
-    search = search_for(params)
-    @bills = search.results
-    @bills.extend(Billit::BillCollectionPageRepresenter)
-    respond_with @bills.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
+  # GET /paperworks/1
+  # GET /paperworks/1.json
+  def show
+    @paperwork = Paperwork.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @paperwork }
+    end
   end
 
-  # GET /bills/new
-  # GET /bills/new.json
+  # GET /paperworks/new
+  # GET /paperworks/new.json
   def new
-    @bill = Bill.new
+    @paperwork = Paperwork.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @bill }
+      format.json { render json: @paperwork }
     end
   end
 
-  # GET /bills/1/edit
+  # GET /paperworks/1/edit
   def edit
-    @bill = Bill.find(params[:id])
+    @paperwork = Paperwork.find(params[:id])
   end
 
-  # POST /bills
-  # POST /bills.json
+  # POST /paperworks
+  # POST /paperworks.json
   def create
-    @bill = Bill.new.extend(Billit::BillRepresenter)
-    @bill.from_json(request.body.read)
-    @bill.save
-    Sunspot.index!(@bill)
-    respond_with @bill, :represent_with => Billit::BillRepresenter
-  end
-
-  # PUT /bills/1
-  # PUT /bills/1.json
-  def update
-    @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
-    @bill.from_json(request.body.read)
-    @bill.save
-    Sunspot.index!(@bill)
-    respond_with @bill, :represent_with => Billit::BillRepresenter
-  end
-
-  # DELETE /bills/1
-  # DELETE /bills/1.json
-  def destroy
-    @bill = Bill.find(params[:id])
-    @bill.destroy
+    @paperwork = Paperwork.new(params[:paperwork])
 
     respond_to do |format|
-      format.html { redirect_to bills_url }
+      if @paperwork.save
+        format.html { redirect_to @paperwork, notice: 'Paperwork was successfully created.' }
+        format.json { render json: @paperwork, status: :created, location: @paperwork }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @paperwork.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /paperworks/1
+  # PUT /paperworks/1.json
+  def update
+    @paperwork = Paperwork.find(params[:id])
+
+    respond_to do |format|
+      if @paperwork.update_attributes(params[:paperwork])
+        format.html { redirect_to @paperwork, notice: 'Paperwork was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @paperwork.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /paperworks/1
+  # DELETE /paperworks/1.json
+  def destroy
+    @paperwork = Paperwork.find(params[:id])
+    @paperwork.destroy
+
+    respond_to do |format|
+      format.html { redirect_to paperworks_url }
       format.json { head :no_content }
     end
+  end
+
+  # GET paperworks/search.json?q=search_string
+  def search
+    require 'will_paginate/array'
+    # Sunspot.remove_all(Paperwork)   # descomentar para reindexar,
+    # Sunspot.index!(Paperwork.all)   # en caso de cambio en modelo
+    search = search_for(params)
+    # @paperwork = search.results
+    puts "params"
+    puts params
+    puts "/params"
+    @paperworks = search.results
+    @paperworks.extend(Billit::PaperworkCollectionRepresenter)
+    respond_with @paperworks.to_json(params), represent_with: Billit::PaperworkCollectionRepresenter
+    # @paperwork.extend(Billit::BillCollectionPageRepresenter)
+    #respond_with @paperwork.to_json(params)#, represent_with: Billit::BillCollectionPageRepresenter
   end
 
   def filter_conditions(conditions)
     @mongoid_attribute_names = ["_id", "created_at"] #FIX should probably have a greater scope
     @search_attribute_names = ["q", "bill_id", "law_text"]
-    @range_field_types = [Time]
+    @range_field_types = [DateTime]
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
 
-    bill_range_fields = Bill.fields.dup
+    bill_range_fields = Paperwork.fields.dup
     @range_field_types.each do |type|
       bill_range_fields.reject! {|field_name, metadata| metadata.options[:type]!= type}
     end
     bill_range_attributes = bill_range_fields.keys
 
-    bill_public_attributes = Bill.attribute_names - @mongoid_attribute_names
+    bill_public_attributes = Paperwork.attribute_names - @mongoid_attribute_names
 
     equivalence_attributes = bill_public_attributes + @search_attribute_names
     range_attributes_min = bill_range_attributes.map {|attribute| attribute + @range_modifier_min}
@@ -136,15 +141,15 @@ class BillsController < ApplicationController
   def search_for(conditions)
     filtered_conditions = filter_conditions(conditions)
 
-    search = Sunspot.search(Bill) do
+    search = Sunspot.search(Paperwork) do
       # FIX the equivalence conditions settings should be in a conf file
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
-          boost_fields :tags => 3.0
-          boost_fields :subject_areas => 2.9
-          boost_fields :title => 2.5
-          boost_fields :abstract => 2.0
+          # boost_fields :tags => 3.0
+          # boost_fields :subject_areas => 2.9
+          # boost_fields :title => 2.5
+          # boost_fields :abstract => 2.0
         end
         filtered_conditions[:equivalence_conditions].delete("q")
       end
@@ -184,11 +189,6 @@ class BillsController < ApplicationController
       paginate page:conditions[:page], per_page:conditions[:per_page]
     end
     search
-  end
-
-  def last_update
-    @date = Bill.max(:updated_at).strftime("%d/%m/%Y")
-    render :text => @date
   end
 
 end

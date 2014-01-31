@@ -1,0 +1,2 @@
+module Billit::PaperworksHelper
+end
