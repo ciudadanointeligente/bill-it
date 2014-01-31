@@ -10,4 +10,5 @@ class Document
   field :stage, :type => String
   field :type, :type => String
   field :chamber, :type => String
+  field :link, :type => String
 end
