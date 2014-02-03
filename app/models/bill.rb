@@ -36,6 +36,7 @@ class Bill
   field :authors, type: Array
   field :publish_date, type: Time
   field :tags, type: Array
+  field :bill_draft_link, type: String
 
   include Sunspot::Mongoid2
   searchable do
@@ -58,6 +59,7 @@ class Bill
     #attachment type has to be a uri (local or remote)
     #if it's a string it will not get indexed
     attachment :law_text
+    attachment :bill_draft_link
   end
 
   def get_law_link
