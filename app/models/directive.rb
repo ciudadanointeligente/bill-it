@@ -7,4 +7,5 @@ class Directive
   field :date, :type => DateTime
   field :step, :type => String
   field :stage, :type => String
+  field :link, :type => String
 end

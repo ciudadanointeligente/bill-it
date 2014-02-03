@@ -2,7 +2,8 @@ class Revision
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  embedded_in :bill
+  belongs_to :bill
 
   field :description, :type => String
+  field :link, :type => String
 end
