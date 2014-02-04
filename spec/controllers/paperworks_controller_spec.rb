@@ -64,8 +64,13 @@ describe PaperworksController do
   describe "GET search" do
 
     before(:each) do
-      @paperwork1 = FactoryGirl.create(:paperwork1)
-      @paperwork2 = FactoryGirl.create(:paperwork2)
+      @paperwork1 = FactoryGirl.build(:paperwork1)
+      @paperwork2 = FactoryGirl.build(:paperwork2)
+      @bill = FactoryGirl.create(:bill1)
+      @bill.paperworks = [@paperwork1, @paperwork2]
+      @bill.save
+      @paperwork1.save
+      @paperwork2.save
       Sunspot.remove_all(Paperwork)
       Sunspot.index!(Paperwork.all)
     end
