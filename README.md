@@ -69,7 +69,7 @@ visit http://localhost:3000 to see billit running
 For info of how ROAR works go to https://github.com/apotonick/roar
 Essentially, you can work on your application as if you had local objects, when they're really in another server
 
-requrie gems "billit_representers" and "roar" in your local project, or add them to your gemfile
+require gems "billit_representers" and "roar" in your local project, or add them to your gemfile
 ```
 gem 'billit_representers'
 gem 'roar'
