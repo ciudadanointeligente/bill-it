@@ -21,6 +21,9 @@ gem 'will_paginate', '~> 3.0'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'guard-bundler'
+  gem 'guard-rails'
+  gem 'guard-rspec'
 end
 
 group :test do
