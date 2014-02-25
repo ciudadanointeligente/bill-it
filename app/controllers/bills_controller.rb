@@ -69,7 +69,12 @@ class BillsController < ApplicationController
     @bill = Bill.new.extend(Billit::BillRepresenter)
     @bill.from_json(request.body.read)
     @bill.save
-    Sunspot.index!(@bill)
+    begin
+      Sunspot.index!(@bill)
+    rescue
+      puts "#{$!}"
+      puts "unindexed bill: " + @bill.uid
+    end
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 
@@ -79,7 +84,12 @@ class BillsController < ApplicationController
     @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
     @bill.from_json(request.body.read)
     @bill.save
-    Sunspot.index!(@bill)
+    begin
+      Sunspot.index!(@bill)
+    rescue
+      puts "#{$!}"
+      puts "unindexed bill: " + @bill.uid
+    end
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
 
