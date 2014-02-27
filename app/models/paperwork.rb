@@ -64,10 +64,17 @@ class Paperwork
   def set_document_link
     documents = Bill.find(self.bill_id).documents
     documents.each do |document|
-      if document.date == self.date && document.stage == self.stage && document.step == self.description
+      stage_match = (clean_string document.stage) == (clean_string self.stage)
+      description_match = (clean_string document.step) == (clean_string self.description)
+      if document.date == self.date && stage_match && description_match
         self.document_link = document.link
       end
     end
+  end
+
+  def clean_string messy_string
+    clean_string = messy_string.strip.chomp('.').strip
+    clean_string = I18n.transliterate(clean_string, locale: :transliterate_special).downcase
   end
 
 end
