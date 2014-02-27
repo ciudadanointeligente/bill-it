@@ -26,4 +26,17 @@ describe Paperwork do
   	@paperwork1.document_link.should eq @document1.link
   	@paperwork2.document_link.should be_nil
   end
+
+  context "with inconsistent data" do
+	it "saves a valid document link " do
+	  @paperwork1 = FactoryGirl.build(:paperwork1)
+	  @inconsistent_data_document = FactoryGirl.create(:inconsistent_data_document)
+	  @bill = FactoryGirl.create(:bill1)
+	  @bill.paperworks = [@paperwork1]
+	  @bill.documents = [@inconsistent_data_document]
+	  @bill.save
+	  @paperwork1.save
+	  @paperwork1.document_link.should eq @inconsistent_data_document.link
+	end
+  end
 end
