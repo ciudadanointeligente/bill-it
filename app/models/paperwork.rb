@@ -5,7 +5,7 @@ class Paperwork
 
   belongs_to :bill
 
-  before_save :save_bill_uid, :index_paperwork, :define_timeline_status, :set_document_link
+  before_save :save_bill_uid, :index_paperwork, :define_timeline_status, :set_external_links
 
   field :session, :type => String
   field :date, :type => DateTime
@@ -68,6 +68,33 @@ class Paperwork
       description_match = (clean_string document.step) == (clean_string self.description)
       if document.date == self.date && stage_match && description_match
         self.document_link = document.link
+      end
+    end
+  end
+
+  def set_report_link
+    reports = Bill.find(self.bill_id).reports
+    reports.each do |report|
+      stage_match = (clean_string report.stage) == (clean_string self.stage)
+      description_match = (clean_string report.step) == (clean_string self.description)
+      if report.date == self.date && stage_match && description_match
+        self.report_link = report.link
+      end
+    end
+  end
+
+  def set_external_links
+    set_model_link 'report'
+    set_model_link 'document'
+  end
+
+  def set_model_link model
+    model_values = Bill.find(self.bill_id).send model.pluralize
+    model_values.each do |model_value|
+      stage_match = (clean_string model_value.stage) == (clean_string self.stage)
+      description_match = (clean_string model_value.step) == (clean_string self.description)
+      if model_value.date == self.date && stage_match && description_match
+        self.send(model.singularize + '_link=', model_value.link)
       end
     end
   end
