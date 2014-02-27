@@ -5,7 +5,7 @@ class Paperwork
 
   belongs_to :bill
 
-  before_save :save_bill_uid, :index_paperwork, :define_timeline_status
+  before_save :save_bill_uid, :index_paperwork, :define_timeline_status, :set_document_link
 
   field :session, :type => String
   field :date, :type => DateTime
@@ -14,6 +14,7 @@ class Paperwork
   field :chamber, :type => String
   field :bill_uid, :type => String
   field :timeline_status, :type => String
+  field :document_link, :type => String
 
   include Sunspot::Mongoid2
   searchable do
@@ -59,4 +60,14 @@ class Paperwork
       'Retiro de Urgencia' => ['retira la urgencia']
     }
   end
+
+  def set_document_link
+    documents = Bill.find(self.bill_id).documents
+    documents.each do |document|
+      if document.date == self.date && document.stage == self.stage && document.step == self.description
+        self.document_link = document.link
+      end
+    end
+  end
+
 end
