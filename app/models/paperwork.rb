@@ -15,6 +15,7 @@ class Paperwork
   field :bill_uid, :type => String
   field :timeline_status, :type => String
   field :document_link, :type => String
+  field :report_link, :type => String
 
   include Sunspot::Mongoid2
   searchable do
