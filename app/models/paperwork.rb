@@ -61,28 +61,6 @@ class Paperwork
     }
   end
 
-  def set_document_link
-    documents = Bill.find(self.bill_id).documents
-    documents.each do |document|
-      stage_match = (clean_string document.stage) == (clean_string self.stage)
-      description_match = (clean_string document.step) == (clean_string self.description)
-      if document.date == self.date && stage_match && description_match
-        self.document_link = document.link
-      end
-    end
-  end
-
-  def set_report_link
-    reports = Bill.find(self.bill_id).reports
-    reports.each do |report|
-      stage_match = (clean_string report.stage) == (clean_string self.stage)
-      description_match = (clean_string report.step) == (clean_string self.description)
-      if report.date == self.date && stage_match && description_match
-        self.report_link = report.link
-      end
-    end
-  end
-
   def set_external_links
     set_model_link 'report'
     set_model_link 'document'
