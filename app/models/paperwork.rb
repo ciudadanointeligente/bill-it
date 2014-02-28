@@ -47,17 +47,18 @@ class Paperwork
     self.timeline_status = timeline_status_value
   end
 
+  # The order in which these appear matters. The latter override the previous.
   def timeline_status_hash
     {
-      'Ingreso' => ['ingreso', 'iniciativa'],
-      'Avanza' => ['pasa a'],
-      'Indicaciones' => ['indicaciones', 'indicación'],
-      'Votación' => ['discusión'],
-      'Urgencia' => ['hace presente la urgencia'],
-      'Rechazado' => ['rechazado', 'rechazo'],
-      'Inasistencia' => ['insistencia'],
       'Descartado' => ['retira', 'retirado'],
+      'Rechazado' => ['rechazado', 'rechazo'],
+      'Votación' => ['discusión'],
+      'Ingreso' => ['ingreso', 'iniciativa'],
+      'Inasistencia' => ['insistencia'],
+      'Indicaciones' => ['indicaciones', 'indicación'],
       'Informe' => ['informe'],
+      'Avanza' => ['pasa a'],
+      'Urgencia' => ['hace presente la urgencia'],
       'Retiro de Urgencia' => ['retira la urgencia']
     }
   end
