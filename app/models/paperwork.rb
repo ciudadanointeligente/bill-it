@@ -5,7 +5,7 @@ class Paperwork
 
   belongs_to :bill
 
-  before_save :save_bill_uid, :index_paperwork, :define_timeline_status, :set_external_links
+  before_save :save_bill_uid, :index_paperwork, :define_timeline_status
 
   field :session, :type => String
   field :date, :type => DateTime
@@ -14,8 +14,6 @@ class Paperwork
   field :chamber, :type => String
   field :bill_uid, :type => String
   field :timeline_status, :type => String
-  field :document_link, :type => String
-  field :report_link, :type => String
 
   include Sunspot::Mongoid2
   searchable do
@@ -61,27 +59,6 @@ class Paperwork
       'Urgencia' => ['hace presente la urgencia'],
       'Retiro de Urgencia' => ['retira la urgencia']
     }
-  end
-
-  def set_external_links
-    set_model_link 'report'
-    set_model_link 'document'
-  end
-
-  def set_model_link model
-    model_values = Bill.find(self.bill_id).send model.pluralize
-    model_values.each do |model_value|
-      stage_match = (clean_string model_value.stage) == (clean_string self.stage)
-      description_match = (clean_string model_value.step) == (clean_string self.description)
-      if model_value.date == self.date && stage_match && description_match
-        self.send(model.singularize + '_link=', model_value.link)
-      end
-    end
-  end
-
-  def clean_string messy_string
-    clean_string = messy_string.strip.chomp('.').strip
-    clean_string = I18n.transliterate(clean_string, locale: :transliterate_special).downcase
   end
 
 end
