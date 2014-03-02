@@ -55,7 +55,7 @@ class Paperwork
       'Inasistencia' => ['insistencia'],
       'Indicaciones' => ['indicaciones', 'indicación'],
       'Informe' => ['informe'],
-      'Avanza' => ['pasa a'],
+      'Avanza' => ['pasa a', 'a cámara'],
       'Urgencia' => ['hace presente la urgencia'],
       'Retiro de Urgencia' => ['retira la urgencia']
     }
