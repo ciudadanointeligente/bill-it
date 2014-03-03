@@ -10,6 +10,6 @@ describe Paperwork do
     @paperwork1.save
     @paperwork2.save
   	@paperwork1.timeline_status.should eq 'Ingreso'
-  	@paperwork2.timeline_status.should eq 'Estado por Defecto'
+  	@paperwork2.timeline_status.should eq 'Tramitación Terminada'
   end
 end

@@ -56,6 +56,7 @@ class Paperwork
       'Indicaciones' => ['indicaciones', 'indicación'],
       'Informe' => ['informe'],
       'Avanza' => ['pasa a', 'a cámara'],
+      'Tramitación Terminada' => ['al ejecutivo'],
       'Urgencia' => ['hace presente la urgencia'],
       'Retiro de Urgencia' => ['retira la urgencia']
     }
