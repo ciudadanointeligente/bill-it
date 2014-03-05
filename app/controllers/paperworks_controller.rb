@@ -89,15 +89,9 @@ class PaperworksController < ApplicationController
     # Sunspot.remove_all(Paperwork)   # descomentar para reindexar,
     # Sunspot.index!(Paperwork.all)   # en caso de cambio en modelo
     search = search_for(params)
-    # @paperwork = search.results
-    puts "params"
-    puts params
-    puts "/params"
     @paperworks = search.results
     @paperworks.extend(Billit::PaperworkCollectionRepresenter)
     respond_with @paperworks.to_json(params), represent_with: Billit::PaperworkCollectionRepresenter
-    # @paperwork.extend(Billit::BillCollectionPageRepresenter)
-    #respond_with @paperwork.to_json(params)#, represent_with: Billit::BillCollectionPageRepresenter
   end
 
   def filter_conditions(conditions)

@@ -97,9 +97,6 @@ describe BillsController do
       it "assigns the requested bill as @bill" do
         bill = FactoryGirl.create(:bill1)
         get :show, id: bill.uid, format: :json
-        puts 'assigns'
-        puts assigns(:bill)
-        puts '/assigns'
         assigns(:bill).should eq(bill)
       end
 
@@ -129,7 +126,7 @@ describe BillsController do
       @bill4 = FactoryGirl.create(:bill4)
       stub_request(:any, "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=19029").
         to_return(:body => File.open("#{Rails.root}/spec/example_files/ley_19029.xml"), :status => 200)
-      stub_request(:any, "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202%&tipodoc=compa").
+      stub_request(:any, "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202&tipodoc=compa").
         to_return(:body => File.open("#{Rails.root}/spec/example_files/boletin_3773-06.doc"), :status => 200)
       Sunspot.remove_all(Bill)
       Sunspot.index!(Bill.all)
@@ -157,9 +154,12 @@ describe BillsController do
 
         it "paginates results" do
           get :search, q: "", per_page: '2', page: '1', format: :json
-          assigns(:bills).should eq([@bill1, @bill2])
+          first_page = assigns(:bills)
           get :search, q: "", per_page: '2', page: '2', format: :json
-          assigns(:bills).should eq([@bill3, @bill4])
+          second_page = assigns(:bills)
+          first_page.length.should eq(2)
+          second_page.length.should eq(2)
+          first_page.should_not eq second_page
         end
 
         it "boosts results for fields: tag, subject_areas, title and abstract, in that order" do

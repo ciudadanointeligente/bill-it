@@ -37,7 +37,8 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.5)
     arel (3.0.2)
-    billit_representers (0.8.5)
+    awesome_print (1.2.0)
+    billit_representers (0.8.8)
       activemodel
       roar (= 0.11.19)
       roar-rails (= 0.1.0)
@@ -221,7 +222,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  billit_representers (= 0.8.5)
+  awesome_print
+  billit_representers (= 0.8.8)
   database_cleaner
   factory_girl_rails
   faker
