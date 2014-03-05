@@ -15,7 +15,7 @@ gem 'progress_bar'
 #Representers
 # gem 'roar', '~> 0.11.19'
 gem 'roar-rails', "0.1.0"
-gem 'billit_representers', '0.8.5'
+gem 'billit_representers', '0.8.8'
 gem 'will_paginate', '~> 3.0'
 
 group :development, :test do
@@ -24,6 +24,7 @@ group :development, :test do
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
+  gem 'awesome_print'
 end
 
 group :test do

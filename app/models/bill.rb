@@ -3,15 +3,12 @@ class Bill
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  # include Billit::BillRepresenter
-
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags, :set_law_link
+  before_save :standardize_tags
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
-  # embeds_many :paperworks
   has_many :priorities, autosave: true, class_name: "Priority"
   has_many :reports, autosave: true, class_name: "Report"
   has_many :documents, autosave: true, class_name: "Document"
@@ -30,7 +27,6 @@ class Bill
   field :sub_stage, type: String
   field :status, type: String
   field :resulting_document, type: String
-  field :law_link, type: String
   field :merged_bills, type: String
   field :subject_areas, type: Array
   field :authors, type: Array
@@ -58,26 +54,32 @@ class Bill
     time :updated_at
     #attachment type has to be a uri (local or remote)
     #if it's a string it will not get indexed
+    attachment :bill_draft
     attachment :law_text
-    attachment :bill_draft_link
   end
 
-  def get_law_link
-    #if self.law is a valid uri
-    if self.resulting_document =~ URI::regexp
-      URI.encode self.resulting_document
-    elsif !self.resulting_document.blank?
-      law_number = self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2')
-      "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_number
+  def law_id
+    self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2') if resulting_document =~ /Ley[^\d]*(\d+)\.?(\d*)/
+  end
+
+  def bill_draft
+    self.bill_draft_link
+  end
+
+  def law_xml_link
+    if !self.law_id.blank?
+      "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_id
+    end
+  end
+
+  def law_web_link
+    if !self.law_id.blank?
+      "http://www.leychile.cl/Navegar?idLey=" + law_id
     end
   end
 
   def law_text
-    get_law_link
-  end
-
-  def set_law_link
-    self.law_link = get_law_link
+    law_xml_link
   end
 
   def to_param
