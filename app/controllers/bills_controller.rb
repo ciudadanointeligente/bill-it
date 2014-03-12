@@ -126,12 +126,17 @@ class BillsController < ApplicationController
 
     filtered_conditions = {}
     equivalence_conditions = {}
+    disjunction_conditions = {}
     range_conditions_min = {}
     range_conditions_max = {}
     conditions.each do |key, value|
       next if value.nil?() || value == ""
       if equivalence_attributes.include?(key)
-        equivalence_conditions[key] = value
+        if value =~ /\|/
+          disjunction_conditions[key] = value
+        else
+          equivalence_conditions[key] = value
+        end
       elsif range_attributes_min.include?(key)
         range_conditions_min[key.gsub(@range_modifier_min, "")] = value
       elsif range_attributes_max.include?(key)
@@ -139,7 +144,7 @@ class BillsController < ApplicationController
       end
     end
 
-    return {equivalence_conditions: equivalence_conditions,\
+    return {equivalence_conditions: equivalence_conditions, disjunction_conditions: disjunction_conditions,\
       range_conditions_min: range_conditions_min, range_conditions_max: range_conditions_max}
   end
 
@@ -168,10 +173,16 @@ class BillsController < ApplicationController
         end
         filtered_conditions[:equivalence_conditions].delete("bill_id")
       end
-      #search over specific fields
+      # search over specific fields
+      filtered_conditions[:equivalence_conditions].each do |key, value|
+        fulltext value do
+          fields key
+        end
+      end
+      #search over specific fields that come with |
       text_fields do
         all_of do
-          filtered_conditions[:equivalence_conditions].each do |key, value|
+          filtered_conditions[:disjunction_conditions].each do |key, value|
             any_of do
               value.split("|").each do |term|
                 with(key, term)

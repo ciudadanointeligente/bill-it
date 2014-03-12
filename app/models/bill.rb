@@ -22,7 +22,6 @@ class Bill
   field :creation_date, type: Time
   field :source, type: String
   field :initial_chamber, type: String
-  field :current_priority, type: String
   field :stage, type: String
   field :sub_stage, type: String
   field :status, type: String
@@ -56,6 +55,30 @@ class Bill
     #if it's a string it will not get indexed
     attachment :bill_draft
     attachment :law_text
+  end
+
+  def current_priority
+    return "Sin urgencia" if priorities.blank?
+
+    latest_priority = priorities.desc(:entry_date).first
+    return "Sin urgencia" if latest_priority.type == "Sin urgencia"
+    
+    days_in_force = case latest_priority.type
+      when "Discusión inmediata"
+        2
+      when "Suma"
+        5
+      when "Simple"
+        10
+      else
+        return "Sin urgencia"
+    end
+
+    if (days_in_force.business_days.after latest_priority.entry_date) >= Date.today
+      latest_priority.type
+    else
+      "Sin urgencia"
+    end
   end
 
   def law_id

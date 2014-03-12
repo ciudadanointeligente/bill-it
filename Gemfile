@@ -18,6 +18,9 @@ gem 'roar-rails', "0.1.0"
 gem 'billit_representers', '0.8.9'
 gem 'will_paginate', '~> 3.0'
 
+#Dates
+gem 'business_time'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'

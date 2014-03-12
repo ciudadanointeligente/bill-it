@@ -210,6 +210,18 @@ describe BillsController do
         get :search, law_text: "presidio", format: :json
         assigns(:bills).should eq([@bill1, @bill2])
       end
+
+      it "searches for bill authors with name and last name in any order" do
+        get :search, authors: "Gazmuri Mujica Jaime", format: :json
+        assigns(:bills).should eq([@bill3])
+        get :search, authors: "Jaime Gazmuri Mujica", format: :json
+        assigns(:bills).should eq([@bill3])
+      end
+
+      it "searches with OR operator" do
+        get :search, tags: "justicia|transparencia", format: :json
+        assigns(:bills).should eq([@bill1,@bill2,@bill3, @bill4])
+      end
     end
   end
 
