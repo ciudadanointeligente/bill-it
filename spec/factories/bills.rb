@@ -15,7 +15,6 @@ FactoryGirl.define do
       f.publish_date "1991-01-23T00:00:00Z"
       f.authors []
       f.initial_chamber "C.Diputados"
-      f.current_priority nil
       f.resulting_document "Ley Nº 19.029"
     end
     factory :bill2 do |f|
@@ -29,7 +28,6 @@ FactoryGirl.define do
       f.publish_date "1991-01-23T00:00:00Z"
       f.authors []
       f.initial_chamber "C.Diputados"
-      f.current_priority nil
       f.resulting_document "Ley Nº 19.029"
     end
     factory :bill3 do |f|
@@ -43,7 +41,6 @@ FactoryGirl.define do
       f.publish_date "2008-08-11T00:00:00Z"
       f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
       f.initial_chamber "Senado"
-      f.current_priority nil
       f.bill_draft_link "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202&tipodoc=compa"
     end
     factory :bill4 do |f|
@@ -55,9 +52,8 @@ FactoryGirl.define do
       f.stage "Tramitación terminada"
       f.creation_date "2007-01-04T00:00:00Z"
       f.publish_date "2009-08-11T00:00:00Z"
-      f.authors ["Gazmuri Mujica, Jaime", "Larraín Fernández, Hernán"]
+      f.authors ["Gazmuri Mujica, Jorge", "Larraín Fernández, Hernán"]
       f.initial_chamber "C.Diputados"
-      f.current_priority nil
       f.bill_draft_link "http://www.senado.cl/appsenado/index.php?mo=tramitacion&ac=getDocto&iddocto=202&tipodoc=compa"
     end
   end

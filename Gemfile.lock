@@ -43,6 +43,9 @@ GEM
       roar (= 0.11.19)
       roar-rails (= 0.1.0)
     builder (3.0.4)
+    business_time (0.7.1)
+      activesupport (>= 3.1.0)
+      tzinfo
     celluloid (0.15.2)
       timers (~> 1.1.0)
     celluloid-io (0.15.0)
@@ -224,6 +227,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   billit_representers (= 0.8.9)
+  business_time
   database_cleaner
   factory_girl_rails
   faker

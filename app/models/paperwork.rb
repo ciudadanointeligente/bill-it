@@ -1,5 +1,4 @@
 class Paperwork
-# class Papperwork
   include Mongoid::Document
   include Mongoid::Timestamps
 
