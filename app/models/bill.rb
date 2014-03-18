@@ -91,10 +91,6 @@ class Bill
     self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2') if resulting_document =~ /Ley[^\d]*(\d+)\.?(\d*)/
   end
 
-  def bill_draft
-    self.bill_draft_link
-  end
-
   def law_xml_link
     if !self.law_id.blank?
       "http://www.leychile.cl/Consulta/obtxml?opt=7&idLey=" + law_id
@@ -105,10 +101,6 @@ class Bill
     if !self.law_id.blank?
       "http://www.leychile.cl/Navegar?idLey=" + law_id
     end
-  end
-
-  def law_text
-    law_xml_link
   end
 
   def to_param
@@ -123,5 +115,14 @@ class Bill
 
   def short_uid
     self.uid.split("-")[0]
+  end
+
+  # The two methods below only exist so the query fields have nicer names
+  def bill_draft
+    self.bill_draft_link
+  end
+
+  def law_text
+    law_xml_link
   end
 end
