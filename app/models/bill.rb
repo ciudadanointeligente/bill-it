@@ -7,6 +7,7 @@ class Bill
   validates_uniqueness_of :uid
 
   before_save :standardize_tags
+  after_save :set_current_priority
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
   has_many :priorities, autosave: true, class_name: "Priority"
@@ -32,6 +33,7 @@ class Bill
   field :publish_date, type: Time
   field :tags, type: Array
   field :bill_draft_link, type: String
+  field :current_priority, type: String
 
   include Sunspot::Mongoid2
   searchable do
@@ -57,7 +59,7 @@ class Bill
     attachment :law_text
   end
 
-  def current_priority
+  def get_current_priority
     return "Sin urgencia" if priorities.blank?
 
     latest_priority = priorities.desc(:entry_date).first
@@ -79,6 +81,10 @@ class Bill
     else
       "Sin urgencia"
     end
+  end
+
+  def set_current_priority
+    self.current_priority = get_current_priority
   end
 
   def law_id
