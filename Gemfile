@@ -15,7 +15,7 @@ gem 'progress_bar'
 #Representers
 # gem 'roar', '~> 0.11.19'
 gem 'roar-rails', "0.1.0"
-gem 'billit_representers', '0.8.10'
+gem 'billit_representers', '0.8.11'
 gem 'will_paginate', '~> 3.0'
 
 #Dates
