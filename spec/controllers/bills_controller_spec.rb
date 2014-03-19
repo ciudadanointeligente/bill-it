@@ -222,6 +222,30 @@ describe BillsController do
         get :search, tags: "justicia|transparencia", format: :json
         assigns(:bills).should eq([@bill1,@bill2,@bill3, @bill4])
       end
+
+      it "searches by priorities" do
+        Date.stub(:today){"2014-01-13".to_date}
+        priority1 = FactoryGirl.create(:priority1, type: "Simple", entry_date: Date.today - 1)
+        priority2 = FactoryGirl.create(:priority1, type: "Discusión inmediata", entry_date: Date.today - 1)
+        priority3 = FactoryGirl.create(:priority1, type: "Suma", entry_date: Date.today - 1)
+        priority4 = FactoryGirl.create(:priority1, type: "Discusión inmediata", entry_date: Date.today - 1)
+        @bill1.priorities = [priority1]
+        @bill2.priorities = [priority2]
+        @bill3.priorities = [priority3]
+        @bill4.priorities = [priority4]
+        @bill1.save
+        @bill2.save
+        @bill3.save
+        @bill4.save
+        Sunspot.remove_all(Bill)
+        Sunspot.index!(@bill1)
+        Sunspot.index!(@bill2)
+        Sunspot.index!(@bill3)
+        Sunspot.index!(@bill4)
+        Sunspot.commit
+        get :search, current_priority: "Discusión inmediata", format: :json
+        assigns(:bills).should eq([@bill2,@bill4])
+      end
     end
   end
 

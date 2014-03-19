@@ -7,6 +7,7 @@ class Bill
   validates_uniqueness_of :uid
 
   before_save :standardize_tags
+  after_save :set_current_priority
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
   has_many :priorities, autosave: true, class_name: "Priority"
@@ -32,6 +33,7 @@ class Bill
   field :publish_date, type: Time
   field :tags, type: Array
   field :bill_draft_link, type: String
+  field :current_priority, type: String
 
   include Sunspot::Mongoid2
   searchable do
@@ -57,7 +59,7 @@ class Bill
     attachment :law_text
   end
 
-  def current_priority
+  def get_current_priority
     return "Sin urgencia" if priorities.blank?
 
     latest_priority = priorities.desc(:entry_date).first
@@ -81,12 +83,12 @@ class Bill
     end
   end
 
-  def law_id
-    self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2') if resulting_document =~ /Ley[^\d]*(\d+)\.?(\d*)/
+  def set_current_priority
+    self.current_priority = get_current_priority
   end
 
-  def bill_draft
-    self.bill_draft_link
+  def law_id
+    self.resulting_document.gsub(/Ley[^\d]*(\d+)\.?(\d*)/, '\1\2') if resulting_document =~ /Ley[^\d]*(\d+)\.?(\d*)/
   end
 
   def law_xml_link
@@ -101,10 +103,6 @@ class Bill
     end
   end
 
-  def law_text
-    law_xml_link
-  end
-
   def to_param
     uid
   end
@@ -117,5 +115,14 @@ class Bill
 
   def short_uid
     self.uid.split("-")[0]
+  end
+
+  # The two methods below only exist so the query fields have nicer names
+  def bill_draft
+    self.bill_draft_link
+  end
+
+  def law_text
+    law_xml_link
   end
 end
