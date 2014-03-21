@@ -1,0 +1,13 @@
+%div.row
+  %div.col-md-6.col-md-offset-3
+    %h2.text-center
+      = t('main.title_slogan')
+      %br
+      = t('main.title_subslogan')
+
+    = form_tag('search.json', :method => 'get', :class => "form-inline") do
+      %div.input-group
+        %input.form-control{:type => "text", :name => 'q', :placeholder => t("main.search_placeholder")}
+        %span.input-group-btn
+          %button{:type => "submit", :class => "btn btn-primary btn-lg"}
+            =t("main.button_search")

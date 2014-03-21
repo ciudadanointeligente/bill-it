@@ -41,7 +41,7 @@ http://localhost:8983
 
 run the service:
 ```
-bundle exec rails s
+bundle exec guard
 ```
 visit http://localhost:3000 to see billit running
 

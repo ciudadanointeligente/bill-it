@@ -2,4 +2,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  layout:
+    title_project: "Bill It"
+    from: "de Ciudadano Inteligente"
+  main:
+    title_slogan: "Bill it"
+    title_subslogan: "the revenge"
+    search_placeholder: "..."
+    button_search: "Search"
