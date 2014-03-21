@@ -97,21 +97,21 @@
       <div class="row">
         <div class="col-md-4">
             <ul>
-                <li><a href="https://github.com/ciudadanointeligente/bill-it" target="_blank"><i class="fa fa-github-alt"></i> Revisa nuestro código en Github</a></li>
+                <li><a href="https://github.com/ciudadanointeligente/bill-it" target="_blank"><i class="fa fa-github-alt"></i> <%= t('layout.github_checkout') %></a></li>
             </ul>
         </div>
         <div class="col-md-4">
           <ul>
             <li>
-              Desarrollado por <a href="http://www.ciudadanointeligente.org/" target="_blank"><img src="<%= image_path('logo-ciudadanoi.png') %>" alt="Fundación Ciudadano Inteligente" title="Fundación Ciudadano Inteligente"></a>
+              <%= t('layout.developed_by') %><a href="http://www.ciudadanointeligente.org/" target="_blank"><img src="<%= image_path('logo-ciudadanoi.png') %>" alt="<%= t('layout.developed_by_name') %>" title="<%= t('layout.developed_by_name') %>"></a>
             </li>
           </ul>
         </div>
         <div class="col-md-4">
             <ul>
-                <li><a href="tel:+56224192770"><i class="fa fa-phone"></i> +562 2 419 2770</a></li>
-                <li><a href="" class="email-contacto" target="_top"><i class="fa fa-envelope-o"></i> Contacto</a></li>
-                <li><a href="http://bit.ly/17qiMkf" target="_blank"><i class="fa fa-map-marker"></i> Holanda 895, Providencia, Santiago, Chile</a></li>
+                <li><a href="tel:+56224192770"><i class="fa fa-phone"></i> <%= t('layout.phone_data') %></a></li>
+                <li><a href="" class="email-contacto" target="_top"><i class="fa fa-envelope-o"></i> <%= t('layout.contact') %></a></li>
+                <li><a href="<%= t('layout.address_url') %>" target="_blank"><i class="fa fa-map-marker"></i> <%= t('layout.address') %></a></li>
             </ul>
         </div>
       </div>

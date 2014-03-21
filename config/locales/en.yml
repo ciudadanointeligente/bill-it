@@ -5,6 +5,13 @@ en:
   layout:
     title_project: "Bill It"
     from: "de Ciudadano Inteligente"
+    developed_by: "Developed by"
+    developed_by_name: "Fundación Ciudadano Inteligente"
+    github_checkout: "Check out our code on Github"
+    phone_data: "(+56 2) 2419 2770"
+    contact: "Contact"
+    address: "Holanda 895, Providencia, Santiago, Chile"
+    address_url: 'http://bit.ly/17qiMkf'
   main:
     title_slogan: "Bill it"
     title_subslogan: "the revenge"
