@@ -1,0 +1,91 @@
+%div.hero-space-bill
+  %div.container
+    %div.row
+      %div.col-md-9
+        %ol.breadcrumb
+          %li
+            = link_to t('layout.home'), root_path
+          %li
+            = link_to t('bill.breadcrumb_bill'), bills_path
+          %li.active
+            = @bill.title[0..30] + '...'
+      %div.col-md-3
+        %ul.list-inline.action-btn
+    %div.row
+      %div.col-md-1.side
+        %h5.light
+          = @bill.uid
+        - if ! @bill.icon.blank?
+          = image_tag("statusicon/" + @bill.icon, class:"hidden-xs", title:@bill.status.strip)
+      %div.col-md-11
+        %h4
+          = @bill.title
+        %p
+          -if !@bill.creation_date.blank?
+            %span.light
+              = t('bill.creation_date') + ":"
+            = localize @bill.creation_date.to_date
+            %br/
+          -if !@bill.source.blank?
+            %span.light
+              = t('bill.source') + ":"
+            = @bill.source
+            %br/
+          -if !@bill.initial_chamber.blank?
+            %span.light
+              = t('bill.initial_chamber') + ":"
+            = @bill.initial_chamber
+            %br/
+          -if !@bill.current_priority.blank?
+            %span.light
+              = t('bill.current_priority') + ":"
+            = @bill.current_priority
+            %br/
+          -if !@bill.stage.blank?
+            %span.light
+              = t('bill.stage') + ":"
+            = @bill.stage
+            %br/
+          -if !@bill.status.blank?
+            %span.light
+              = t('bill.status') + ":"
+            = @bill.status
+            %br/
+          -if !@bill.publish_date.blank?
+            %span.light
+              = t('bill.publish_date') + ":"
+            = localize @bill.publish_date.to_date
+            %br/
+          -if !@bill.abstract.blank?
+            %span.light
+              = t('bill.abstract') + ":"
+            = @bill.abstract
+        %p
+          -if !@authors.blank?
+            %span.light
+              = t('bill.authors') + ':'
+            - @authors.each_with_index do |author, index|
+              %span
+                - author = author.second
+                - if !author['uid'].blank?
+                  = link_to author['name'], congressman_path(author['uid'])
+                - elsif
+                  = author['name']
+                - if index < @authors.size - 1
+                  = ', '
+            %br/
+          -if !@bill.tags.blank?
+            %ul.list-inline
+              - if !@bill.tags.blank?
+                - @bill.tags.each do |tag|
+                  %li
+                    %span.label.label-default= tag
+            %br/
+          -if ! @bill.bill_draft_link.blank?
+            %a{'href'=> @bill.bill_draft_link}
+              = t('bill.download_project')
+              %i.fa.fa-download
+          -if ! @bill.law_web_link.blank?
+            %a{'href'=> @bill.law_web_link, 'target'=>'_blank'}
+              = t('bill.view_law') + ' ' + @bill.law_id
+              %i.fa.fa-eye

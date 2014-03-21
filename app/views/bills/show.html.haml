@@ -1,42 +1,153 @@
-%p#notice= notice
+%section#graph
+  %ul.list-inline
+    - if ! @bill.paperworks.blank?
+      %li
+        %h4{name:'timeline'}
+          = t('bill.title_event')
+    - if ! @bill.paperworks.blank?
+      %li
+        = link_to (url_for :controller => 'bills', :action=>'show', :id=>@bill.uid, :format => 'xls'), :onclick => "ga('send','download','download_bill_history_xls')" do
+          = t('bill.download_history')
+          %i.fa.fa-download
+      %li
+        %a{'href'=>'#', 'data-toggle'=>'modal', 'data-target'=>'#Documents', 'onclick' => "ga('send','view','view_documents')"}
+          = t('bill.view_documents')
+          %i.fa.fa-file
+      %li.pull-right
+        %div.hidden-xs
+          = t('bill.sort_time')
+          %a.down{'href'=>'#','onclick'=>"ga('send','click','desktop_more_recent')"}
+            %i.fa.fa-chevron-circle-down
+          %a.up{'href'=>'#','onclick'=>"ga('send','click','desktop_less_recent')"}
+            %i.fa.fa-chevron-circle-up
 
-%p
-  %b Uid:
-  = @bill.uid
-%p
-  %b Title:
-  = @bill.title
-%p
-  %b Abstract:
-  = @bill.abstract
-%p
-  %b Tags:
-  = @bill.tags
-%p
-  %b Matters:
-  = @bill.matters
-%p
-  %b Stage:
-  = @bill.stage
-%p
-  %b Creation date:
-  = @bill.creation_date
-%p
-  %b Publish date:
-  = @bill.publish_date
-%p
-  %b Authors:
-  = @bill.authors
-%p
-  %b Origin chamber:
-  = @bill.origin_chamber
-%p
-  %b Current urgency:
-  = @bill.current_urgency
-%p
-  %b Link law:
-  = @bill.link_law
+  - if ! @bill.paperworks.blank?
+    %div.row.visible-xs
+      %div.col-xs-6
+        %button.down{'onclick'=>"ga('send','click','mobile_more_recent')"}
+          %i.fa.fa-chevron-circle-down
+          = t('bill.more_recents')
+      %div.col-xs-6
+        %button.up{'onclick'=>"ga('send','click','mobile_less_recent')"}
+          %i.fa.fa-chevron-circle-up
+          = t('bill.less_recents')
+    
+      
+  %div.modal.fade#Documents{'tabindex'=>'-1', 'role'=>'dialog', 'aria-labelledby'=>'myModalLabel', 'aria-hidden'=>'true'}
+    %div.modal-dialog.modal-lg
+      %div.modal-content
+        %div.modal-header
+          %button.close{'type'=>'button', 'data-dismiss'=>'modal', 'aria-hidden'=>'true'}
+            &times;
+          %h4.modal-title#myModalLabel
+            = t('bill.modal_bulletin_number') 
+            = @bill.uid
+        %div.modal-body
 
-= link_to 'Edit', edit_bill_path(@bill)
-\|
-= link_to 'Back', bills_path
+          - if ! @bill.reports.blank?
+            %h5
+              = t('bill.modal_reports') 
+            %table.table.table-striped
+              %tr
+                %th
+                  = t('bill.modal_table_date')
+                %th
+                  = t('bill.modal_table_paperwork')
+              - @bill.reports.each do | rep |
+                - if ! rep.link.blank?
+                  %tr
+                    %td
+                      - if ! rep.date.blank?
+                        = localize rep.date.to_date
+                    %td
+                      %a{'href'=>rep.link}
+                        = rep.step
+                    
+          - if ! @bill.documents.blank?
+            %h5
+              = t('bill.modal_documents') 
+            %table.table.table-striped
+              %tr
+                %th
+                  = t('bill.modal_table_date')
+                %th
+                  = t('bill.modal_table_paperwork')
+              - @bill.documents.each do | doc |
+                - if ! doc.link.blank?
+                  %tr
+                    %td
+                      - if ! doc.date.blank?
+                        = localize doc.date.to_date
+                    %td
+                      %a{'href'=>doc.link}
+                        = doc.step
+          
+          - if ! @bill.directives.blank?
+            %h5
+              = t('bill.modal_directives')
+            %table.table.table-striped
+              %tr
+                %th
+                  = t('bill.modal_table_date')
+                %th
+                  = t('bill.modal_table_paperwork')
+              - @bill.directives.each do | dir |
+                - if ! dir.link.blank?
+                  %tr
+                    %td
+                      - if ! dir.date.blank?
+                        = localize dir.date.to_date
+                    %td
+                      %a{'href'=>dir.link}
+                        = dir.step
+          
+          - if ! @bill.revisions.blank?
+            %h5
+              = t('bill.modal_revision')
+            %table.table.table-striped
+              %tr
+                %th
+                  = t('bill.modal_table_paperwork')
+              - @bill.revisions.each do | rev |
+                - if ! rev.link.blank?
+                  %tr
+                    %td
+                      %a{'href'=>rev.link}
+                        = rev.description
+
+  %div#timeline.row
+    - @bill.paperworks.each_with_index do | paperwork, index |
+      %div{ 'data-sort' => paperwork.date.to_time.to_i }
+        %div.timeline-container.col-md-1
+          = image_tag("statusicon/" + paperwork.icon_event, class:"hidden-xs")
+        %div.bill_header.col-md-11
+          %h5
+            = paperwork.description
+          %p.light
+            = localize paperwork.date.to_date, :format => :long
+
+          %p
+            = paperwork.stage
+          
+            - if paperwork.chamber.length > 1
+              = '•' + t('bill.chamber') + ':'
+              = paperwork.chamber
+
+            - if paperwork.session.length > 1
+              = '•' + t('bill.session') + ':'
+              = paperwork.session
+
+:javascript
+  $('.up').on('click', function(e){
+    e.preventDefault();
+    $("div#timeline>div").tsort({order:'asc', data:'sort'});
+  });
+
+  $('.down').on('click', function(e){
+    e.preventDefault();
+    $("div#timeline>div").tsort({order:'desc', data:'sort'});
+  });
+
+  $(document).ready(function(){
+    $("div#timeline>div").tsort({order:'asc', data:'sort'});
+  })

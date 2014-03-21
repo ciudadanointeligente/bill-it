@@ -7,7 +7,7 @@ Dir['./app/models/billit/*'].each { |model| require model }
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
   represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
-  respond_to :json, :xml
+  respond_to :json, :xml, :html
   # json /bills
   # GET /bills.json
   def index
@@ -28,11 +28,13 @@ class BillsController < ApplicationController
 
   # GET /bills/1.json
   def show
+    @condition_bill_header = true
     @bill = Bill.find_by(uid: params[:id])
     if @bill.nil?
       render text: "", :status => 404
     else
-      respond_with @bill, :represent_with => Billit::BillRepresenter
+      # respond_with @bill, :represent_with => Billit::BillRepresenter
+      @bill
     end
   end
 

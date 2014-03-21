@@ -1,0 +1,30 @@
+%div.row
+  %div.col-md-9
+    %ol.breadcrumb
+      %li
+        = link_to t('layout.home'), root_path
+      %li.current
+        Resultado de búsqueda
+  %div.col-md-3
+    %ul.list-inline.pull-right
+      %li
+        - url = 'https://www.facebook.com/sharer/sharer.php?u='+request.original_url
+        %a.btn-warning.btn-xs{'href'=>'#', 'onclick'=>'window.open("'+url+'","facebook","width=450, height=250")'}
+          %i.fa.fa-facebook 
+          Comparte
+      %li
+        - url = 'https://twitter.com/share?url='+request.original_url+'&hashtags='+ENV['twitter_tags']
+        %a.btn-warning.btn-xs{'href'=>'#', 'onclick'=>'window.open("'+url+'","twitter","width=450, height=250")'}
+          %i.fa.fa-twitter 
+          Twittea
+
+%div.row
+  %h2
+    Proyectos de ley    
+
+%div.row
+  %div.col-md-3.aside
+    = render :partial => "filter_search_form"
+  %div.col-md-9.whitewithaside
+    - @bills = @bills_query.bills
+    = render :partial => "box_bills_result"

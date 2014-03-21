@@ -1,0 +1,73 @@
+= form_tag({controller: "bills", action: "searches"}, :method => 'get', :name => 'bills_search', :id => 'bills_search') do
+  %div.form-group
+    = label_tag :q, 'Palabra clave'
+    %input.form-control{:name=>'q', :id=>'q', 'value' => params[:q], :placeholder => t('search.placeholder_search_for'), :onfocus => "ga('send','paperwork','focus_search')"}
+
+  %div.form-group
+    = label_tag :bill_id, t('search.bulletin')
+    = text_field_tag :bill_id, params[:bill_id], :class => 'form-control', :placeholder => t('search.placeholder_bulletin'), :onfocus => "ga('send','paperwork','focus_bulletin')"
+
+  %div.form-group
+    = label_tag :authors, t('search.author')
+    - if params[:authors] == nil
+      - params[:authors] = ""
+    %div
+      %input{"type" => "text", "value" => params[:authors], "class" => "form-control", "id" => "authors", "name" => "authors", "placeholder" => t('search.placeholder_author'), :autocomplete=>"off"}
+
+  %div.form-group
+    = label_tag :stage, t('search.stage')
+    %select{:name => "stage", :class => "form-control", :onfocus => "ga('send','paperwork','focus_stage')"}
+      %option{:value => "", selected: params[:stage] == ""}= t 'search.all_the_stages'
+      - @stages = Billit::Bill.class_variable_get(:@@stage_valid_values)
+      - if @stages != nil
+        - @stages.each do |stage|
+          %option{:value => stage, selected: params[:stage] == stage}= stage
+
+  /
+    %div.form-group
+      = label_tag :initial_chamber, t('search.bill_type')
+      %select{:name => "status", :class => "form-control", :onfocus => "ga('send','paperwork','focus_type')"}
+        %option{:value => "", selected: params[:initial_chamber] == ""}= t 'search.all_the_types'
+        %option{:value => "Publicado", selected: params[:initial_chamber] == "Publicado"}= 'Ley'
+        %option{:value => "En tramitación", selected: params[:initial_chamber] == "En tramitación"}= 'Proyecto de ley'
+
+  %div.form-group
+    = label_tag :initial_chamber, t('search.initial_chamber')
+    %select{:name => "initial_chamber", :class => "form-control", :onfocus => "ga('send','paperwork','focus_chamber')"}
+      %option{:value => "", selected: params[:initial_chamber] == ""}= t 'search.all_the_chambers'
+      - @chambers = Billit::Bill.class_variable_get(:@@initial_chamber_valid_values)
+      - if @chambers != nil
+        - @chambers.each do |chamber|
+          %option{:value => chamber, selected: params[:initial_chamber] == chamber}= chamber
+
+  %div.form-group
+    = label_tag :initial_chamber, t('search.current_priority')
+    %select{:name => "current_priority", :class => "form-control", :onfocus => "ga('send','paperwork','focus_priority')"}
+      %option{:value => "", selected: params[:current_priority] == ""}= t 'search.all_the_priorities'
+      - @priorities = Billit::Bill.class_variable_get(:@@current_priority_valid_values)
+      - if @priorities != nil
+        - @priorities.each do |priority|
+          %option{:value => priority, selected: params[:current_priority] == priority}= priority
+
+  %div.form-group
+    = label_tag :creation_date_min, t('search.creation_date_min')
+    - if params[:creation_date_min] == nil
+      - params[:creation_date_min] = ENV['parliaments_initial_date']
+    %div.input-group
+      %input{"type" => "date", "value" => params[:creation_date_min], "min" => params[:creation_date_min], "name" => "creation_date_min", "class" => "form-control", "onfocus" => "ga('send','paperwork','focus_min_date')"}
+      %span.input-group-addon
+        %i.fa.fa-calendar
+
+  %div.form-group
+    = label_tag :creation_date_max, t('search.creation_date_max')
+    - if params[:creation_date_max] == nil
+      - params[:creation_date_max] = Date.today.to_s
+    %div.input-group
+      %input{"type" => "date", "value" => params[:creation_date_max], "min" => ENV['parliaments_initial_date'], "name" => "creation_date_max", "class" => "form-control", "onfocus" => "ga('send','paperwork','focus_max_date')"}
+      %span.input-group-addon
+        %i.fa.fa-calendar
+
+  %input{"type" => "hidden", "name" => "bills", "value" => "1"}
+
+  %button.btn.btn-primary.pull-right.btn-lg
+    Buscar

@@ -1,0 +1,31 @@
+%div.row.result.whitewithaside
+  %div.col-md-1
+    %h5.light
+      = bill.uid
+    - if ! bill.icon.blank?
+      = image_tag("statusicon/" + bill.icon, class:"hidden-xs")
+  %div.col-md-10
+    %h5
+      = link_to bill.title, bill_path(bill.uid), :onclick => "ga('send','paperwork','bill', '"+bill.uid+"')"
+    %p
+      - if ! bill.stage.blank?
+        %span.light
+          = t('search.stage')
+        = bill.stage
+        %br/
+      - if ! bill.creation_date.blank?
+        %span.light
+          = t('search.creation_date')
+        = localize bill.creation_date.to_date, :format => :long
+        %br/
+      - if ! bill.source.blank?
+        %span.light
+          = t('search.initiative')
+        = bill.source
+
+  %div.col-md-1
+    %p
+      = link_to (new_user_subscription_path(:bill => bill.uid)) do
+        %i.fa.fa-star-o{title: t('bill.subscribe')}
+        %span.visible-xs 
+          = t('bill.subscribe')
