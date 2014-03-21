@@ -28,6 +28,7 @@ group :development, :test do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'awesome_print'
+  gem 'newrelic_rpm'
 end
 
 group :test do
