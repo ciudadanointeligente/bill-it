@@ -1,19 +1,19 @@
 # encoding: UTF-8
 require 'billit_representers/representers/bill_representer'
-require 'billit_representers/representers/bill_collection_representer'
-require 'billit_representers/representers/bill_collection_page_representer'
+require 'billit_representers/representers/bill_basic_representer'
+require 'billit_representers/representers/bill_page_representer'
 Dir['./app/models/billit/*'].each { |model| require model }
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
-  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillCollectionRepresenter
+  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
   respond_to :json, :xml
   # json /bills
   # GET /bills.json
   def index
     @bills = Bill.all
     
-    respond_with @bills, represent_with: Billit::BillCollectionRepresenter
+    respond_with @bills, represent_with: Billit::BillPageRepresenter
   end
 
   # GET /id/feed
@@ -43,8 +43,8 @@ class BillsController < ApplicationController
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = search_for(params)
     @bills = search.results
-    @bills.extend(Billit::BillCollectionPageRepresenter)
-    respond_with @bills.to_json(params), represent_with: Billit::BillCollectionPageRepresenter
+    @bills.extend(Billit::BillPageRepresenter)
+    respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
   end
 
   # GET /bills/new
