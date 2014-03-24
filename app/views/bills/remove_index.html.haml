@@ -1,0 +1,41 @@
+%h1 Listing bills
+
+%table
+  %tr
+    %th Uid
+    %th Title
+    %th Abstract
+    %th Tags
+    %th Matters
+    %th Stage
+    %th Creation date
+    %th Publish date
+    %th Authors
+    %th Origin chamber
+    %th Current urgency
+    %th Link law
+    %th
+    %th
+    %th
+
+  - @bills.each do |bill|
+    %tr
+      %td= bill.uid
+      %td= bill.title
+      %td= bill.abstract
+      %td= bill.tags
+      %td= bill.matters
+      %td= bill.stage
+      %td= bill.creation_date
+      %td= bill.publish_date
+      %td= bill.authors
+      %td= bill.origin_chamber
+      %td= bill.current_urgency
+      %td= bill.link_law
+      %td= link_to 'Show', bill
+      %td= link_to 'Edit', edit_bill_path(bill)
+      %td= link_to 'Destroy', bill, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Bill', new_bill_path

@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2'
 gem "jquery-rails", "~> 2.2"
-
 gem 'haml-rails', '~> 0.4'
 
 #Search
@@ -31,10 +30,17 @@ group :development, :test do
   gem 'newrelic_rpm'
 end
 
+group :development do
+  gem 'thin'
+  # Replaces default rails error page with a much better and more useful error page
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  # Turns off the rails asset pipeline log
+  gem 'quiet_assets'
+end
+
 group :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'webmock'
 end
-
-

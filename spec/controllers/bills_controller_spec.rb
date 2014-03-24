@@ -106,6 +106,13 @@ describe BillsController do
         response.should be_success
         response.body.should eq(assigns(:bill).to_json)
       end
+
+      it "returns the correct bill in html format" do
+        bill = FactoryGirl.create(:bill1)
+        get :show, id: bill.uid, format: :html
+        response.should be_success
+        response.body.should eq(assigns(:bill))
+      end
     end
     describe "with non existent id" do
       it "returns a 404" do

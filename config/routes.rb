@@ -1,4 +1,7 @@
 BillIt::Application.routes.draw do
+
+  root :to => "bills#index"
+
   resources :paperworks do
     get 'search', on: :collection
   end

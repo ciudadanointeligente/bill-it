@@ -84,5 +84,8 @@ module BillIt
       g.integration_tool nil
       g.performance_tool nil
     end
+
+    # Application name
+    config.application_name = "Bill-it"
   end
 end

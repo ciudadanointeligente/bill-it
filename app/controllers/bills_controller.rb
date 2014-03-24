@@ -1,4 +1,6 @@
 # encoding: UTF-8
+require 'billit_representers/models/bill'
+require 'billit_representers/models/bill_page'
 require 'billit_representers/representers/bill_representer'
 require 'billit_representers/representers/bill_basic_representer'
 require 'billit_representers/representers/bill_page_representer'
@@ -7,14 +9,16 @@ Dir['./app/models/billit/*'].each { |model| require model }
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
   represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
-  respond_to :json, :xml
+  respond_to :json, :xml, :html
   # json /bills
   # GET /bills.json
-  def index
-    @bills = Bill.all
-    
-    respond_with @bills, represent_with: Billit::BillPageRepresenter
-  end
+  # def index
+  #   # require 'will_paginate/array'
+  #   # @bills = Bill.all.to_a
+  #   # @bills.extend(Billit::BillPageRepresenter)
+  #   # respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
+  #   search
+  # end
 
   # GET /id/feed
   def feed
@@ -28,11 +32,13 @@ class BillsController < ApplicationController
 
   # GET /bills/1.json
   def show
+    @condition_bill_header = true
     @bill = Bill.find_by(uid: params[:id])
     if @bill.nil?
       render text: "", :status => 404
     else
-      respond_with @bill, :represent_with => Billit::BillRepresenter
+      # respond_with @bill, :represent_with => Billit::BillRepresenter
+      @bill
     end
   end
 
@@ -42,10 +48,14 @@ class BillsController < ApplicationController
     # Sunspot.remove_all(Bill)   # descomentar para reindexar,
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = search_for(params)
-    @bills = search.results
-    @bills.extend(Billit::BillPageRepresenter)
-    respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
+    @bills_query = search.results
+    @bills_query.extend(Billit::BillPageRepresenter)
+    respond_to do |format|
+      format.html {@bills_query = Billit::BillPage.new.from_json(@bills_query.to_json(params))}
+    end
+    # respond_with @bills_query.to_json(params), represent_with: Billit::BillPageRepresenter
   end
+  alias index search
 
   # GET /bills/new
   # GET /bills/new.json
