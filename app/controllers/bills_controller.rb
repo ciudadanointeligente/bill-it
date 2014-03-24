@@ -1,4 +1,6 @@
 # encoding: UTF-8
+require 'billit_representers/models/bill'
+require 'billit_representers/models/bill_page'
 require 'billit_representers/representers/bill_representer'
 require 'billit_representers/representers/bill_basic_representer'
 require 'billit_representers/representers/bill_page_representer'
@@ -6,15 +8,17 @@ Dir['./app/models/billit/*'].each { |model| require model }
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
-  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
+  # represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
   respond_to :json, :xml, :html
   # json /bills
   # GET /bills.json
-  def index
-    @bills = Bill.all
-    
-    respond_with @bills, represent_with: Billit::BillPageRepresenter
-  end
+  # def index
+  #   # require 'will_paginate/array'
+  #   # @bills = Bill.all.to_a
+  #   # @bills.extend(Billit::BillPageRepresenter)
+  #   # respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
+  #   search
+  # end
 
   # GET /id/feed
   def feed
@@ -33,8 +37,7 @@ class BillsController < ApplicationController
     if @bill.nil?
       render text: "", :status => 404
     else
-      # respond_with @bill, :represent_with => Billit::BillRepresenter
-      @bill
+      respond_with @bill, :represent_with => Billit::BillRepresenter
     end
   end
 
@@ -46,8 +49,10 @@ class BillsController < ApplicationController
     search = search_for(params)
     @bills = search.results
     @bills.extend(Billit::BillPageRepresenter)
+    @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
     respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
   end
+  alias index search
 
   # GET /bills/new
   # GET /bills/new.json
