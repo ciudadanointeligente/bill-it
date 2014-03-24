@@ -1,0 +1,336 @@
+# Localization file for Spanish. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+es:
+  layout:
+    home: Portada
+    search: Búsqueda
+    glossary: Glosario
+    communication: Preguntales
+    disclosure: Declaraciones
+    congressmen: Congresistas
+    tables: Tablas
+    about_us: Acerca de nosotros
+    menu: Menú
+    from: de Ciudadano Inteligente
+    title_project: Congreso abierto
+    welcome: Bienvenido(a)
+    bills: Proyectos de ley
+  main:
+    search_placeholder: Ingresa un proyecto de ley o congresista
+    username: Nombre de usuario
+    password: Contraseña
+    stay_signed: Mantenerme conectado
+    login: Ingresar
+    registry: Crear una cuenta
+    forgot: Olvidaste tu clave?
+    latest_tables: Últimas tablas
+    latest_bills: Últimos proyectos de ley
+    view_more: Ver más
+    senator_highlights: Senador destacado
+    option_votes: Opciones
+    nro_votes: Nro. votos
+    yes: Sí
+    no: No
+    abstentions: Abstenciones
+    title_slogan: Bienvenido a tu congreso online
+    title_subslogan: Entra sin pedir permiso
+    filter_bills: Proyectos de ley
+    filter_congressmen: Congresistas
+    discussion_agendas: Tablas de discusión
+    high_chamber: Senado
+    low_chamber: Cámara de diputados
+    last_responses: Últimas respuestas
+    last_questions: Últimas Preguntas
+    view_more_questions: Ver más preguntas
+    session: Sesión
+    legislature: Legislatura
+    view_previous_agendas: Ver tablas anteriores
+    hot_projects: Proyectos contingentes
+  search:
+    search_title: Búsqueda
+    search_for: 'Buscar por:'
+    search: Buscar
+    bill: Proyecto de ley 
+    bills: Proyectos de ley
+    persons: Autores
+    current_priority: 'Urgencia actual:'
+    bill_type: 'Tipo de proyecto:'
+    download_as_excel: Descargar como Excel
+    all_the_types: Todos los tipos
+    all_the_stages: Todas las etapas
+    all_the_chambers: Todas las cámaras
+    all_the_priorities: Todas las urgencias
+    quick: Vista rápida
+    placeholder_search_for: Ingresa una palabra clave
+    bulletin: 'Boletín:'
+    placeholder_bulletin: Ingresa nro de boletín
+    stage: 'Etapa:'
+    creation_date: 'Fecha de ingreso: '
+    initiative: 'Iniciativa: '
+    creation_date_min: 'Fecha de ingreso (min):'
+    creation_date_max: 'Fecha de ingreso (max):'
+    initial_chamber: 'Cámara de origen:'
+    author: Autor
+    placeholder_author: Ingresa el nombre de un autor
+    there_are_no_results: No hay resultados para esta búsqueda
+    event_range: rango de eventos
+    bills_advanced_search: Ver todos los resultados
+    congressmen_advanced_search: Ver todos los resultados
+    congressmen: Congresistas
+    represent: 'Lugar que representa:'
+    all_results: Ver todos los resultados
+    search_results: Resultados de búsqueda
+  agendas:
+    chamber: Cámara
+    date: Fecha
+    bills: Proyectos de ley
+  bill:
+    bulletin: Boletín
+    title: Título
+    abstract: Resumen
+    tags: Etiquetas
+    stage: Etapa
+    creation_date: Fecha de ingreso
+    publish_date: Fecha de publicación
+    chamber: Cámara
+    source: Iniciativa
+    initial_chamber: Cámara de origen
+    current_priority: Urgencia actual
+    sub_stage: Sub etapa
+    status: Estado
+    resulting_document: Ley
+    law_link: Enlace a la ley
+    merged_bills: Refundido
+    subject_areas: Materias
+    authors: Autores
+    paperworks: Eventos
+    priorities: Urgencias
+    reports: Reportes
+    revisions: Comparados
+    documents: Documentos
+    directives: Indicaciones
+    remarks: Observaciones
+    comments: Comentarios
+    title_event: EVENTOS DEL PROYECTO
+    download_history: Descargar historial
+    view_law: Ver ley 
+    view_documents: Ver documentos
+    more_recents: Más recientes
+    less_recents: Menos reciente
+    sort_time: Invertir orden temporal
+    session: Sesión
+    modal_bulletin_number: Documentos boletín
+    modal_reports: Informes
+    modal_table_date: Fecha
+    modal_table_paperwork: Trámite
+    modal_documents: Oficios
+    modal_directives: Indicaciones
+    modal_revision: Comparados
+    bill_subscribe: Suscríbete
+    subscribe: Suscríbete a este proyecto
+    fb_share: Comparte
+    tw_share: Twittea
+    tw_text: Revisa el boletín %s en congresoabierto.cl
+    breadcrumb_bill: Proyectos de ley
+    download_project: Descargar proyecto
+  paperwork:
+    chamber: 'Cámara:'
+    created_at: 'Fecha de creación:'
+    date: 'Fecha:'
+    description: 'Descripción:'
+    session: 'Sesión:'
+    stage: 'Etapa:'
+    updated_at: 'Última actualización:'
+  priority:
+    created_at: 'Fecha de creación:'
+    entry_chamber: 'Cámara de ingreso:'
+    entry_date: 'Fecha de ingreso:'
+    entry_message: 'Mensaje de ingreso:'
+    type: 'Tipo:'
+    updated_at: 'Última actualización:'
+    withdrawal_chamber: 'Cámara de retiro:'
+    withdrawal_date: 'Fecha de retiro:'
+    withdrawal_message: 'Mensaje de retiro:'
+  report:
+    created_at: 'Fecha de creación:'
+    date: 'Fecha:'
+    stage: 'Etapa:'
+    step: 'Trámite:'
+    updated_at: 'Última actualización:'
+  revision:
+    description: 'Descripción:'
+    revision: 'Comparado:'
+  document:
+    chamber: 'Cámara:'
+    created_at: 'Fecha de creación:'
+    date: 'Fecha:'
+    paperwork: 'Evento:'
+    number: 'Número:'
+    stage: 'Etapa:'
+    step: 'Trámite:'
+    type: 'Tipo:'
+    updated_at: 'Última actualización:'
+  directive:
+    created_at: 'Fecha de creación:'
+    date: 'Fecha:'
+    paperwork: 'Evento:'
+    stage: 'Etapa:'
+    step: 'Trámite:'
+    updated_at: 'Última actualización:'
+  pagination:
+    page: 'Página '
+    of: ' de '
+    with: ' con '
+    results: ' resultados'
+    previous: Anterior
+    next: Siguiente
+  export:
+    link_to_bill: Enlace a boletín
+  users:
+    you_must_be_logged: Debes estar registrado para acceder a esta sección
+    welcome_back: ¡Bienvenido!
+    logged_in: ¡Conectado!
+    logged_out: ¡Sesión cerrada!
+    invalid_email_or_password: Correo electrónico o contraseña no válidos
+    user_not_found: Usuario no encontrado
+    signed_up: ¡Registrado!
+    you_cant_delete_yourself: ¡Usted no puede eliminar a si mismo!
+    user_deleted: Usuario eliminado
+    user_updated: Usuario actualizado
+    log_in: Iniciar sesión
+    sign_up: Registrarse
+    log_out: Cerrar sesión
+    logged_as: Autentificado como
+    hello: Bienvenido
+    manage_users: Gestión de usuarios
+    show: Mostrar
+    edit: Editar
+    delete: Eliminar
+    user: Usuario
+    users: Usuarios
+  user_subscriptions:
+    confirmation_mail_sent: Se ha enviado un correo electrónico a la casilla registrada
+    already_subscribe: Ya existe una suscripción a este bill con ese correo electrónico
+    verified_mail: El correo electrónico fue exitosamente verificado
+    subscribe: Suscríbete
+    email: Correo Electrónico
+  communication:
+    name: Nombre
+    email: E-mail
+    choose_congressmen: Seleccione un senador o diputado
+    writte_message: Redacta tu mensaje
+    subject: Título del mensaje
+    message: Contenido del mensaje
+    send: Enviar
+    list_messages: Mensajes enviados
+    questions: Preguntas hechas a %s
+  congressmen:
+    home: Portada
+    breadcrumb: Congresistas
+    fb_share: Comparte
+    tw_share: Twittea
+    title: Congresistas
+    title_search: Búsqueda de Congresistas
+    represent: 'Representa:'
+    search_for: 'Buscar por:'
+    placeholder_search_for: 'Nombre, comuna o region'
+    askthem: Preguntales
+    district: 'Distrito: '
+    region: 'Región: '
+    comuna: 'Comuna: '
+    period: 'Periodo:'
+    party: 'Partido:'
+    commissions: Comisiones
+    permanent: 'Comisión permanente: '
+    special: 'Comisión especial: '
+    research: 'Comisión investigadora: '
+    bio: Biografía
+    last_initiatives: Últimas iniciativas
+    view_project: Ver proyecto
+    askthem_responses: 'Preguntas hechas a %s'
+    votes: Votaciones
+    last_interventions: Últimas intervenciones
+    birth_date: 'Fecha nacimiento: '
+    years: '%s (%s años)'
+  routes:
+    bills: proyectos
+    bills_search: busquedas_de_proyectos
+    communications: comunicaciones
+    disclosures: declaraciones
+    congressmen: congresistas
+    tables: tablas
+    users: usuarios
+    glossaries: glosarios
+    searches: busquedas
+    sessions: sesiones
+    new: nuevo
+    edit: editar
+    user_subscriptions: suscripcion
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mié
+    - jue
+    - vie
+    - sáb
+    abbr_month_names:
+    -
+    - ene
+    - feb
+    - mar
+    - abr
+    - may
+    - jun
+    - jul
+    - ago
+    - sep
+    - oct
+    - nov
+    - dic
+    day_names:
+    - domingo
+    - lunes
+    - martes
+    - miércoles
+    - jueves
+    - viernes
+    - sábado
+    formats:
+      default: ! '%d/%m/%Y'
+      long: ! '%A %d de %B de %Y'
+      short: ! '%d de %b'
+      day_and_month: ! '%A %d de %B'
+    month_names:
+    -
+    - enero
+    - febrero
+    - marzo
+    - abril
+    - mayo
+    - junio
+    - julio
+    - agosto
+    - septiembre
+    - octubre
+    - noviembre
+    - diciembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    prompts:
+      day: Día
+      hour: Hora
+      minute: Minutos
+      month: Mes
+      second: Segundos
+      year: Año
+  email:
+    subject: 'Congreso abierto, confirmación de suscripción'
+    body_header: 'Bienvenido a Congreso abierto, %s'
+    body_content: 'Para confirmar tu suscripción al Proyecto de ley %s haz click '
+    body_footer: 'Atte el equipo de Congreso abierto'

@@ -1,4 +1,4 @@
-= form_tag({controller: "bills", action: "searches"}, :method => 'get', :name => 'bills_search', :id => 'bills_search') do
+= form_tag({controller: "bills", action: "search"}, :method => 'get', :name => 'bills_search', :id => 'bills_search') do
   %div.form-group
     = label_tag :q, 'Palabra clave'
     %input.form-control{:name=>'q', :id=>'q', 'value' => params[:q], :placeholder => t('search.placeholder_search_for'), :onfocus => "ga('send','paperwork','focus_search')"}
