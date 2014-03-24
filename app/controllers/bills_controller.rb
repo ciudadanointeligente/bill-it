@@ -8,7 +8,7 @@ Dir['./app/models/billit/*'].each { |model| require model }
 
 class BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
-  represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
+  # represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
   respond_to :json, :xml, :html
   # json /bills
   # GET /bills.json
@@ -37,8 +37,7 @@ class BillsController < ApplicationController
     if @bill.nil?
       render text: "", :status => 404
     else
-      # respond_with @bill, :represent_with => Billit::BillRepresenter
-      @bill
+      respond_with @bill, :represent_with => Billit::BillRepresenter
     end
   end
 
@@ -48,12 +47,10 @@ class BillsController < ApplicationController
     # Sunspot.remove_all(Bill)   # descomentar para reindexar,
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = search_for(params)
-    @bills_query = search.results
-    @bills_query.extend(Billit::BillPageRepresenter)
-    respond_to do |format|
-      format.html {@bills_query = Billit::BillPage.new.from_json(@bills_query.to_json(params))}
-    end
-    # respond_with @bills_query.to_json(params), represent_with: Billit::BillPageRepresenter
+    @bills = search.results
+    @bills.extend(Billit::BillPageRepresenter)
+    @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
+    respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
   end
   alias index search
 

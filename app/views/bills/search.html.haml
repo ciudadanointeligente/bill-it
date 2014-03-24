@@ -1,0 +1,18 @@
+%div.row
+  %div.col-md-9
+    %ol.breadcrumb
+      %li
+        = link_to t('layout.home'), root_path
+      %li.current
+        Resultado de búsqueda
+
+%div.row
+  %h2
+    Proyectos de ley    
+
+%div.row
+  %div.col-md-3.aside
+    = render :partial => "filter_search_form"
+  %div.col-md-9.whitewithaside
+    - @bills = @bills_query.bills
+    = render :partial => "box_bills_result"
