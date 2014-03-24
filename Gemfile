@@ -20,6 +20,10 @@ gem 'will_paginate', '~> 3.0'
 #Dates
 gem 'business_time'
 
+#ActiveAdmin
+gem 'activeadmin-mongoid'
+gem 'coffee-script', '~> 2.2.0'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'

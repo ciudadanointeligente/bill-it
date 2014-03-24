@@ -32,6 +32,9 @@ BillIt::Application.configure do
   #Representers
   config.representer.default_url_options = {:host => ENV['root_url']}
 
+  #ActiveAdmin
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+
   # Limit log disk space
   config.logger = Logger.new("log/#{Rails.env}.log", 1, ENV['log_size_limit'])
 end
