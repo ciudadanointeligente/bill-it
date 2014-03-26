@@ -16,7 +16,10 @@
         %h5.light
           = @bill.uid
         - if ! @bill.icon.blank?
-          = image_tag("statusicon/" + @bill.icon, class:"hidden-xs", title:@bill.status.strip)
+          - title = ''
+          - if ! @bill.status.blank?
+            - title = @bill.status.strip
+          = image_tag("statusicon/" + @bill.icon, class:"hidden-xs", title:title)
       %div.col-md-11
         %h4
           = @bill.title

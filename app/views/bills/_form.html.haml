@@ -13,34 +13,89 @@
     = f.label :title
     = f.text_field :title
   .field
-    = f.label :abstract
-    = f.text_field :abstract
+    = f.label :creation_date
+    = f.datetime_select :creation_date
   .field
-    = f.label :tags
-    = f.text_field :tags
+    = f.label :source
+    = f.text_field :source
   .field
-    = f.label :matters
-    = f.text_field :matters
+    = f.label :initial_chamber
+    = f.text_field :initial_chamber
+  .field
+    = f.label :current_priority
+    = f.text_field :current_priority
   .field
     = f.label :stage
     = f.text_field :stage
   .field
-    = f.label :creation_date
-    = f.datetime_select :creation_date
+    = f.label :sub_stage
+    = f.text_field :sub_stage
   .field
-    = f.label :publish_date
-    = f.datetime_select :publish_date
+    = f.label :status
+    = f.text_field :status
+  .field
+    = f.label :resulting_document
+    = f.text_field :resulting_document
+  .field
+    = f.label :law_id
+    = f.text_field :law_id
+  .field
+    = f.label :merged_bills
+    = f.text_field :merged_bills
+  .field
+    = f.label :subject_areas
+    = f.text_field :subject_areas
   .field
     = f.label :authors
     = f.text_field :authors
   .field
-    = f.label :origin_chamber
-    = f.text_field :origin_chamber
+    = f.label :publish_date
+    = f.datetime_select :publish_date
   .field
-    = f.label :current_urgency
-    = f.text_field :current_urgency
-  .field
-    = f.label :link_law
-    = f.text_field :link_law
+    = f.label :tags
+    = f.text_field :tags
+  
   .actions
-    = f.submit 'Save'
+    %button.save
+      Save
+
+:javascript
+  
+  $(document).ready(function(){
+    $.fn.serializeObject = function()
+    {
+      var o = {};
+      var a = this.serializeArray();
+      $.each(a, function() {
+        if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+              o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+        } else {
+          o[this.name] = this.value || '';
+        }
+      });
+      return o;
+    };
+
+    $('.save').on('click',function(e){
+      e.preventDefault();
+      console.log( JSON.stringify( $('form').serializeObject() ) );
+      var data = '{"uid":"8085-29","short_uid":"8085","title":"Crea el Ministerio del Deporte eeee","creation_date":"2011-12-14T00:00:00Z","stage":"Tercer trámite constitucional (C.Diputados)","sub_stage":"Oficio aprobación de modificaciones a Cámara Revisora "}';
+      $.ajax({
+        type: 'PUT',
+        url: 'http://localhost:3000/bills/8085-29',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: data.serialize()
+      }).done(function() {
+        //$( this ).addClass( "done" );
+        console.log( 'done: ' + JSON.stringify($('.edit_bill').serialize()) );
+      }).fail(function(e) {
+        //$( this ).addClass( "done" );
+        console.log(e.status +' : '+ e.statusText +', \n'+ e.responseText)
+        console.log( 'fail: ' + data );
+      });
+    })
+  })
