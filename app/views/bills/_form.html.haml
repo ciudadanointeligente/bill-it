@@ -86,18 +86,25 @@
 
     $('button.save').on('click', function(event){
       event.preventDefault();
+      if($('form.edit_bill').length) 
+      { 
+        var form = $('form.edit_bill') ;
+        var type = 'PUT';
+      } else { 
+        var form = $('form.new_bill') ;
+        var type = 'POST';
+      }
       $.ajax({
-        type: 'PUT',
-        url: $('form.edit_bill').attr('action'),
+        type: type,
+        url: form.attr('action'),
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify( $('form.edit_bill').serializeObject() )
+        data: JSON.stringify( form.serializeObject() )
       }).done(function() {
        // console.log( 'done: ' + JSON.stringify( $('form.edit_bill').serializeObject() ) );
-       
       }).fail(function(event) {
         console.log(event.status +' : '+ event.statusText +', \n'+ event.responseText)
-        console.log( 'fail: '+ JSON.stringify( $('form.edit_bill').serializeObject() ) ) ;
+        console.log( 'fail: '+ JSON.stringify( form.serializeObject() ) ) ;
       });
     });
   })
