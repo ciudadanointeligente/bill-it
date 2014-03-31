@@ -5,8 +5,16 @@ BillIt::Application.routes.draw do
 
   root :to => "bills#index"
 
-  resources :paperworks do
-    get 'search', on: :collection
+
+  namespace :cl do
+    resources :bills do
+      get 'feed', on: :member
+      get 'search', on: :collection
+      get 'last_update', on: :collection
+    end
+    resources :paperworks do
+      get 'search', on: :collection
+    end
   end
 
   resources :bills do

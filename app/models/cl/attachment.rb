@@ -3,7 +3,7 @@ class Attachment
   include Mongoid::Timestamps
   # The user who uploaded the file owns it
   # belongs_to :user
-  belongs_to :bill
+  belongs_to :bill, class_name: 'Cl::Bill'
   # Attachment is polymorphic because a variety of things (project, team)
   # are "attachable", i.e. accept file uploads
   # belongs_to :attachable, :polymorphic => true

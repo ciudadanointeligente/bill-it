@@ -1,12 +1,12 @@
 # encoding: UTF-8
-require 'billit_representers/models/bill'
-require 'billit_representers/models/bill_page'
-require 'billit_representers/representers/bill_representer'
-# require 'billit_representers/representers/bill_basic_representer'
-require 'billit_representers/representers/bill_page_representer'
+require 'billit_representers/models/cl/bill'
+require 'billit_representers/models/cl/bill_page'
+require 'billit_representers/representers/cl/bill_representer'
+require 'billit_representers/representers/cl/bill_basic_representer'
+require 'billit_representers/representers/cl/bill_page_representer'
 Dir['./app/models/billit/*'].each { |model| require model }
 
-class BillsController < ApplicationController
+class Cl::BillsController < ApplicationController
   include Roar::Rails::ControllerAdditions
   # represents :json, :entity => Billit::BillRepresenter, :collection => Billit::BillPageRepresenter
   respond_to :json, :xml, :html
@@ -22,7 +22,7 @@ class BillsController < ApplicationController
 
   # GET /id/feed
   def feed
-    @bill = Bill.find_by(uid: params[:id])
+    @bill = Cl::Bill.find_by(uid: params[:id])
 
     # this will be our Feed's update timestamp
     @updated_at = @bill.updated_at unless @bill.nil?
@@ -33,11 +33,11 @@ class BillsController < ApplicationController
   # GET /bills/1.json
   def show
     @condition_bill_header = true
-    @bill = Bill.find_by(uid: params[:id])
+    @bill = Cl::Bill.find_by(uid: params[:id])
     if @bill.nil?
       render text: "", :status => 404
     else
-      respond_with @bill, :represent_with => Billit::BillRepresenter
+      respond_with @bill, :represent_with => Billit::Cl::BillRepresenter
     end
   end
 
@@ -48,17 +48,16 @@ class BillsController < ApplicationController
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = search_for(params)
     @bills = search.results
-    @bills.extend(Billit::BillPageRepresenter)
-    # The next line is only used so the search view could be reused from somewhere else
-    @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
-    respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
+    @bills.extend(Billit::Cl::BillPageRepresenter)
+    # @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
+    respond_with @bills.to_json(params), represent_with: Billit::Cl::BillPageRepresenter
   end
   alias index search
 
   # GET /bills/new
   # GET /bills/new.json
   def new
-    @bill = Bill.new
+    @bill = Cl::Bill.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -74,7 +73,7 @@ class BillsController < ApplicationController
   # POST /bills
   # POST /bills.json
   def create
-    @bill = Bill.new.extend(Billit::BillRepresenter)
+    @bill = Cl::Bill.new.extend(Billit::Cl::BillRepresenter)
     @bill.from_json(request.body.read)
     @bill.save
     begin
@@ -83,13 +82,13 @@ class BillsController < ApplicationController
       puts "#{$!}"
       puts "unindexed bill: " + @bill.uid
     end
-    respond_with @bill, :represent_with => Billit::BillRepresenter
+    respond_with @bill, :represent_with => Billit::Cl::BillRepresenter
   end
 
   # PUT /bills/1
   # PUT /bills/1.json
   def update
-    @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
+    @bill = Cl::Bill.find_by(uid:params[:id]).extend(Billit::Cl::BillRepresenter)
     @bill.from_json(request.body.read)
     @bill.save
     begin
@@ -98,13 +97,13 @@ class BillsController < ApplicationController
       puts "#{$!}"
       puts "unindexed bill: " + @bill.uid
     end
-    respond_with @bill, :represent_with => Billit::BillRepresenter
+    respond_with @bill, :represent_with => Billit::Cl::BillRepresenter
   end
 
   # DELETE /bills/1
   # DELETE /bills/1.json
   def destroy
-    @bill = Bill.find(params[:id])
+    @bill = Cl::Bill.find(params[:id])
     @bill.destroy
 
     respond_to do |format|
@@ -120,13 +119,13 @@ class BillsController < ApplicationController
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
 
-    bill_range_fields = Bill.fields.dup
+    bill_range_fields = Cl::Bill.fields.dup
     @range_field_types.each do |type|
       bill_range_fields.reject! {|field_name, metadata| metadata.options[:type]!= type}
     end
     bill_range_attributes = bill_range_fields.keys
 
-    bill_public_attributes = Bill.attribute_names - @mongoid_attribute_names
+    bill_public_attributes = Cl::Bill.attribute_names - @mongoid_attribute_names
 
     equivalence_attributes = bill_public_attributes + @search_attribute_names
     range_attributes_min = bill_range_attributes.map {|attribute| attribute + @range_modifier_min}
@@ -159,12 +158,13 @@ class BillsController < ApplicationController
   def search_for(conditions)
     filtered_conditions = filter_conditions(conditions)
 
-    search = Sunspot.search(Bill) do
+    search = Sunspot.search(Cl::Bill) do
       # FIX the equivalence conditions settings should be in a conf file
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
           boost_fields :tags => 3.0
+          boost_fields :subject_areas => 2.9
           boost_fields :title => 2.5
           boost_fields :abstract => 2.0
         end
@@ -215,7 +215,7 @@ class BillsController < ApplicationController
   end
 
   def last_update
-    @date = Bill.max(:updated_at).strftime("%d/%m/%Y")
+    @date = Cl::Bill.max(:updated_at).strftime("%d/%m/%Y")
     render :text => @date
   end
 

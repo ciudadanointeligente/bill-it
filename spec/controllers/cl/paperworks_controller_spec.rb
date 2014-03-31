@@ -18,7 +18,7 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe PaperworksController do
+describe Cl::PaperworksController do
 
   # This should return the minimal set of attributes required to create a valid
   # Paperwork. As you add validations to Paperwork, be sure to
@@ -32,7 +32,7 @@ describe PaperworksController do
 
   describe "GET index", broken: true do
     it "assigns all paperworks as @paperworks" do
-      paperwork = Paperwork.create! valid_attributes
+      paperwork = Cl::Paperwork.create! valid_attributes
       get :index, {}, valid_session
       assigns(:paperworks).should eq([paperwork])
     end
@@ -40,7 +40,7 @@ describe PaperworksController do
 
   describe "GET show", broken: true do
     it "assigns the requested paperwork as @paperwork" do
-      paperwork = Paperwork.create! valid_attributes
+      paperwork = Cl::Paperwork.create! valid_attributes
       get :show, {:id => paperwork.to_param}, valid_session
       assigns(:paperwork).should eq(paperwork)
     end
@@ -55,7 +55,7 @@ describe PaperworksController do
 
   describe "GET edit", broken: true do
     it "assigns the requested paperwork as @paperwork" do
-      paperwork = Paperwork.create! valid_attributes
+      paperwork = Cl::Paperwork.create! valid_attributes
       get :edit, {:id => paperwork.to_param}, valid_session
       assigns(:paperwork).should eq(paperwork)
     end
@@ -64,15 +64,15 @@ describe PaperworksController do
   describe "GET search" do
 
     before(:each) do
-      @paperwork1 = FactoryGirl.build(:paperwork1)
-      @paperwork2 = FactoryGirl.build(:paperwork2)
-      @bill = FactoryGirl.create(:bill1)
+      @paperwork1 = FactoryGirl.build(:cl_paperwork1)
+      @paperwork2 = FactoryGirl.build(:cl_paperwork2)
+      @bill = FactoryGirl.create(:cl_bill1)
       @bill.paperworks = [@paperwork1, @paperwork2]
       @bill.save
       @paperwork1.save
       @paperwork2.save
-      Sunspot.remove_all(Paperwork)
-      Sunspot.index!(Paperwork.all)
+      Sunspot.remove_all(Cl::Paperwork)
+      Sunspot.index!(Cl::Paperwork.all)
     end
 
     it "searches over a date range" do
@@ -120,21 +120,21 @@ describe PaperworksController do
 
       it "redirects to the created paperwork" do
         post :create, {:paperwork => valid_attributes}, valid_session
-        response.should redirect_to(Paperwork.last)
+        response.should redirect_to(Cl::Paperwork.last)
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved paperwork as @paperwork" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Paperwork.any_instance.stub(:save).and_return(false)
+        Cl::Paperwork.any_instance.stub(:save).and_return(false)
         post :create, {:paperwork => { "session" => "invalid value" }}, valid_session
         assigns(:paperwork).should be_a_new(Paperwork)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Paperwork.any_instance.stub(:save).and_return(false)
+        Cl::Paperwork.any_instance.stub(:save).and_return(false)
         post :create, {:paperwork => { "session" => "invalid value" }}, valid_session
         response.should render_template("new")
       end
@@ -144,23 +144,23 @@ describe PaperworksController do
   describe "PUT update", broken: true do
     describe "with valid params" do
       it "updates the requested paperwork" do
-        paperwork = Paperwork.create! valid_attributes
+        paperwork = Cl::Paperwork.create! valid_attributes
         # Assuming there are no other paperworks in the database, this
         # specifies that the Paperwork created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Paperwork.any_instance.should_receive(:update_attributes).with({ "session" => "MyString" })
+        Cl::Paperwork.any_instance.should_receive(:update_attributes).with({ "session" => "MyString" })
         put :update, {:id => paperwork.to_param, :paperwork => { "session" => "MyString" }}, valid_session
       end
 
       it "assigns the requested paperwork as @paperwork" do
-        paperwork = Paperwork.create! valid_attributes
+        paperwork = Cl::Paperwork.create! valid_attributes
         put :update, {:id => paperwork.to_param, :paperwork => valid_attributes}, valid_session
         assigns(:paperwork).should eq(paperwork)
       end
 
       it "redirects to the paperwork" do
-        paperwork = Paperwork.create! valid_attributes
+        paperwork = Cl::Paperwork.create! valid_attributes
         put :update, {:id => paperwork.to_param, :paperwork => valid_attributes}, valid_session
         response.should redirect_to(paperwork)
       end
@@ -168,17 +168,17 @@ describe PaperworksController do
 
     describe "with invalid params" do
       it "assigns the paperwork as @paperwork" do
-        paperwork = Paperwork.create! valid_attributes
+        paperwork = Cl::Paperwork.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Paperwork.any_instance.stub(:save).and_return(false)
+        Cl::Paperwork.any_instance.stub(:save).and_return(false)
         put :update, {:id => paperwork.to_param, :paperwork => { "session" => "invalid value" }}, valid_session
         assigns(:paperwork).should eq(paperwork)
       end
 
       it "re-renders the 'edit' template" do
-        paperwork = Paperwork.create! valid_attributes
+        paperwork = Cl::Paperwork.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Paperwork.any_instance.stub(:save).and_return(false)
+        Cl::Paperwork.any_instance.stub(:save).and_return(false)
         put :update, {:id => paperwork.to_param, :paperwork => { "session" => "invalid value" }}, valid_session
         response.should render_template("edit")
       end
@@ -187,14 +187,14 @@ describe PaperworksController do
 
   describe "DELETE destroy", broken: true do
     it "destroys the requested paperwork" do
-      paperwork = Paperwork.create! valid_attributes
+      paperwork = Cl::Paperwork.create! valid_attributes
       expect {
         delete :destroy, {:id => paperwork.to_param}, valid_session
       }.to change(Paperwork, :count).by(-1)
     end
 
     it "redirects to the paperworks list" do
-      paperwork = Paperwork.create! valid_attributes
+      paperwork = Cl::Paperwork.create! valid_attributes
       delete :destroy, {:id => paperwork.to_param}, valid_session
       response.should redirect_to(paperworks_url)
     end

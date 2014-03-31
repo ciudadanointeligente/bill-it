@@ -1,10 +1,10 @@
-require 'billit_representers/representers/paperwork_collection_representer'
-class PaperworksController < ApplicationController
+require 'billit_representers/representers/cl/paperwork_page_representer'
+class Cl::PaperworksController < ApplicationController
   respond_to :json, :xml
   # GET /paperworks
   # GET /paperworks.json
   def index
-    @paperworks = Paperwork.all
+    @paperworks = Cl::Paperwork.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +15,7 @@ class PaperworksController < ApplicationController
   # GET /paperworks/1
   # GET /paperworks/1.json
   def show
-    @paperwork = Paperwork.find(params[:id])
+    @paperwork = Cl::Paperwork.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,7 +26,7 @@ class PaperworksController < ApplicationController
   # GET /paperworks/new
   # GET /paperworks/new.json
   def new
-    @paperwork = Paperwork.new
+    @paperwork = Cl::Paperwork.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,13 +36,13 @@ class PaperworksController < ApplicationController
 
   # GET /paperworks/1/edit
   def edit
-    @paperwork = Paperwork.find(params[:id])
+    @paperwork = Cl::Paperwork.find(params[:id])
   end
 
   # POST /paperworks
   # POST /paperworks.json
   def create
-    @paperwork = Paperwork.new(params[:paperwork])
+    @paperwork = Cl::Paperwork.new(params[:paperwork])
 
     respond_to do |format|
       if @paperwork.save
@@ -58,7 +58,7 @@ class PaperworksController < ApplicationController
   # PUT /paperworks/1
   # PUT /paperworks/1.json
   def update
-    @paperwork = Paperwork.find(params[:id])
+    @paperwork = Cl::Paperwork.find(params[:id])
 
     respond_to do |format|
       if @paperwork.update_attributes(params[:paperwork])
@@ -74,7 +74,7 @@ class PaperworksController < ApplicationController
   # DELETE /paperworks/1
   # DELETE /paperworks/1.json
   def destroy
-    @paperwork = Paperwork.find(params[:id])
+    @paperwork = Cl::Paperwork.find(params[:id])
     @paperwork.destroy
 
     respond_to do |format|
@@ -90,8 +90,8 @@ class PaperworksController < ApplicationController
     # Sunspot.index!(Paperwork.all)   # en caso de cambio en modelo
     search = search_for(params)
     @paperworks = search.results
-    @paperworks.extend(Billit::PaperworkCollectionRepresenter)
-    respond_with @paperworks.to_json(params), represent_with: Billit::PaperworkCollectionRepresenter
+    @paperworks.extend(Billit::Cl::PaperworkPageRepresenter)
+    respond_with @paperworks.to_json(params), represent_with: Billit::Cl::PaperworkPageRepresenter
   end
 
   def filter_conditions(conditions)
@@ -101,13 +101,13 @@ class PaperworksController < ApplicationController
     @range_modifier_min = "_min"
     @range_modifier_max = "_max"
 
-    bill_range_fields = Paperwork.fields.dup
+    bill_range_fields = Cl::Paperwork.fields.dup
     @range_field_types.each do |type|
       bill_range_fields.reject! {|field_name, metadata| metadata.options[:type]!= type}
     end
     bill_range_attributes = bill_range_fields.keys
 
-    bill_public_attributes = Paperwork.attribute_names - @mongoid_attribute_names
+    bill_public_attributes = Cl::Paperwork.attribute_names - @mongoid_attribute_names
 
     equivalence_attributes = bill_public_attributes + @search_attribute_names
     range_attributes_min = bill_range_attributes.map {|attribute| attribute + @range_modifier_min}
@@ -135,7 +135,7 @@ class PaperworksController < ApplicationController
   def search_for(conditions)
     filtered_conditions = filter_conditions(conditions)
 
-    search = Sunspot.search(Paperwork) do
+    search = Sunspot.search(Cl::Paperwork) do
       # FIX the equivalence conditions settings should be in a conf file
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")

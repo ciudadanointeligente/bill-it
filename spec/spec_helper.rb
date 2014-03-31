@@ -42,12 +42,16 @@ RSpec.configure do |config|
 
   # Database_cleaner
   config.before :each do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.start
+    DatabaseCleaner[:mongoid].strategy = :truncation
+    DatabaseCleaner[:mongoid].start
   end
   config.after do
-    DatabaseCleaner.clean
+    DatabaseCleaner[:mongoid].clean
   end
+
+  # config.before(:suite) do
+  #   DatabaseCleaner[:mongoid].strategy = :truncation
+  # end
 
   # To skip groups of tests
   config.filter_run_excluding :broken => true

@@ -1,8 +1,8 @@
-class Priority
+class Cl::Priority
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :bill
+  belongs_to :bill, class_name: 'Cl::Bill'
 
   field :type, :type => String
   field :entry_date, :type => DateTime

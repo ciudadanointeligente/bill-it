@@ -1,8 +1,8 @@
-class Paperwork
+class Cl::Paperwork
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  belongs_to :bill
+  belongs_to :bill, class_name: "Cl::Bill"
 
   before_save :save_bill_uid, :index_paperwork, :define_timeline_status
 
@@ -24,7 +24,7 @@ class Paperwork
   end
 
   def save_bill_uid
-    bill = Bill.find(self.bill_id)
+    bill = Cl::Bill.find(self.bill_id)
     self.bill_uid = bill.uid
   end
 
