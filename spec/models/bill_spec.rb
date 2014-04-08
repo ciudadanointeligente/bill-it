@@ -55,6 +55,14 @@ describe Bill do
       bill1 = FactoryGirl.create(:bill1)
       bill1.current_priority.should eq "Sin urgencia"
     end
+    it "works with more than 1 priority" do
+      bill1 = FactoryGirl.build(:bill1)
+      priority1 = FactoryGirl.create(:priority1, type: "Simple", entry_date: Date.yesterday)
+      priority2 = FactoryGirl.create(:priority1, type: "Suma", entry_date: Date.today)
+      bill1.priorities = [priority1, priority2]
+      bill1.save
+      bill1.current_priority.should eq "Suma"
+    end
     it "returns the right value when priority is outdated" do
       bill1 = FactoryGirl.build(:bill1)
       priority1 = FactoryGirl.create(:priority1, type: "Discusión inmediata", entry_date: 2.business_days.ago)
@@ -97,4 +105,43 @@ describe Bill do
     end
   end
 
+  describe "self.update_priority" do
+    before(:each) do
+      Date.stub(:today){"2014-01-06".to_date}
+      @bill1 = FactoryGirl.build(:bill1)
+      @bill2 = FactoryGirl.build(:bill2)
+      priority1 = FactoryGirl.create(:priority1, type: "Suma", entry_date: Date.today - 10)
+      priority2 = FactoryGirl.create(:priority1, type: "Suma", entry_date: Date.today - 11)
+      @bill1.priorities = [priority1]
+      @bill2.priorities = [priority2]
+      @bill1.save
+      @bill2.save
+    end
+    it "updates outdated bill priorities for all bills" do
+      # Day 1
+      @bill1.current_priority.should eq "Suma"
+      @bill2.current_priority.should eq "Sin urgencia"
+      # The next day
+      Date.stub(:today){"2014-01-07".to_date}
+      Bill.update_priority
+      updated_bill1 = Bill.find_by uid: @bill1.uid
+      updated_bill2 = Bill.find_by uid: @bill2.uid
+      updated_bill1.current_priority.should eq "Sin urgencia"
+      updated_bill2.current_priority.should eq "Sin urgencia"
+    end
+
+    it "indexes the updated bill priorities" do
+      Bill.update_priority
+
+      Sunspot.remove_all(Bill)
+      Sunspot.index!(@bill1)
+      Sunspot.index!(@bill2)
+      search = Sunspot.search Bill do
+        text_fields do
+          with :current_priority, "Sin urgencia"
+        end
+      end
+      search.results.count.should eq 1
+    end
+  end
 end

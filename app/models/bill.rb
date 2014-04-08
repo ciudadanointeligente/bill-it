@@ -6,8 +6,7 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags
-  after_save :set_current_priority
+  before_save :standardize_tags, :set_current_priority
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
   has_many :priorities, autosave: true, class_name: "Priority"
@@ -35,6 +34,8 @@ class Bill
   field :bill_draft_link, type: String
   field :current_priority, type: String
 
+  scope :urgent, where(:current_priority.in => ["Discusión inmediata", "Suma", "Simple"])
+
   include Sunspot::Mongoid2
   searchable do
     text :uid
@@ -60,9 +61,9 @@ class Bill
   end
 
   def get_current_priority
-    return "Sin urgencia" if priorities.blank?
-
-    latest_priority = priorities.desc(:entry_date).first
+    return "Sin urgencia" if self.priorities.blank?
+    all_priorities = self.priorities.in_memory.blank? ? self.priorities : self.priorities.in_memory
+    latest_priority = all_priorities.sort{ |x,y| y.entry_date <=> x.entry_date }.first
     return "Sin urgencia" if latest_priority.type == "Sin urgencia"
     
     days_in_force = case latest_priority.type
@@ -124,5 +125,11 @@ class Bill
 
   def law_text
     law_xml_link
+  end
+
+  def self.update_priority
+    Bill.urgent.each do |bill|
+      bill.save
+    end
   end
 end
