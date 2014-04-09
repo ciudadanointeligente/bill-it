@@ -51,6 +51,7 @@ GEM
     celluloid-io (0.15.0)
       celluloid (>= 0.15.0)
       nio4r (>= 0.5.0)
+    chronic (0.10.2)
     coderay (1.1.0)
     crack (0.4.1)
       safe_yaml (~> 0.9.0)
@@ -220,6 +221,9 @@ GEM
     webmock (1.13.0)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
+    whenever (0.9.2)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.4)
 
 PLATFORMS
@@ -247,4 +251,5 @@ DEPENDENCIES
   sunspot_mongoid2
   sunspot_solr
   webmock
+  whenever
   will_paginate (~> 3.0)

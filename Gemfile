@@ -21,6 +21,9 @@ gem 'will_paginate', '~> 3.0'
 #Dates
 gem 'business_time'
 
+#Clean ruby syntax for writing and deploying cron jobs
+gem 'whenever', :require => false
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -36,5 +39,3 @@ group :test do
   gem 'faker'
   gem 'webmock'
 end
-
-
