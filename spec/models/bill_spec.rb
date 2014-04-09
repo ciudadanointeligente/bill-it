@@ -42,6 +42,18 @@ describe Bill do
     bill2.law_web_link.should be_nil
   end
 
+  it "gets indexed after save" do
+    search = Sunspot.search Bill do
+      fulltext "pena"
+    end
+    search.results.count.should eq 0
+    bill1 = FactoryGirl.create(:bill1)
+    search = Sunspot.search Bill do
+      fulltext "pena"
+    end
+    search.results.count.should eq 1
+  end
+
   describe "current_priority" do
     it "returns the right priority" do
       bill1 = FactoryGirl.build(:bill1)

@@ -7,6 +7,7 @@ class Bill
   validates_uniqueness_of :uid
 
   before_save :standardize_tags, :set_current_priority
+  after_save :index!
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
   has_many :priorities, autosave: true, class_name: "Priority"
