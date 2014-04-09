@@ -25,6 +25,8 @@ mongoid.yml
 sunspot.yml
 config.ru
 log.yml
+config/schedule.rb
+config/newrelic.yml
 
 #for local gem installations
 /vendor/*
