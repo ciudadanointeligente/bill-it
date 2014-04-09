@@ -63,7 +63,7 @@ class Bill
   def get_current_priority
     return "Sin urgencia" if self.priorities.blank?
     all_priorities = self.priorities.in_memory.blank? ? self.priorities : self.priorities.in_memory
-    latest_priority = all_priorities.sort{ |x,y| y.entry_date <=> x.entry_date }.first
+    latest_priority = all_priorities.reject{|x| x.entry_date.blank?}.sort{ |x,y| y.entry_date <=> x.entry_date }.first
     return "Sin urgencia" if latest_priority.type == "Sin urgencia"
     
     days_in_force = case latest_priority.type
