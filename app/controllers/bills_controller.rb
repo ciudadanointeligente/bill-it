@@ -156,9 +156,9 @@ class BillsController < ApplicationController
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
-          boost_fields :tags => 3.5
-          boost_fields :subject_areas => 3.0
-          boost_fields :title => 2.5
+          boost_fields :tags => 10.0
+          boost_fields :subject_areas => 7.0
+          boost_fields :title => 4.0
           boost_fields :abstract => 2.0
         end
         filtered_conditions[:equivalence_conditions].delete("q")
