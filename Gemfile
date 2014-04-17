@@ -21,8 +21,9 @@ gem 'will_paginate', '~> 3.0'
 #Dates
 gem 'business_time'
 
-#Clean ruby syntax for writing and deploying cron jobs
-gem 'whenever', :require => false
+# Clean ruby syntax for writing and deploying cron jobs (for rvm)
+gem 'whenever', :git => 'https://github.com/Insomniware/whenever.git', :require => false
+#gem 'whenever', :require => false #for non rvm
 
 group :development, :test do
   gem 'rspec-rails'
