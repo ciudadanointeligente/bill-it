@@ -74,7 +74,13 @@ class BillsController < ApplicationController
   # POST /bills.json
   def create
     @bill = Bill.new.extend(Billit::BillRepresenter)
-    @bill.from_json(request.body.read)
+    begin
+      @bill.from_json(request.body.read)
+    rescue MultiJson::LoadError
+      params[:bill].keys.each do |key|
+        @bill.send(key.to_s + "=", params[:bill][key])
+      end
+    end
     @bill.save
     begin
       Sunspot.index!(@bill)
@@ -90,7 +96,17 @@ class BillsController < ApplicationController
   def update
     #@bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
     @bill = Bill.find_by(uid:params[:id])
-    @bill.from_json(request.body.read)
+    begin
+      @bill.from_json(request.body.read)
+    rescue MultiJson::LoadError
+      params[:bill].keys.each do |key|
+        # if key == 'tags'
+        #   @bill.tags = params[:bill][:tags].split(/,|;|\|/)
+        # else
+          @bill.send(key.to_s + "=", params[:bill][key])
+        # end
+      end
+    end
     @bill.save
     begin
       Sunspot.index!(@bill)
@@ -164,9 +180,9 @@ class BillsController < ApplicationController
       # search over all fields
       if filtered_conditions[:equivalence_conditions].key?("q")
         fulltext filtered_conditions[:equivalence_conditions]["q"] do
-          boost_fields :tags => 3.0
-          boost_fields :subject_areas => 2.9
-          boost_fields :title => 2.5
+          boost_fields :tags => 10.0
+          boost_fields :subject_areas => 7.0
+          boost_fields :title => 4.0
           boost_fields :abstract => 2.0
         end
         filtered_conditions[:equivalence_conditions].delete("q")

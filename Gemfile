@@ -14,7 +14,7 @@ gem 'progress_bar'
 #Representers
 # gem 'roar', '~> 0.11.19'
 gem 'roar-rails', "0.1.0"
-gem 'billit_representers', '0.9.0'
+gem 'billit_representers', '0.9.4', path: '/home/maugsburger/workspace'
 gem 'will_paginate', '~> 3.0'
 
 #Dates
@@ -23,6 +23,9 @@ gem 'business_time'
 #ActiveAdmin
 gem 'activeadmin-mongoid'
 gem 'coffee-script', '~> 2.2.0'
+# Clean ruby syntax for writing and deploying cron jobs (for rvm)
+gem 'whenever', :git => 'https://github.com/Insomniware/whenever.git', :require => false
+#gem 'whenever', :require => false #for non rvm
 
 group :development, :test do
   gem 'rspec-rails'

@@ -45,6 +45,20 @@ bundle exec guard
 ```
 visit http://localhost:3000 to see billit running
 
+### Deploying to production
+
+#### Tasks using cron
+
+To run tasks like send notifications emails of changes in bills the project use [whenever](https://github.com/javan/whenever), this tool generate cron jobs from the `config/schedule.rb` file.
+
+Add the jobs to crontab:
+
+    bundle exec whenever --update-crontab bill-it
+
+Clear the jobs associated with a app name:
+
+    bundle exec whenever --clear-crontab bill-it
+
 ##Usage
 ###GET bill
 * /bills/id.json => bill by id in json format

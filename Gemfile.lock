@@ -5,6 +5,22 @@ GIT
     sunspot_cell (0.1.2)
       sunspot (>= 1.3.0)
 
+GIT
+  remote: https://github.com/Insomniware/whenever.git
+  revision: 957a332fba539c5128fda08777d772e1060cfb3c
+  specs:
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
+
+PATH
+  remote: /home/maugsburger/workspace
+  specs:
+    billit_representers (0.9.4)
+      activemodel
+      roar (= 0.11.19)
+      roar-rails (= 0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,10 +78,6 @@ GEM
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
-    billit_representers (0.9.0)
-      activemodel
-      roar (= 0.11.19)
-      roar-rails (= 0.1.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bourbon (3.1.8)
@@ -80,6 +92,7 @@ GEM
     celluloid-io (0.15.0)
       celluloid (>= 0.15.0)
       nio4r (>= 0.5.0)
+    chronic (0.10.2)
     coderay (1.1.0)
     coffee-script (2.2.0)
       coffee-script-source
@@ -308,7 +321,7 @@ DEPENDENCIES
   activeadmin-mongoid
   awesome_print
   better_errors
-  billit_representers (= 0.9.0)
+  billit_representers (= 0.9.4)!
   binding_of_caller
   business_time
   coffee-script (~> 2.2.0)
@@ -332,4 +345,5 @@ DEPENDENCIES
   sunspot_solr
   thin
   webmock
+  whenever!
   will_paginate (~> 3.0)

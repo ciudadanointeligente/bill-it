@@ -37,74 +37,24 @@
     = f.label :resulting_document
     = f.text_field :resulting_document
   .field
-    = f.label :law_id
-    = f.text_field :law_id
-  .field
     = f.label :merged_bills
+    - merged_bills = @bill.merged_bills.join(", ")
+    = f.text_field :merged_bills, value: merged_bills
     = f.text_field :merged_bills
   .field
     = f.label :subject_areas
-    = f.text_field :subject_areas
+    - subject_areas = @bill.subject_areas.join(", ")
+    = f.text_field :subject_areas, value: subject_areas
   .field
     = f.label :authors
-    = f.text_field :authors
+    - authors = @bill.authors.join(", ")
+    = f.text_field :authors, value: authors
   .field
     = f.label :publish_date
     = f.text_field :publish_date
-  /
-    .field
-      = f.label :tags
-      = f.text_field :tags
-  
+  .field
+    = f.label :tags
+    - tags = @bill.tags.join(", ")
+    = f.text_field :tags, value: tags
   .actions
-    %button.save
-      Save
-
-:javascript
-  
-  $(document).ready(function(){
-    $.fn.serializeObject = function()
-    {
-      var o = {};
-      var a = this.serializeArray();
-      $.each(a, function() {
-        if (o[this.name] !== undefined) {
-          if (!o[this.name].push) {
-              o[this.name] = [o[this.name]];
-          }
-          o[this.name].push(this.value || '');
-        } else {
-          len = this.name.length;
-          if( this.name.substring(0, 4) == "bill")
-            o[this.name.substring(5, len-1)] = this.value || '';
-          //else
-          //  o[this.name] = this.value || '';
-        }
-      });
-      return o;
-    };
-
-    $('button.save').on('click', function(event){
-      event.preventDefault();
-      if($('form.edit_bill').length) 
-      { 
-        var form = $('form.edit_bill') ;
-        var type = 'PUT';
-      } else { 
-        var form = $('form.new_bill') ;
-        var type = 'POST';
-      }
-      $.ajax({
-        type: type,
-        url: form.attr('action'),
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify( form.serializeObject() )
-      }).done(function() {
-       // console.log( 'done: ' + JSON.stringify( $('form.edit_bill').serializeObject() ) );
-      }).fail(function(event) {
-        console.log(event.status +' : '+ event.statusText +', \n'+ event.responseText)
-        console.log( 'fail: '+ JSON.stringify( form.serializeObject() ) ) ;
-      });
-    });
-  })
+    = f.submit 'Save'

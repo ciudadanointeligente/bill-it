@@ -6,8 +6,8 @@ class Bill
   validates_presence_of :uid
   validates_uniqueness_of :uid
 
-  before_save :standardize_tags
-  after_save :set_current_priority
+  before_save :arrayify, :standardize_tags, :set_current_priority
+  after_save :index!
 
   has_many :paperworks, autosave: true, class_name: "Paperwork"
   has_many :priorities, autosave: true, class_name: "Priority"
@@ -27,13 +27,15 @@ class Bill
   field :sub_stage, type: String
   field :status, type: String
   field :resulting_document, type: String
-  field :merged_bills, type: String
+  field :merged_bills, type: Array
   field :subject_areas, type: Array
   field :authors, type: Array
   field :publish_date, type: Time
   field :tags, type: Array
   field :bill_draft_link, type: String
   field :current_priority, type: String
+
+  scope :urgent, where(:current_priority.in => ["Discusión inmediata", "Suma", "Simple"])
 
   include Sunspot::Mongoid2
   searchable do
@@ -60,9 +62,9 @@ class Bill
   end
 
   def get_current_priority
-    return "Sin urgencia" if priorities.blank?
-
-    latest_priority = priorities.desc(:entry_date).first
+    return "Sin urgencia" if self.priorities.blank?
+    all_priorities = self.priorities.in_memory.blank? ? self.priorities : self.priorities.in_memory
+    latest_priority = all_priorities.reject{|x| x.entry_date.blank?}.sort{ |x,y| y.entry_date <=> x.entry_date }.first
     return "Sin urgencia" if latest_priority.type == "Sin urgencia"
     
     days_in_force = case latest_priority.type
@@ -107,10 +109,21 @@ class Bill
     uid
   end
 
+  def arrayify
+    ["subject_areas", "authors", "tags"].each do |field|
+      if field.class == String
+        field = field.split(/,|;|\|/)
+      end
+    end
+  end
+    
+
   def standardize_tags
-    self.tags.map! do |tag|
-      tag = I18n.transliterate(tag, locale: :transliterate_special).downcase
-    end if self.tags
+    if self.tags.class == Array
+      self.tags.map! do |tag|
+        tag = I18n.transliterate(tag, locale: :transliterate_special).downcase.strip
+      end
+    end
   end
 
   def short_uid
@@ -144,5 +157,11 @@ class Bill
       end
     end
     return 'paperwork.png'
+  end
+
+  def self.update_priority
+    Bill.urgent.each do |bill|
+      bill.save
+    end
   end
 end
