@@ -18,6 +18,7 @@ pickle-email-*.html
 solr/data/*
 solr/pids/*
 *.log
+unindexed_bills
 
 #configuration files
 hateoas.yml
