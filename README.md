@@ -3,18 +3,6 @@ bill-it
 
 Bill management system for the Poplus project.
 
-##Requirements
-
-Make sure you're using ruby 2.0 or above (we highly recommend using [rvm](http://rvm.io/)), and that [bundler](http://bundler.io/) is installed.
-
-Java is needed for Solr. OpenJDK 7 is the recommended package.
-
-In Debian / Ubuntu run
-
-```
-apt-get install openjdk-7-jdk
-```
-
 ##Install
 
 Make sure you have ruby 2.0 and bundler installed. If not visit
@@ -22,6 +10,12 @@ https://rvm.io/rvm/install  and http://bundler.io/
 
 Make sure you have mongodb installed
 if not follow instructions at http://docs.mongodb.org/manual/tutorial/
+
+Java is needed for Solr. OpenJDK 7 is the recommended package. In Debian / Ubuntu run
+```
+apt-get install openjdk-7-jdk
+```
+
 
 clone the billit project
 ```
