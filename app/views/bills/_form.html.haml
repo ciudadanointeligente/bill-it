@@ -38,23 +38,23 @@
     = f.text_field :resulting_document
   .field
     = f.label :merged_bills
-    - merged_bills = @bill.merged_bills.join(", ")
+    - merged_bills = @bill.merged_bills.join("; ") if !@bill.merged_bills.blank?
     = f.text_field :merged_bills, value: merged_bills
     = f.text_field :merged_bills
   .field
     = f.label :subject_areas
-    - subject_areas = @bill.subject_areas.join(", ")
+    - subject_areas = @bill.subject_areas.join("; ")
     = f.text_field :subject_areas, value: subject_areas
   .field
     = f.label :authors
-    - authors = @bill.authors.join(", ")
+    - authors = @bill.authors.join("; ")
     = f.text_field :authors, value: authors
   .field
     = f.label :publish_date
     = f.text_field :publish_date
   .field
     = f.label :tags
-    - tags = @bill.tags.join(", ")
+    - tags = @bill.tags.join("; ")  if !@bill.tags.blank?
     = f.text_field :tags, value: tags
   .actions
     = f.submit 'Save'

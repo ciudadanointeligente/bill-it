@@ -112,7 +112,7 @@ class Bill
   def arrayify
     ["subject_areas", "authors", "tags"].each do |field|
       if field.class == String
-        field = field.split(/,|;|\|/)
+        field = field.split(/;|\|/)
       end
     end
   end
