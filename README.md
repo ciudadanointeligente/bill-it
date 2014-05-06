@@ -11,6 +11,12 @@ https://rvm.io/rvm/install  and http://bundler.io/
 Make sure you have mongodb installed
 if not follow instructions at http://docs.mongodb.org/manual/tutorial/
 
+Java is needed for Solr. OpenJDK 7 is the recommended package. In Debian / Ubuntu run
+```
+apt-get install openjdk-7-jdk
+```
+
+
 clone the billit project
 ```
 git clone git@github.com:ciudadanointeligente/bill-it.git
@@ -40,6 +46,11 @@ http://localhost:8983
 ```
 
 run the service:
+```
+bundle exec rails s
+```
+
+If you are running a development environment and you want to monitor file changes and respond immediately, then run this instead:
 ```
 bundle exec guard
 ```
@@ -175,11 +186,37 @@ bundle exec rails console
 ```
 and then executing the reindex method on your model name, for instance:
 ```
-Bill.reindex
+Sunspot.index! Bills.all 
 ```
 
-For small servers, on which the previous method gets killed for lack of memory, the following rake task can be executed
+In this method you can actually write any query instead of Bills.all and it will only reindex that query.
+
+There are other commands that perform a reindexing, but they can be resource intensive and not so granular:
 ```
 bundle exec rake sunspot:solr:reindex
 ```
-This process is much slower.
+
+And
+
+```
+Bill.reindex
+```
+
+### How to deploy as an permanent service
+
+If you want to configure BillIt as a service, once way of doing it is with nginx and passenger
+
+```
+gem install passenger 
+```
+
+Follow the instructions here:
+http://www.modrails.com/documentation/Users%20guide%20Nginx.html#install_on_debian_ubuntu
+
+Step 2.3 is the only thing needed. Or 2.4 for Fedora.
+
+WARNING: If you have the project installed in it's own user folder (eg: /home/billit) and you have bundles installed in vendor/bundle, then setting a global `passenger_ruby` interpreter in the nginx.conf file will prevent the interpreter from finding the correct bundle. So please comment out the `passenger_ruby` in nginx.conf
+
+Then you need to add the application to nginx, here you have a sample configuration file:
+https://gist.github.com/rezzo/9bda60d84eacafc1e39d
+
