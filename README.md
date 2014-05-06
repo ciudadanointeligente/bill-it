@@ -47,6 +47,11 @@ http://localhost:8983
 
 run the service:
 ```
+bundle exec rails s
+```
+
+If you are running a development environment and you want to monitor file changes and respond immediately, then run this instead:
+```
 bundle exec guard
 ```
 visit http://localhost:3000 to see billit running
@@ -181,11 +186,18 @@ bundle exec rails console
 ```
 and then executing the reindex method on your model name, for instance:
 ```
-Bill.reindex
+Sunspot.index! Bills.all 
 ```
 
-For small servers, on which the previous method gets killed for lack of memory, the following rake task can be executed
+In this method you can actually write any query instead of Bills.all and it will only reindex that query.
+
+There are other commands that perform a reindexing, but they can be resource intensive and not so granular:
 ```
 bundle exec rake sunspot:solr:reindex
 ```
-This process is much slower.
+
+And
+
+```
+Bill.reindex
+```
