@@ -201,3 +201,22 @@ And
 ```
 Bill.reindex
 ```
+
+### How to deploy as an permanent service
+
+If you want to configure BillIt as a service, once way of doing it is with nginx and passenger
+
+```
+gem install passenger 
+```
+
+Follow the instructions here:
+http://www.modrails.com/documentation/Users%20guide%20Nginx.html#install_on_debian_ubuntu
+
+Step 2.3 is the only thing needed. Or 2.4 for Fedora.
+
+WARNING: If you have the project installed in it's own user folder (eg: /home/billit) and you have bundles installed in vendor/bundle, then setting a global `passenger_ruby` interpreter in the nginx.conf file will prevent the interpreter from finding the correct bundle. So please comment out the `passenger_ruby` in nginx.conf
+
+Then you need to add the application to nginx, here you have a sample configuration file:
+https://gist.github.com/rezzo/9bda60d84eacafc1e39d
+
