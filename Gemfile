@@ -51,3 +51,6 @@ group :test do
   gem 'faker'
   gem 'webmock'
 end
+
+#Javascript Runtime, If you have nodejs you can comment this line
+gem 'therubyracer'
