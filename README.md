@@ -73,12 +73,14 @@ Clear the jobs associated with a app name:
 ##Usage
 ###GET bill
 * /bills/id.json => bill by id in json format
+* /bills/id.json?callback=my_function => bill by id in jsonp format, with my_function as wrapper funcition
 * /bills/id.xml => bill by id in xml format
 * /bills/new => create a new bill by filling in a form
-* /bills/id/edit => not working
+* /bills/id/edit => edit bill
 
 ###GET search
 * /bills/search.json?q=term => search for "term" in all fields
+* /bills/search.json?q=term&callback=my_function => search for "term" in jsonp format, with my_function as wrapper funcition
 * /bills/search.json?title=hello|hola&tags=world => search for bills with title similar to "hello" or "hola" and with the tag "world"
 
 ###POST

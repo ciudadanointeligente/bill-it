@@ -107,6 +107,14 @@ describe BillsController do
         response.body.should eq(assigns(:bill).to_json)
       end
 
+      it "returns the correct bill wrapped around a callback function in jsonp format" do
+        bill = FactoryGirl.create(:bill1)
+        func_name = "my_function"
+        get :show, id: bill.uid, format: :json, callback: func_name
+        response.should be_success
+        response.body.should eq(func_name + "(" + assigns(:bill).to_json + ")")
+      end
+
       xit "returns the correct bill in html format" do
         bill = FactoryGirl.create(:bill1)
         get :show, id: bill.uid, format: :html
@@ -150,6 +158,13 @@ describe BillsController do
         xit "returns bills in roar/json format" do
           get :search, q: "Tramitación", format: :json
           response.body.should eq(assigns(:bills).to_json)
+        end
+        #FIX works well, but haven't found the way to test the format
+        xit "returns bills in roar/jsonp format" do
+          func_name = "my_function"
+          get :search, q: "Tramitación", format: :json, callback: func_name
+          response.should be_success
+          response.body.should eq(func_name + "(" + assigns(:bills).to_json + ")")
         end
       end
 

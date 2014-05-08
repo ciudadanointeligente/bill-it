@@ -37,7 +37,7 @@ class BillsController < ApplicationController
     if @bill.nil?
       render text: "", :status => 404
     else
-      respond_with @bill, :represent_with => Billit::BillRepresenter
+      respond_with @bill, :callback => params['callback'], :represent_with => Billit::BillRepresenter
     end
   end
 
@@ -50,7 +50,7 @@ class BillsController < ApplicationController
     @bills = search.results
     @bills.extend(Billit::BillPageRepresenter)
     @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
-    respond_with @bills.to_json(params), represent_with: Billit::BillPageRepresenter
+    respond_with @bills.to_json(params), :callback => params['callback'], represent_with: Billit::BillPageRepresenter
   end
   alias index search
 
