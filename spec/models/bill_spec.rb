@@ -67,6 +67,13 @@ describe Bill do
       bill1 = FactoryGirl.create(:bill1)
       bill1.current_priority.should eq "Sin urgencia"
     end
+    it "returns no priority value with future dates" do
+      bill1 = FactoryGirl.create(:bill1)
+      priority1 = FactoryGirl.create(:priority1, type: "Discusión inmediata", entry_date: Date.tomorrow)
+      bill1.priorities = [priority1]
+      bill1.save
+      bill1.current_priority.should eq "Sin urgencia"
+    end
     it "works with more than 1 priority" do
       bill1 = FactoryGirl.build(:bill1)
       priority1 = FactoryGirl.create(:priority1, type: "Simple", entry_date: Date.yesterday)
