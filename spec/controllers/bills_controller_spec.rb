@@ -121,6 +121,13 @@ describe BillsController do
         response.should be_success
         response.body.should eq(assigns(:bill))
       end
+
+      it 'returns specific fields' do
+        bill = FactoryGirl.create(:bill1)
+        get :show, id: bill.uid, format: :json, fields: 'uid,title'
+        response.should be_success
+        response.body.should eq({title: bill.title, uid: bill.uid}.to_json)
+      end
     end
     describe "with non existent id" do
       it "returns a 404" do
@@ -146,6 +153,12 @@ describe BillsController do
       Sunspot.remove_all(Bill)
       Sunspot.index!(Bill.all)
     end
+
+    it 'returns specific fields' do
+        get :search, q: "Aeronáutico", format: :json, fields: 'uid,title'
+        response.should be_success
+        response.body.should eq({bills:[{title: @bill1.title, uid: @bill1.uid}]}.to_json)
+      end
 
     context "doing a simple 'q' query" do
       context "with a single result" do

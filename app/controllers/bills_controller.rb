@@ -34,10 +34,15 @@ class BillsController < ApplicationController
   def show
     @condition_bill_header = true
     @bill = Bill.find_by(uid: params[:id])
-    if @bill.nil?
-      render text: "", :status => 404
+    if params[:fields]
+      fields = params[:fields].split(',')
+      render json: @bill.to_json(only: fields)
     else
-      respond_with @bill, :callback => params['callback'], :represent_with => Billit::BillRepresenter
+      if @bill.nil?
+        render text: "", :status => 404
+      else
+        respond_with @bill, :callback => params['callback'], :represent_with => Billit::BillRepresenter
+      end
     end
   end
 
@@ -48,9 +53,16 @@ class BillsController < ApplicationController
     # Sunspot.index!(Bill.all)   # en caso de cambio en modelo
     search = search_for(params)
     @bills = search.results
-    @bills.extend(Billit::BillPageRepresenter)
-    @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
-    respond_with @bills.to_json(params), :callback => params['callback'], represent_with: Billit::BillPageRepresenter
+    if params[:fields]
+      fields = params[:fields].split(',')
+      bills = @bills.map {|bill| bill.to_json(only: fields)}.join(",")
+      result = "{\"bills\":["+ bills + "]}"
+      render json: result
+    else
+      @bills.extend(Billit::BillPageRepresenter)
+      @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))
+      respond_with @bills.to_json(params), :callback => params['callback'], represent_with: Billit::BillPageRepresenter
+    end
   end
   alias index search
 
