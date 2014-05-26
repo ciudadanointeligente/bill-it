@@ -33,11 +33,13 @@ class BillsController < ApplicationController
   # GET /bills/1.json
   def show
     @condition_bill_header = true
-    @bill = Bill.find_by(uid: params[:id])
     if params[:fields]
       fields = params[:fields].split(',')
-      render json: @bill.to_json(only: fields)
+      @bill = Bill.only(fields).find_by(uid: params[:id])
+      # render json: @bill.to_json(only: fields)
+      respond_with @bill, :callback => params['callback'], :represent_with => Billit::BillBasicRepresenter
     else
+      @bill = Bill.find_by(uid: params[:id])
       if @bill.nil?
         render text: "", :status => 404
       else
@@ -55,7 +57,7 @@ class BillsController < ApplicationController
     @bills = search.results
     if params[:fields]
       fields = params[:fields].split(',')
-      @bills.map! {|bill| Bill.only(fields).find_by(bill.uid)}
+      @bills.map! {|bill| Bill.only(fields).find_by(uid: bill.uid)}
       @bills.extend(Billit::BillPageRepresenter)
       respond_with @bills.to_json(params), :callback => params['callback'], represent_with: Billit::BillPageRepresenter
     else

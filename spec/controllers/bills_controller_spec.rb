@@ -126,7 +126,11 @@ describe BillsController do
         bill = FactoryGirl.create(:bill1)
         get :show, id: bill.uid, format: :json, fields: 'uid,title'
         response.should be_success
-        response.body.should eq({title: bill.title, uid: bill.uid}.to_json)
+        assigns(:bill).should eq(bill)
+        assigns(:bill).uid.should eq(bill.uid)
+        assigns(:bill).title.should eq(bill.title)
+        assigns(:bill).initial_chamber.should be_nil
+        # response.body.should eq({title: bill.title, uid: bill.uid}.to_json)
       end
     end
     describe "with non existent id" do
@@ -155,9 +159,9 @@ describe BillsController do
     end
 
     it 'returns specific fields' do
-        get :search, q: "Aeronáutico", format: :json, fields: 'uid,title'
+        get :search, q: "Pena", format: :json, fields: 'uid,title'
         response.should be_success
-        assigns(:bills).should eq([@bill1])
+        assigns(:bills).should eq([@bill1, @bill2])
         assigns(:bills).first.uid.should eq(@bill1.uid)
         assigns(:bills).first.title.should eq(@bill1.title)
         assigns(:bills).first.initial_chamber.should be_nil
