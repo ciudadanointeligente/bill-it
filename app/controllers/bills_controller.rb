@@ -55,9 +55,9 @@ class BillsController < ApplicationController
     @bills = search.results
     if params[:fields]
       fields = params[:fields].split(',')
-      bills = @bills.map {|bill| bill.to_json(only: fields)}.join(",")
-      result = "{\"bills\":["+ bills + "]}"
-      render json: result
+      @bills.map! {|bill| Bill.only(fields).find_by(bill.uid)}
+      @bills.extend(Billit::BillPageRepresenter)
+      respond_with @bills.to_json(params), :callback => params['callback'], represent_with: Billit::BillPageRepresenter
     else
       @bills.extend(Billit::BillPageRepresenter)
       @bills_query = Billit::BillPage.new.from_json(@bills.to_json(params))

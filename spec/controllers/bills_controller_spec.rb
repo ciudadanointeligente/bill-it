@@ -157,7 +157,10 @@ describe BillsController do
     it 'returns specific fields' do
         get :search, q: "Aeronáutico", format: :json, fields: 'uid,title'
         response.should be_success
-        response.body.should eq({bills:[{title: @bill1.title, uid: @bill1.uid}]}.to_json)
+        assigns(:bills).should eq([@bill1])
+        assigns(:bills).first.uid.should eq(@bill1.uid)
+        assigns(:bills).first.title.should eq(@bill1.title)
+        assigns(:bills).first.initial_chamber.should be_nil
       end
 
     context "doing a simple 'q' query" do
