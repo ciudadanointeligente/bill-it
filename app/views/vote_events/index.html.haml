@@ -1,0 +1,21 @@
+%h1 Listing vote_events
+
+%table
+  %tr
+    %th Startdate
+    %th Enddate
+    %th
+    %th
+    %th
+
+  - @vote_events.each do |vote_event|
+    %tr
+      %td= vote_event.startDate
+      %td= vote_event.endDate
+      %td= link_to 'Show', vote_event
+      %td= link_to 'Edit', edit_vote_event_path(vote_event)
+      %td= link_to 'Destroy', vote_event, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Vote event', new_vote_event_path

@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Startdate:
+  = @vote_event.startDate
+%p
+  %b Enddate:
+  = @vote_event.endDate
+
+= link_to 'Edit', edit_vote_event_path(@vote_event)
+\|
+= link_to 'Back', vote_events_path
