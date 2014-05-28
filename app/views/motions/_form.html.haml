@@ -1,0 +1,34 @@
+= form_for @motion do |f|
+  - if @motion.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@motion.errors.count, "error")} prohibited this motion from being saved:"
+      %ul
+        - @motion.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :organization
+    = f.text_field :organization
+  .field
+    = f.label :context
+    = f.text_field :context
+  .field
+    = f.label :creator
+    = f.text_field :creator
+  .field
+    = f.label :text
+    = f.text_field :text
+  .field
+    = f.label :date
+    = f.datetime_select :date
+  .field
+    = f.label :requirement
+    = f.text_field :requirement
+  .field
+    = f.label :result
+    = f.text_field :result
+  .field
+    = f.label :session
+    = f.text_field :session
+  .actions
+    = f.submit 'Save'

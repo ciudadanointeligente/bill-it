@@ -1,0 +1,30 @@
+%p#notice= notice
+
+%p
+  %b Organization:
+  = @motion.organization
+%p
+  %b Context:
+  = @motion.context
+%p
+  %b Creator:
+  = @motion.creator
+%p
+  %b Text:
+  = @motion.text
+%p
+  %b Date:
+  = @motion.date
+%p
+  %b Requirement:
+  = @motion.requirement
+%p
+  %b Result:
+  = @motion.result
+%p
+  %b Session:
+  = @motion.session
+
+= link_to 'Edit', edit_motion_path(@motion)
+\|
+= link_to 'Back', motions_path

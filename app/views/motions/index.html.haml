@@ -1,0 +1,33 @@
+%h1 Listing motions
+
+%table
+  %tr
+    %th Organization
+    %th Context
+    %th Creator
+    %th Text
+    %th Date
+    %th Requirement
+    %th Result
+    %th Session
+    %th
+    %th
+    %th
+
+  - @motions.each do |motion|
+    %tr
+      %td= motion.organization
+      %td= motion.context
+      %td= motion.creator
+      %td= motion.text
+      %td= motion.date
+      %td= motion.requirement
+      %td= motion.result
+      %td= motion.session
+      %td= link_to 'Show', motion
+      %td= link_to 'Edit', edit_motion_path(motion)
+      %td= link_to 'Destroy', motion, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Motion', new_motion_path
