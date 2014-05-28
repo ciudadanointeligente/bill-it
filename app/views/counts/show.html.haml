@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Option:
+  = @count.option
+%p
+  %b Value:
+  = @count.value
+
+= link_to 'Edit', edit_count_path(@count)
+\|
+= link_to 'Back', counts_path

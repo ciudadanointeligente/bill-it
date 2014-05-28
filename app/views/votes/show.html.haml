@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Voter:
+  = @vote.voter_id
+%p
+  %b Option:
+  = @vote.option
+
+= link_to 'Edit', edit_vote_path(@vote)
+\|
+= link_to 'Back', votes_path

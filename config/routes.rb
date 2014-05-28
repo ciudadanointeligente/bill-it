@@ -1,5 +1,11 @@
 BillIt::Application.routes.draw do
 
+  resources :votes
+
+
+  resources :counts
+
+
   resources :vote_events
 
 

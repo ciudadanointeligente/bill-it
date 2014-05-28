@@ -1,0 +1,21 @@
+%h1 Listing counts
+
+%table
+  %tr
+    %th Option
+    %th Value
+    %th
+    %th
+    %th
+
+  - @counts.each do |count|
+    %tr
+      %td= count.option
+      %td= count.value
+      %td= link_to 'Show', count
+      %td= link_to 'Edit', edit_count_path(count)
+      %td= link_to 'Destroy', count, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Count', new_count_path
