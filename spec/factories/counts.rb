@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :count do
-    option "MyString"
-    value "MyString"
+    option "si"
+    value 42
   end
 end

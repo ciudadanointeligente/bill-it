@@ -10,5 +10,6 @@ FactoryGirl.define do
     requirement "MyString"
     result "MyString"
     session "MyString"
+    vote_events { [FactoryGirl.build(:vote_event)] }
   end
 end
