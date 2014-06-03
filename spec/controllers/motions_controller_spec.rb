@@ -44,6 +44,13 @@ describe MotionsController do
       get :show, {:id => motion.to_param}, valid_session
       assigns(:motion).should eq(motion)
     end
+
+    it "returns the correct motion in json format" do
+      motion = FactoryGirl.create(:motion)
+      get :show, id: motion.id, format: :json
+      response.should be_success
+      response.body.should eq(assigns(:motion).to_json)
+    end
   end
 
   describe "GET new" do
@@ -89,12 +96,12 @@ describe MotionsController do
         assigns(:motion).should be_a_new(Motion)
       end
 
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Motion.any_instance.stub(:save).and_return(false)
-        post :create, {:motion => { "organization" => "invalid value" }}, valid_session
-        response.should render_template("new")
-      end
+      # it "re-renders the 'new' template" do
+      #   # Trigger the behavior that occurs when invalid params are submitted
+      #   Motion.any_instance.stub(:save).and_return(false)
+      #   post :create, {:motion => { "organization" => "invalid value" }}, valid_session
+      #   response.should render_template("new")
+      # end
     end
   end
 
@@ -132,13 +139,13 @@ describe MotionsController do
         assigns(:motion).should eq(motion)
       end
 
-      it "re-renders the 'edit' template" do
-        motion = Motion.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Motion.any_instance.stub(:save).and_return(false)
-        put :update, {:id => motion.to_param, :motion => { "organization" => "invalid value" }}, valid_session
-        response.should render_template("edit")
-      end
+      # it "re-renders the 'edit' template" do
+      #   motion = Motion.create! valid_attributes
+      #   # Trigger the behavior that occurs when invalid params are submitted
+      #   Motion.any_instance.stub(:save).and_return(false)
+      #   put :update, {:id => motion.to_param, :motion => { "organization" => "invalid value" }}, valid_session
+      #   response.should render_template("edit")
+      # end
     end
   end
 
