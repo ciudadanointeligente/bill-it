@@ -2,9 +2,9 @@
 
 FactoryGirl.define do
   factory :vote_event do
-    startDate "2014-05-28 17:07:28"
-    endDate "2014-05-28 17:07:28"
-    count { FactoryGirl.build(:count) }
+    start_date "2014-05-28 17:07:28"
+    end_date "2014-05-28 17:07:28"
+    counts { [FactoryGirl.build(:count)] }
     votes { [FactoryGirl.build(:vote)] }
   end
 end

@@ -10,8 +10,8 @@
 
   - @vote_events.each do |vote_event|
     %tr
-      %td= vote_event.startDate
-      %td= vote_event.endDate
+      %td= vote_event.start_date
+      %td= vote_event.end_date
       %td= link_to 'Show', vote_event
       %td= link_to 'Edit', edit_vote_event_path(vote_event)
       %td= link_to 'Destroy', vote_event, :method => :delete, :data => { :confirm => 'Are you sure?' }

@@ -70,7 +70,7 @@ GEM
     better_errors (1.1.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
-    billit_representers (0.9.5)
+    billit_representers (0.9.7)
       activemodel
       roar (= 0.11.19)
       roar-rails (= 0.1.0)
@@ -322,7 +322,7 @@ DEPENDENCIES
   activeadmin-mongoid
   awesome_print
   better_errors
-  billit_representers (= 0.9.5)
+  billit_representers (= 0.9.7)
   binding_of_caller
   business_time
   coffee-script (~> 2.2.0)

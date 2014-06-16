@@ -108,8 +108,8 @@ class BillsController < ApplicationController
   # PUT /bills/1
   # PUT /bills/1.json
   def update
-    #@bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
-    @bill = Bill.find_by(uid:params[:id])
+    @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
+    # @bill = Bill.find_by(uid:params[:id])
     begin
       @bill.from_json(request.body.read)
     rescue MultiJson::LoadError

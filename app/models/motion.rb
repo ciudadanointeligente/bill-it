@@ -1,6 +1,7 @@
 class Motion
   include Mongoid::Document
 
+  belongs_to :bill
   has_many :vote_events, autosave: true, class_name: "VoteEvent"
 
   field :organization, type: String

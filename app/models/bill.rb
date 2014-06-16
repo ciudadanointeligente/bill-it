@@ -15,6 +15,7 @@ class Bill
   has_many :documents, autosave: true, class_name: "Document"
   has_many :directives, autosave: true, class_name: "Directive"
   has_many :remarks, autosave: true, class_name: "Remark"
+  has_many :motions, autosave: true, class_name: "Motion"
   embeds_many :revisions
   
   field :uid, type: String
