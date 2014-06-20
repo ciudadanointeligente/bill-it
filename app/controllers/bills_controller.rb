@@ -110,23 +110,28 @@ class BillsController < ApplicationController
   def update
     @bill = Bill.find_by(uid:params[:id]).extend(Billit::BillRepresenter)
     # @bill = Bill.find_by(uid:params[:id])
-    begin
-      @bill.from_json(request.body.read)
-    rescue MultiJson::LoadError
-      params[:bill].keys.each do |key|
-        # if key == 'tags'
-        #   @bill.tags = params[:bill][:tags].split(/,|;|\|/)
-        # else
-          @bill.send(key.to_s + "=", params[:bill][key])
-        # end
+    if params[:tags]
+      @bill.tags = params[:tags]
+      @bill.save
+    else
+      begin
+        @bill.from_json(request.body.read)
+      rescue MultiJson::LoadError
+        params[:bill].keys.each do |key|
+          # if key == 'tags'
+          #   @bill.tags = params[:bill][:tags].split(/,|;|\|/)
+          # else
+            @bill.send(key.to_s + "=", params[:bill][key])
+          # end
+        end
       end
-    end
-    @bill.save
-    begin
-      Sunspot.index!(@bill)
-    rescue
-      puts "#{$!}"
-      puts "unindexed bill: " + @bill.uid
+      @bill.save
+      begin
+        Sunspot.index!(@bill)
+      rescue
+        puts "#{$!}"
+        puts "unindexed bill: " + @bill.uid
+      end
     end
     respond_with @bill, :represent_with => Billit::BillRepresenter
   end
