@@ -308,6 +308,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    uglifier (2.5.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
     webmock (1.13.0)
@@ -346,6 +349,7 @@ DEPENDENCIES
   sunspot_solr
   therubyracer
   thin
+  uglifier
   webmock
   whenever!
   will_paginate (~> 3.0)
