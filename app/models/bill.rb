@@ -70,16 +70,16 @@ class Bill
     
     days_in_force = case latest_priority.type
       when "Discusión inmediata"
-        2
+        6
       when "Suma"
-        5
+        15
       when "Simple"
-        10
+        30
       else
         return "Sin urgencia"
     end
 
-    if (days_in_force.business_days.after latest_priority.entry_date) >= Date.today
+    if (latest_priority.entry_date + days_in_force.days) >= Date.today
       latest_priority.type
     else
       "Sin urgencia"
