@@ -4,6 +4,7 @@ gem 'rails', '~> 3.2'
 gem "jquery-rails", "~> 2.2"
 gem 'haml-rails', '~> 0.4'
 gem 'uglifier'
+gem 'newrelic_rpm'
 
 #Search
 gem 'sunspot_mongoid2'
@@ -35,7 +36,6 @@ group :development, :test do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'awesome_print'
-  gem 'newrelic_rpm'
 end
 
 group :development do
