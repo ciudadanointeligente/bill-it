@@ -83,6 +83,9 @@ Clear the jobs associated with a app name:
 * /bills/search.json?q=term&callback=my_function => search for "term" in jsonp format, with my_function as wrapper funcition
 * /bills/search.json?title=hello|hola&tags=world => search for bills with title similar to "hello" or "hola" and with the tag "world"
 
+####Example from the app's search:
+* /bills/search?utf8=✓q=&bill_id=&authors=&stage=&initial_chamber=&current_priority=&creation_date_min=2010-10-10&creation_date_max=2014-09-16&bills=1
+
 ###POST
 * /bills => creates new bill
 
