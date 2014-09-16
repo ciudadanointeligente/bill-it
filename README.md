@@ -201,6 +201,13 @@ There are other commands that perform a reindexing, but they can be resource int
 bundle exec rake sunspot:solr:reindex
 ```
 
+The bundle exec command needs to have the ENV variable set, you can just run it as this:
+```
+ENV=production bundle exec rails console
+```
+
+Change production for development or test, depending on the environment you want to run the console in.
+
 And
 
 ```
